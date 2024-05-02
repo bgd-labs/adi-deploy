@@ -1,6 +1,4 @@
-[submodule "lib/aave-helpers"]
-	path = lib/aave-helpers
-	url = https://github.com/bgd-labs/aave-helpers
 [submodule "lib/aave-delivery-infrastructure"]
 	path = lib/aave-delivery-infrastructure
 	url = https://github.com/bgd-labs/aave-delivery-infrastructure
+	branch = fix/create2-adapter-deployments
