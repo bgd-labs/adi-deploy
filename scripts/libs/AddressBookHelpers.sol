@@ -29,7 +29,6 @@ import {GovernanceV3Gnosis} from 'aave-address-book/GovernanceV3Gnosis.sol';
 import {GovernanceV3Scroll} from 'aave-address-book/GovernanceV3Scroll.sol';
 import {GovernanceV3Mumbai} from 'aave-address-book/GovernanceV3Mumbai.sol';
 import {GovernanceV3Fuji} from 'aave-address-book/GovernanceV3Fuji.sol';
-import "../../lib/aave-delivery-infrastructure/lib/aave-address-book/src/MiscEthereum.sol";
 
 library AddressBookMiscHelper {
   function getCrossChainController(uint256 chainId) internal pure returns (address) {

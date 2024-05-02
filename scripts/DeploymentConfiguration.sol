@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import 'forge-std/Script.sol';
 import 'forge-std/console.sol';
 import './libs/DecodeHelpers.sol';
-import './libs/AddressBookHelper.sol';
+import './libs/AddressBookHelpers.sol';
 import {Strings} from 'openzeppelin-contracts/contracts/utils/Strings.sol';
 
 abstract contract DeploymentConfigurationBaseScript is DeployJsonDecodeHelpers, Script {

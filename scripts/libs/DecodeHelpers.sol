@@ -5,6 +5,22 @@ import 'forge-std/StdJson.sol';
 import 'forge-std/Vm.sol';
 import './PathHelpers.sol';
 
+  enum Adapters {
+    Null_Adapter,
+    Same_Chain,
+    CCIP,
+    Arbitrum_Native,
+    Optimism_Native,
+    Polygon_Native,
+    Gnosis_Native,
+    Metis_Native,
+    LayerZero,
+    Hyperlane,
+    Scroll_Native,
+    Polygon_ZkEvm_Native,
+    Base_Native
+  }
+
   struct EndpointAdapterInfo {
     address endpoint;
     uint256 providerGasLimit;
@@ -128,21 +144,7 @@ import './PathHelpers.sol';
     string revision;
   }
 
-  enum Adapters {
-    Null_Adapter,
-    Same_Chain,
-    CCIP,
-    Arbitrum_Native,
-    Optimism_Native,
-    Polygon_Native,
-    Gnosis_Native,
-    Metis_Native,
-    LayerZero,
-    Hyperlane,
-    Scroll_Native,
-    Polygon_ZkEvm_Native,
-    Base_Native
-  }
+
 
 contract DeployJsonDecodeHelpers {
   using stdJson for string;
