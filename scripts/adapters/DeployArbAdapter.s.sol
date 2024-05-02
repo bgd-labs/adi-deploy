@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import './BaseAdapterScript.sol';
-import {BaseArbAdapter, IBaseAdapter} from 'adi-scripts/adapters/arbitrum/DeployArbAdapter.sol';
+import {BaseArbAdapter, IBaseAdapter} from 'adi-scripts/Adapters/DeployArbAdapter.s.sol';
 
 contract DeployArbAdapter is BaseAdapterScript, BaseArbAdapter {
   function REMOTE_NETWORKS(
@@ -54,7 +54,7 @@ contract DeployArbAdapter is BaseAdapterScript, BaseArbAdapter {
           arbConfig.providerGasLimit,
           trustedRemotes,
           true,
-        keccak256(salt)
+        keccak256(arbConfig.salt)
 
       );
     } else {

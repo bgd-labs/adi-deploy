@@ -25,6 +25,7 @@ import './PathHelpers.sol';
     address endpoint;
     uint256 providerGasLimit;
     uint256[] remoteNetworks;
+    string salt;
   }
 
   struct CCIPAdapterInfo {
@@ -32,6 +33,7 @@ import './PathHelpers.sol';
     address linkToken;
     uint256 providerGasLimit;
     uint256[] remoteNetworks;
+    string salt;
   }
 
   struct HyperlaneAdapterInfo {
@@ -39,6 +41,7 @@ import './PathHelpers.sol';
     address igp;
     uint256 providerGasLimit;
     uint256[] remoteNetworks;
+    string salt;
   }
 
   struct Connections {
@@ -449,7 +452,8 @@ contract DeployJsonDecodeHelpers {
         string.concat(endpointAdapterKey, 'providerGasLimit'),
         json
       ),
-      remoteNetworks: PathHelpers.getChainIdsFromNames(chains)
+      remoteNetworks: PathHelpers.getChainIdsFromNames(chains),
+    salt: this.decodeString(endpointAdapterKey, 'salt')
     });
 
     return endpointAdapter;
@@ -471,7 +475,8 @@ contract DeployJsonDecodeHelpers {
       mailBox: tryDecodeAddress(string.concat(hlAdapterKey, 'mailBox'), json),
       igp: tryDecodeAddress(string.concat(hlAdapterKey, 'igp'), json),
       providerGasLimit: tryDecodeUint256(string.concat(hlAdapterKey, 'providerGasLimit'), json),
-      remoteNetworks: PathHelpers.getChainIdsFromNames(chains)
+      remoteNetworks: PathHelpers.getChainIdsFromNames(chains),
+      salt: this.decodeString(hlAdapterKey, 'salt')
     });
   }
 
@@ -491,7 +496,8 @@ contract DeployJsonDecodeHelpers {
       ccipRouter: tryDecodeAddress(string.concat(ccipAdapterKey, 'ccipRouter'), json),
       linkToken: tryDecodeAddress(string.concat(ccipAdapterKey, 'linkToken'), json),
       providerGasLimit: tryDecodeUint256(string.concat(ccipAdapterKey, 'providerGasLimit'), json),
-      remoteNetworks: PathHelpers.getChainIdsFromNames(chains)
+      remoteNetworks: PathHelpers.getChainIdsFromNames(chains),
+      salt: this.decodeString(ccipAdapterKey, 'salt')
     });
   }
 
@@ -795,32 +801,32 @@ contract DeployJsonDecodeHelpers {
   }
 }
 
-  struct Addresses {
-    address arbAdapter;
-    address baseAdapter;
-    address ccipAdapter;
-    uint256 chainId;
-    address clEmergencyOracle;
-    address create3Factory;
-    address crossChainController;
-    address crossChainControllerImpl;
-    address emergencyRegistry;
-    address gnosisAdapter;
-    address guardian;
-    address hlAdapter;
-    address lzAdapter;
-    address metisAdapter;
-    address mockDestination;
-    address opAdapter;
-    address owner;
-    address polAdapter;
-    address proxyAdmin;
-    address proxyFactory;
-    address sameChainAdapter;
-    address scrollAdapter;
-    uint256 version;
-    address zkevmAdapter;
-  }
+struct Addresses {
+  address arbAdapter;
+  address baseAdapter;
+  address ccipAdapter;
+  uint256 chainId;
+  address clEmergencyOracle;
+  address create3Factory;
+  address crossChainController;
+  address crossChainControllerImpl;
+  address emergencyRegistry;
+  address gnosisAdapter;
+  address guardian;
+  address hlAdapter;
+  address lzAdapter;
+  address metisAdapter;
+  address mockDestination;
+  address opAdapter;
+  address owner;
+  address polAdapter;
+  address proxyAdmin;
+  address proxyFactory;
+  address sameChainAdapter;
+  address scrollAdapter;
+  uint256 version;
+  address zkevmAdapter;
+}
 
 library AddressesHelpers {
   using stdJson for string;
