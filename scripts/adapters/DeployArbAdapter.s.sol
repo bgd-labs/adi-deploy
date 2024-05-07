@@ -2,9 +2,9 @@
 pragma solidity ^0.8.0;
 
 import './BaseAdapterScript.sol';
-import {ArbAdapterDeploymentHelper} from "adi-scripts/Adapters/DeployArbAdapter.s.sol";
+import {ArbAdapterDeploymentHelper} from 'adi-scripts/Adapters/DeployArbAdapter.s.sol';
 import {IBaseAdapter} from 'adi/adapters/IBaseAdapter.sol';
-import "aave-helpers/GovV3Helpers.sol";
+import 'aave-helpers/GovV3Helpers.sol';
 
 contract DeployArbAdapter is BaseAdapterScript {
   function REMOTE_NETWORKS(
@@ -48,25 +48,6 @@ contract DeployArbAdapter is BaseAdapterScript {
         require(arbConfig.endpoint != address(0), 'Arbitrum inbox can not be 0');
         require(destinationCCC != address(0), 'Arbitrum CCC must be deployed');
       }
-
-//      arbAdapter = _deployAdapter(
-//          crossChainController,
-//          arbConfig.endpoint,
-//          destinationCCC,
-//          arbConfig.providerGasLimit,
-//          trustedRemotes,
-//          true,
-//        keccak256(arbConfig.salt)
-//      );
-
-      arbAdapter = GovV3Helpers.deployDeterministic(
-        ArbAdapterDeploymentHelper.getAdapterCode(ArbAdapterDeploymentHelper.BaseAdapterArgs({
-          crossChainController: crossChainController,
-          providerGasLimit: arbConfig.providerGasLimit,
-          trustedRemotes: trustedRemotes,
-          isTestnet: true
-        }), arbConfig.endpoint, destinationCCC
-      ));
     } else {
       if (config.chainId == ChainIds.ETHEREUM) {
         // fetch current addresses
@@ -89,25 +70,19 @@ contract DeployArbAdapter is BaseAdapterScript {
         require(arbConfig.endpoint != address(0), 'Arbitrum inbox can not be 0');
         require(destinationCCC != address(0), 'Arbitrum CCC must be deployed');
       }
-//      arbAdapter = _deployAdapter(
-//        crossChainController,
-//        arbConfig.endpoint,
-//        destinationCCC,
-//        arbConfig.providerGasLimit,
-//        trustedRemotes,
-//        false,
-//        keccak256(arbConfig.salt)
-//      );
-
-      arbAdapter = GovV3Helpers.deployDeterministic(
-        ArbAdapterDeploymentHelper.getAdapterCode(ArbAdapterDeploymentHelper.BaseAdapterArgs({
+    }
+    arbAdapter = GovV3Helpers.deployDeterministic(
+      ArbAdapterDeploymentHelper.getAdapterCode(
+        ArbAdapterDeploymentHelper.BaseAdapterArgs({
           crossChainController: crossChainController,
           providerGasLimit: arbConfig.providerGasLimit,
           trustedRemotes: trustedRemotes,
-          isTestnet: false
-        }), arbConfig.endpoint, destinationCCC
-        ));
-    }
+          isTestnet: true
+        }),
+        arbConfig.endpoint,
+        destinationCCC
+      )
+    );
 
     currentAddresses.arbAdapter = revisionAddresses.arbAdapter = arbAdapter;
   }

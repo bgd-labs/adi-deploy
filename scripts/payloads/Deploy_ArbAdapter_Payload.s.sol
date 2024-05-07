@@ -17,7 +17,6 @@ contract AaveV3Arbitrum_New_Adapter_Payload is
   SimpleReceiverAdapterUpdate(
     SimpleReceiverAdapterUpdate.ConstructorInput({
       ccc: GovernanceV3Arbitrum.CROSS_CHAIN_CONTROLLER,
-      newAdapter: 0xc8a2ADC4261c6b669CdFf69E717E77C9cFeB420d,
       adapterToRemove: address(0)
     })
   ) {
@@ -27,7 +26,7 @@ contract AaveV3Arbitrum_New_Adapter_Payload is
       return chains;
     }
 
-    function validateDeployedAdapter() public view override {
+    function getNewAdapterCode() public override returns (bytes memory) {
       IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = new IBaseAdapter.TrustedRemotesConfig[](1);
       trustedRemotes[0] = IBaseAdapter.TrustedRemotesConfig({
         originChainId: ChainIds.MAINNET,
@@ -36,15 +35,13 @@ contract AaveV3Arbitrum_New_Adapter_Payload is
 
       // Problem I see with this is that we will have to put the constructor args. We will need to get them from
       // the config json file
-      bytes memory adapterCode = ArbAdapterDeploymentHelper.getAdapterCode(ArbAdapterDeploymentHelper.BaseAdapterArgs({
+      return ArbAdapterDeploymentHelper.getAdapterCode(ArbAdapterDeploymentHelper.BaseAdapterArgs({
         crossChainController: GovernanceV3Arbitrum.CROSS_CHAIN_CONTROLLER,
         providerGasLimit: 150_000,
         trustedRemotes: trustedRemotes,
         isTestnet: false
       }), address(0), address(0)
       );
-      address predictedAdapter = GovV3Helpers.predictDeterministicAddress(adapterCode);
-      require(predictedAdapter == NEW_ADAPTER);
     }
 }
 
@@ -60,7 +57,6 @@ contract DeployArbitrumPayload is ArbitrumScript {
     // deploy payloads
     address payload0 = GovV3Helpers.deployDeterministic(
       type(AaveV3Arbitrum_New_Adapter_Payload).creationCode
-
     );
   }
 }
