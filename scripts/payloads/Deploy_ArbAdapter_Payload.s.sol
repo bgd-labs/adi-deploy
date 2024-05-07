@@ -6,7 +6,7 @@ import {GovernanceV3Arbitrum} from 'aave-address-book/GovernanceV3Arbitrum.sol';
 import {GovernanceV3Ethereum} from 'aave-address-book/GovernanceV3Ethereum.sol';
 import 'aave-helpers/ScriptUtils.sol';
 import 'aave-helpers/GovV3Helpers.sol';
-import {ArbAdapterDeploymentHelper} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
+import {ArbAdapterDeploymentHelper, BaseAdapterStructs} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
 
 /**
  * @title Hyperlane bridge adapter update to V3
@@ -39,14 +39,16 @@ contract AaveV3Arbitrum_New_Adapter_Payload is
     // the config json file
     return
       ArbAdapterDeploymentHelper.getAdapterCode(
-        ArbAdapterDeploymentHelper.BaseAdapterArgs({
-          crossChainController: GovernanceV3Arbitrum.CROSS_CHAIN_CONTROLLER,
-          providerGasLimit: 150_000,
-          trustedRemotes: trustedRemotes,
-          isTestnet: false
-        }),
-        address(0),
-        address(0)
+        ArbAdapterDeploymentHelper.ArbAdapterArgs({
+          baseArgs: BaseAdapterStructs.BaseAdapterArgs({
+            crossChainController: GovernanceV3Arbitrum.CROSS_CHAIN_CONTROLLER,
+            providerGasLimit: 150_000,
+            trustedRemotes: trustedRemotes,
+            isTestnet: false
+          }),
+          inbox: address(0),
+          destinationCCC: address(0)
+        })
       );
   }
 }
