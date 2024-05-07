@@ -4,9 +4,9 @@ pragma solidity ^0.8.0;
 import 'aave-helpers/adi/SimpleReceiverAdapterUpdate.sol';
 import {GovernanceV3Arbitrum} from 'aave-address-book/GovernanceV3Arbitrum.sol';
 import {GovernanceV3Ethereum} from 'aave-address-book/GovernanceV3Ethereum.sol';
-import "aave-helpers/ScriptUtils.sol";
-import "aave-helpers/GovV3Helpers.sol";
-import {ArbAdapterDeploymentHelper} from "adi-scripts/Adapters/DeployArbAdapter.s.sol";
+import 'aave-helpers/ScriptUtils.sol';
+import 'aave-helpers/GovV3Helpers.sol';
+import {ArbAdapterDeploymentHelper} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
 
 /**
  * @title Hyperlane bridge adapter update to V3
@@ -19,33 +19,37 @@ contract AaveV3Arbitrum_New_Adapter_Payload is
       ccc: GovernanceV3Arbitrum.CROSS_CHAIN_CONTROLLER,
       adapterToRemove: address(0)
     })
-  ) {
-    function getChainsToReceive() public pure override returns (uint256[] memory) {
-      uint256[] memory chains = new uint256[](1);
-      chains[0] = ChainIds.MAINNET;
-      return chains;
-    }
+  )
+{
+  function getChainsToReceive() public pure override returns (uint256[] memory) {
+    uint256[] memory chains = new uint256[](1);
+    chains[0] = ChainIds.MAINNET;
+    return chains;
+  }
 
-    function getNewAdapterCode() public override returns (bytes memory) {
-      IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = new IBaseAdapter.TrustedRemotesConfig[](1);
-      trustedRemotes[0] = IBaseAdapter.TrustedRemotesConfig({
-        originChainId: ChainIds.MAINNET,
-        originForwarder: GovernanceV3Ethereum.CROSS_CHAIN_CONTROLLER
-      });
+  function getNewAdapterCode() public override returns (bytes memory) {
+    IBaseAdapter.TrustedRemotesConfig[]
+      memory trustedRemotes = new IBaseAdapter.TrustedRemotesConfig[](1);
+    trustedRemotes[0] = IBaseAdapter.TrustedRemotesConfig({
+      originChainId: ChainIds.MAINNET,
+      originForwarder: GovernanceV3Ethereum.CROSS_CHAIN_CONTROLLER
+    });
 
-      // Problem I see with this is that we will have to put the constructor args. We will need to get them from
-      // the config json file
-      return ArbAdapterDeploymentHelper.getAdapterCode(ArbAdapterDeploymentHelper.BaseAdapterArgs({
-        crossChainController: GovernanceV3Arbitrum.CROSS_CHAIN_CONTROLLER,
-        providerGasLimit: 150_000,
-        trustedRemotes: trustedRemotes,
-        isTestnet: false
-      }), address(0), address(0)
+    // Problem I see with this is that we will have to put the constructor args. We will need to get them from
+    // the config json file
+    return
+      ArbAdapterDeploymentHelper.getAdapterCode(
+        ArbAdapterDeploymentHelper.BaseAdapterArgs({
+          crossChainController: GovernanceV3Arbitrum.CROSS_CHAIN_CONTROLLER,
+          providerGasLimit: 150_000,
+          trustedRemotes: trustedRemotes,
+          isTestnet: false
+        }),
+        address(0),
+        address(0)
       );
-    }
+  }
 }
-
-
 
 /**
  * @dev Deploy Arbitrum

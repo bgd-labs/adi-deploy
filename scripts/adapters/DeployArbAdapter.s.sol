@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import './BaseAdapterScript.sol';
-import {ArbAdapterDeploymentHelper} from 'adi-scripts/Adapters/DeployArbAdapter.s.sol';
+import {ArbAdapterDeploymentHelper} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
 import {IBaseAdapter} from 'adi/adapters/IBaseAdapter.sol';
 import 'aave-helpers/GovV3Helpers.sol';
 
@@ -71,6 +71,7 @@ contract DeployArbAdapter is BaseAdapterScript {
         require(destinationCCC != address(0), 'Arbitrum CCC must be deployed');
       }
     }
+
     arbAdapter = GovV3Helpers.deployDeterministic(
       ArbAdapterDeploymentHelper.getAdapterCode(
         ArbAdapterDeploymentHelper.BaseAdapterArgs({
