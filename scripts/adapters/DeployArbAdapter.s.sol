@@ -13,19 +13,18 @@ contract DeployArbAdapter is BaseAdapterScript {
     return config.adapters.arbitrumAdapter.remoteNetworks;
   }
 
-  function _deployAdapter(
+  function _getConstructorArgs(
     address crossChainController,
     Addresses memory currentAddresses,
     Addresses memory revisionAddresses,
     ChainDeploymentInfo memory config,
     IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes
-  ) internal override {
+  ) internal view returns (ArbAdapterDeploymentHelper.ArbAdapterArgs memory) {
     require(crossChainController != address(0), 'CCC needs to be deployed');
 
     EndpointAdapterInfo memory arbConfig = config.adapters.arbitrumAdapter;
     require(arbConfig.endpoint != address(0), 'Arbitrum inbox can not be 0');
 
-    address arbAdapter;
     address destinationCCC;
     if (PathHelpers.isTestNet(config.chainId)) {
       if (config.chainId == TestNetChainIds.ETHEREUM_SEPOLIA) {
@@ -71,19 +70,36 @@ contract DeployArbAdapter is BaseAdapterScript {
       }
     }
 
-    arbAdapter = GovV3Helpers.deployDeterministic(
-      ArbAdapterDeploymentHelper.getAdapterCode(
-        ArbAdapterDeploymentHelper.ArbAdapterArgs({
-          baseArgs: BaseAdapterStructs.BaseAdapterArgs({
-            crossChainController: crossChainController,
-            providerGasLimit: arbConfig.providerGasLimit,
-            trustedRemotes: trustedRemotes,
-            isTestnet: true
-          }),
-          inbox: arbConfig.endpoint,
-          destinationCCC: destinationCCC
-        })
-      )
+    return
+      ArbAdapterDeploymentHelper.ArbAdapterArgs({
+        baseArgs: BaseAdapterStructs.BaseAdapterArgs({
+          crossChainController: crossChainController,
+          providerGasLimit: arbConfig.providerGasLimit,
+          trustedRemotes: trustedRemotes,
+          isTestnet: PathHelpers.isTestNet(config.chainId)
+        }),
+        inbox: arbConfig.endpoint,
+        destinationCCC: destinationCCC
+      });
+  }
+
+  function _deployAdapter(
+    address crossChainController,
+    Addresses memory currentAddresses,
+    Addresses memory revisionAddresses,
+    ChainDeploymentInfo memory config,
+    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes
+  ) internal override {
+    ArbAdapterDeploymentHelper.ArbAdapterArgs memory constructorArgs = _getConstructorArgs(
+      crossChainController,
+      currentAddresses,
+      revisionAddresses,
+      config,
+      trustedRemotes
+    );
+
+    address arbAdapter = GovV3Helpers.deployDeterministic(
+      ArbAdapterDeploymentHelper.getAdapterCode(constructorArgs)
     );
 
     currentAddresses.arbAdapter = revisionAddresses.arbAdapter = arbAdapter;

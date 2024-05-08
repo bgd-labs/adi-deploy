@@ -8,6 +8,12 @@ import './libs/AddressBookHelpers.sol';
 import {Strings} from 'openzeppelin-contracts/contracts/utils/Strings.sol';
 
 abstract contract DeploymentConfigurationBaseScript is DeployJsonDecodeHelpers, Script {
+  struct AddressesAndConfig {
+    Addresses currentAddresses;
+    Addresses revisionAddresses;
+    ChainDeploymentInfo config;
+  }
+
   function getAddresses(string memory path, Vm vm) external view returns (Addresses memory) {
     string memory json = vm.readFile(path);
 
@@ -164,13 +170,41 @@ abstract contract DeploymentConfigurationBaseScript is DeployJsonDecodeHelpers, 
     return deploymentConfig;
   }
 
+  function _getAddressesAndConfigs(
+    uint256 chainId,
+    string memory revision,
+    Vm vm
+  ) internal view returns (AddressesAndConfig memory) {
+    // get configuration
+    string memory deploymentConfigJsonPath = PathHelpers.getDeploymentJsonPathByVersion(revision);
+    ChainDeploymentInfo memory config = _getDeploymentConfigurationByChainId(
+      chainId,
+      deploymentConfigJsonPath,
+      revision,
+      vm
+    );
+
+    // fetch current addresses
+    Addresses memory currentAddresses = _getCurrentAddressesByChainId(chainId, vm);
+    // fetch revision addresses
+    Addresses memory revisionAddresses = _getRevisionAddressesByChainId(chainId, revision, vm);
+
+    return (
+      AddressesAndConfig({
+        currentAddresses: currentAddresses,
+        revisionAddresses: revisionAddresses,
+        config: config
+      })
+    );
+  }
+
   function _execute(
     Addresses memory currentAddresses,
     Addresses memory revisionAddresses,
     ChainDeploymentInfo memory config
   ) internal virtual;
 
-  function run() public {
+  function run() public virtual {
     // get deployment json path
     string memory key = 'DEPLOYMENT_VERSION';
 

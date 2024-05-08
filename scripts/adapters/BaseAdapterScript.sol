@@ -17,16 +17,13 @@ abstract contract BaseAdapterScript is DeploymentConfigurationBaseScript {
     IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes
   ) internal virtual;
 
-  function _execute(
-    Addresses memory currentAddresses,
-    Addresses memory revisionAddresses,
+  function _getTrustedRemotes(
     ChainDeploymentInfo memory config
-  ) internal override {
+  ) internal view returns (IBaseAdapter.TrustedRemotesConfig[] memory) {
     uint256[] memory remoteNetworks = REMOTE_NETWORKS(config);
-
     // generate trusted trustedRemotes
     IBaseAdapter.TrustedRemotesConfig[]
-    memory trustedRemotes = new IBaseAdapter.TrustedRemotesConfig[](remoteNetworks.length);
+      memory trustedRemotes = new IBaseAdapter.TrustedRemotesConfig[](remoteNetworks.length);
 
     for (uint256 i = 0; i < remoteNetworks.length; i++) {
       // fetch current addresses
@@ -52,12 +49,21 @@ abstract contract BaseAdapterScript is DeploymentConfigurationBaseScript {
         originChainId: remoteNetworks[i]
       });
     }
+    return trustedRemotes;
+  }
 
+  function _execute(
+    Addresses memory currentAddresses,
+    Addresses memory revisionAddresses,
+    ChainDeploymentInfo memory config
+  ) internal override {
     address crossChainController = _getCrossChainController(
       currentAddresses,
       revisionAddresses,
       config.chainId
     );
+
+    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes(config);
 
     _deployAdapter(
       crossChainController,
