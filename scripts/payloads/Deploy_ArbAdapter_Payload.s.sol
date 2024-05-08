@@ -7,6 +7,7 @@ import {GovernanceV3Ethereum} from 'aave-address-book/GovernanceV3Ethereum.sol';
 import 'aave-helpers/ScriptUtils.sol';
 import 'aave-helpers/GovV3Helpers.sol';
 import {ArbAdapterDeploymentHelper, BaseAdapterStructs} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
+import {IBaseAdapter} from 'adi/adapters/IBaseAdapter.sol';
 
 /**
  * @title Hyperlane bridge adapter update to V3

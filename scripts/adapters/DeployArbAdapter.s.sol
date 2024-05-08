@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import './BaseAdapterScript.sol';
 import {ArbAdapterDeploymentHelper, BaseAdapterStructs} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
 import {IBaseAdapter} from 'adi/adapters/IBaseAdapter.sol';
-import 'aave-helpers/GovV3Helpers.sol';
+import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
 
 contract DeployArbAdapter is BaseAdapterScript {
   function REMOTE_NETWORKS(
