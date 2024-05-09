@@ -88,6 +88,7 @@ contract DeployArbAdapter is BaseAdapterScript {
     ChainDeploymentInfo memory config,
     IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes
   ) internal override {
+    console.log('======');
     ArbAdapterDeploymentHelper.ArbAdapterArgs memory constructorArgs = _getConstructorArgs(
       crossChainController,
       config,

@@ -12,11 +12,11 @@ solc = "0.8.19"
 
 [rpc_endpoints]
 ethereum="${RPC_MAINNET}"
-ethereum-sepolia="${RPC_ETHEREUM_SEPOLIA}"
+ethereum_sepolia="${RPC_ETHEREUM_SEPOLIA}"
 polygon="${RPC_POLYGON}"
 polygon-testnet="${RPC_POLYGON_MUMBAI}"
 arbitrum="${RPC_ARBITRUM}"
-arbitrum-sepolia="${RPC_ARBITRUM_SEPOLIA}"
+arbitrum_sepolia="${RPC_ARBITRUM_SEPOLIA}"
 metis="${RPC_METIS}"
 metis-testnet="${RPC_METIS_TESTNET}"
 avalanche="${RPC_AVALANCHE}"
@@ -40,7 +40,7 @@ celo-testnet="${RPC_CELO_ALFAJORES}"
 
 [etherscan]
 ethereum={key="${ETHERSCAN_API_KEY_MAINNET}", chain=1 }
-ethereum-sepolia={key="${ETHERSCAN_API_KEY_MAINNET}",chain=11155111}
+ethereum_sepolia={key="${ETHERSCAN_API_KEY_MAINNET}",chain=11155111}
 optimism={key="${ETHERSCAN_API_KEY_OPTIMISM}",chain=10}
 optimism-testnet={key="${ETHERSCAN_API_KEY_OPTIMISM}",chain=10}
 avalanche={key="${ETHERSCAN_API_KEY_AVALANCHE}",chain=43114}
@@ -48,7 +48,7 @@ avalanche-testnet={key="${ETHERSCAN_API_KEY_AVALANCHE}",chain=43113}
 polygon={key="${ETHERSCAN_API_KEY_POLYGON}",chain=137}
 polygon-testnet={key="${ETHERSCAN_API_KEY_POLYGON}",chain=80001}
 arbitrum={key="${ETHERSCAN_API_KEY_ARBITRUM}",chain=42161}
-arbitrum-sepolia={key="${ETHERSCAN_API_KEY_ARBITRUM}",chain=42161}
+arbitrum_sepolia={key="${ETHERSCAN_API_KEY_ARBITRUM}",chain=42161}
 metis={ key="any", chain=1088, url='https://andromeda-explorer.metis.io/' }
 metis-testnet={ key="any", chain=599, url='https://goerli.explorer.metisdevops.link/' }
 fantom={key="${ETHERSCAN_API_KEY_FANTOM}",chain=250}

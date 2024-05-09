@@ -35,7 +35,7 @@ custom_scroll-testnet := --legacy --with-gas-price 1000000000 # 1 gwei
 define deploy_single_fn
 	DEPLOYMENT_VERSION=$(4) CHAIN_ID=$(2) forge script \
 	scripts/$(1).s.sol:$(3) \
-	--rpc-url $(2) --broadcast --verify --slow -vvvv \
+	--rpc-url $(2) --broadcast --verify --slow -vvvv\
 	$(if $(LEDGER),$(BASE_LEDGER),$(BASE_KEY)) \
 	$(custom_$(2))
 endef
@@ -165,3 +165,7 @@ set-approved-ccf-senders:
 
 remove-adapters-custom:
 	@$(call deploy_fn,CCC/Remove_CCF_Sender_Adapters,ethereum scroll)
+
+
+deploy-ledger :; forge script ${contract} --rpc-url ${chain} $(if ${dry},--sender 0x25F2226B597E8F9514B3F68F00f494cF4f286491 -vvvv,--broadcast --ledger --mnemonic-indexes ${MNEMONIC_INDEX} --sender ${LEDGER_SENDER} --verify -vvvv --slow)
+deploy-pk :; forge script ${contract} --rpc-url ${chain} $(if ${dry},--sender 0x25F2226B597E8F9514B3F68F00f494cF4f286491 -vvvv,--broadcast --private-key ${PRIVATE_KEY} --verify -vvvv --slow)

@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 import 'aave-helpers/adi/SimpleReceiverAdapterUpdate.sol';
 import 'aave-helpers/ScriptUtils.sol';
 import {ArbAdapterDeploymentHelper, BaseAdapterStructs} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
+import {TestNetChainIds} from 'adi-scripts/contract_extensions/TestNetChainIds.sol';
 import {IBaseAdapter} from 'adi/adapters/IBaseAdapter.sol';
 import {DeployArbAdapter} from '../adapters/DeployArbAdapter.s.sol';
 
@@ -48,14 +49,18 @@ contract AaveV3Arbitrum_New_Adapter_Payload is SimpleReceiverAdapterUpdate {
 
 /**
  * @dev Deploy Arbitrum
- * deploy-command: make deploy-ledger contract=src/20240320_Multi_HyperlaneBridgeAdapterUpdateToV3/HyperlaneBridgeAdapterUpdateToV3_20240320.s.sol:DeployArbitrum chain=arbitrum
+ * deploy-command: make deploy-pk contract=scripts/payloads/Deploy_ArbAdapter_Payload.s.sol:DeployArbitrumPayload chain=arbitrum_sepolia
  * verify-command: npx catapulta-verify -b broadcast/HyperlaneBridgeAdapterUpdateToV3_20240320.s.sol/42161/run-latest.json
  */
-contract DeployArbitrumPayload is DeployArbAdapter, ArbitrumScript {
-  function run() public override broadcast {
+contract DeployArbitrumPayload is DeployArbAdapter {
+  function run() public override {
     // @dev revision '1' will need to change depending on the revision of deployment configuration that we want to use
     // This could also be set on the make call ans env variable
-    AddressesAndConfig memory configurations = _getAddressesAndConfigs(ChainIds.ARBITRUM, '1', vm);
+    AddressesAndConfig memory configurations = _getAddressesAndConfigs(
+      TestNetChainIds.ARBITRUM_SEPOLIA,
+      '1',
+      vm
+    );
 
     address crossChainController = _getCrossChainController(
       configurations.currentAddresses,
@@ -73,9 +78,11 @@ contract DeployArbitrumPayload is DeployArbAdapter, ArbitrumScript {
       trustedRemotes
     );
 
+    vm.startBroadcast();
     // deploy payloads
     address payload0 = GovV3Helpers.deployDeterministic(
       abi.encodePacked(type(AaveV3Arbitrum_New_Adapter_Payload).creationCode, abi.encode(arbArgs))
     );
+    vm.stopBroadcast();
   }
 }

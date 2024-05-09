@@ -5,149 +5,147 @@ import 'forge-std/StdJson.sol';
 import 'forge-std/Vm.sol';
 import './PathHelpers.sol';
 
-  enum Adapters {
-    Null_Adapter,
-    Same_Chain,
-    CCIP,
-    Arbitrum_Native,
-    Optimism_Native,
-    Polygon_Native,
-    Gnosis_Native,
-    Metis_Native,
-    LayerZero,
-    Hyperlane,
-    Scroll_Native,
-    Polygon_ZkEvm_Native,
-    Base_Native
-  }
+enum Adapters {
+  Null_Adapter,
+  Same_Chain,
+  CCIP,
+  Arbitrum_Native,
+  Optimism_Native,
+  Polygon_Native,
+  Gnosis_Native,
+  Metis_Native,
+  LayerZero,
+  Hyperlane,
+  Scroll_Native,
+  Polygon_ZkEvm_Native,
+  Base_Native
+}
 
-  struct EndpointAdapterInfo {
-    address endpoint;
-    uint256 providerGasLimit;
-    uint256[] remoteNetworks;
-    string salt;
-  }
+struct EndpointAdapterInfo {
+  address endpoint;
+  uint256 providerGasLimit;
+  uint256[] remoteNetworks;
+  //    string salt;
+}
 
-  struct CCIPAdapterInfo {
-    address ccipRouter;
-    address linkToken;
-    uint256 providerGasLimit;
-    uint256[] remoteNetworks;
-    string salt;
-  }
+struct CCIPAdapterInfo {
+  address ccipRouter;
+  address linkToken;
+  uint256 providerGasLimit;
+  uint256[] remoteNetworks;
+  //    string salt;
+}
 
-  struct HyperlaneAdapterInfo {
-    address mailBox;
-    address igp;
-    uint256 providerGasLimit;
-    uint256[] remoteNetworks;
-    string salt;
-  }
+struct HyperlaneAdapterInfo {
+  address mailBox;
+  address igp;
+  uint256 providerGasLimit;
+  uint256[] remoteNetworks;
+  //    string salt;
+}
 
-  struct Connections {
-    uint256[] chainIds;
-    Adapters[] ethereum;
-    Adapters[] avalanche;
-    Adapters[] polygon;
-    Adapters[] arbitrum;
-    Adapters[] optimism;
-    Adapters[] polygon_zkevm;
-    Adapters[] binance;
-    Adapters[] base;
-    Adapters[] metis;
-    Adapters[] gnosis;
-    Adapters[] scroll;
-    Adapters[] ethereum_sepolia;
-    Adapters[] polygon_mumbai;
-    Adapters[] avalanche_fuji;
-    Adapters[] arbitrum_sepolia;
-    Adapters[] metis_testnet;
-    Adapters[] binance_testnet;
-    Adapters[] base_sepolia;
-    Adapters[] polygon_zkevm_goerli;
-    Adapters[] gnosis_chiado;
-    Adapters[] scroll_sepolia;
-  }
+struct Connections {
+  uint256[] chainIds;
+  Adapters[] ethereum;
+  Adapters[] avalanche;
+  Adapters[] polygon;
+  Adapters[] arbitrum;
+  Adapters[] optimism;
+  Adapters[] polygon_zkevm;
+  Adapters[] binance;
+  Adapters[] base;
+  Adapters[] metis;
+  Adapters[] gnosis;
+  Adapters[] scroll;
+  Adapters[] ethereum_sepolia;
+  Adapters[] polygon_mumbai;
+  Adapters[] avalanche_fuji;
+  Adapters[] arbitrum_sepolia;
+  Adapters[] metis_testnet;
+  Adapters[] binance_testnet;
+  Adapters[] base_sepolia;
+  Adapters[] polygon_zkevm_goerli;
+  Adapters[] gnosis_chiado;
+  Adapters[] scroll_sepolia;
+}
 
-  struct Confirmations {
-    uint256[] chainIds;
-    uint8 ethereum;
-    uint8 avalanche;
-    uint8 polygon;
-    uint8 arbitrum;
-    uint8 optimism;
-    uint8 polygon_zkevm;
-    uint8 binance;
-    uint8 base;
-    uint8 metis;
-    uint8 gnosis;
-    uint8 scroll;
-    uint8 ethereum_sepolia;
-    uint8 polygon_mumbai;
-    uint8 avalanche_fuji;
-    uint8 arbitrum_sepolia;
-    uint8 metis_testnet;
-    uint8 binance_testnet;
-    uint8 base_sepolia;
-    uint8 polygon_zkevm_goerli;
-    uint8 gnosis_chiado;
-    uint8 scroll_sepolia;
-  }
+struct Confirmations {
+  uint256[] chainIds;
+  uint8 ethereum;
+  uint8 avalanche;
+  uint8 polygon;
+  uint8 arbitrum;
+  uint8 optimism;
+  uint8 polygon_zkevm;
+  uint8 binance;
+  uint8 base;
+  uint8 metis;
+  uint8 gnosis;
+  uint8 scroll;
+  uint8 ethereum_sepolia;
+  uint8 polygon_mumbai;
+  uint8 avalanche_fuji;
+  uint8 arbitrum_sepolia;
+  uint8 metis_testnet;
+  uint8 binance_testnet;
+  uint8 base_sepolia;
+  uint8 polygon_zkevm_goerli;
+  uint8 gnosis_chiado;
+  uint8 scroll_sepolia;
+}
 
-  struct AdaptersDeploymentInfo {
-    CCIPAdapterInfo ccipAdapter;
-    EndpointAdapterInfo scrollAdapter;
-    EndpointAdapterInfo arbitrumAdapter;
-    EndpointAdapterInfo optimismAdapter;
-    EndpointAdapterInfo baseAdapter;
-    EndpointAdapterInfo metisAdapter;
-    EndpointAdapterInfo gnosisAdapter;
-    EndpointAdapterInfo lzAdapter;
-    HyperlaneAdapterInfo hlAdapter;
-    EndpointAdapterInfo zkevmAdapter;
-    EndpointAdapterInfo polAdapter;
-  }
+struct AdaptersDeploymentInfo {
+  CCIPAdapterInfo ccipAdapter;
+  EndpointAdapterInfo scrollAdapter;
+  EndpointAdapterInfo arbitrumAdapter;
+  EndpointAdapterInfo optimismAdapter;
+  EndpointAdapterInfo baseAdapter;
+  EndpointAdapterInfo metisAdapter;
+  EndpointAdapterInfo gnosisAdapter;
+  EndpointAdapterInfo lzAdapter;
+  HyperlaneAdapterInfo hlAdapter;
+  EndpointAdapterInfo zkevmAdapter;
+  EndpointAdapterInfo polAdapter;
+}
 
-  struct ProxyInfo {
-    address deployedAddress;
-    address owner;
-    string salt;
-  }
+struct ProxyInfo {
+  address deployedAddress;
+  address owner;
+  string salt;
+}
 
-  struct ProxyContracts {
-    ProxyInfo create3;
-    ProxyInfo proxyAdmin;
-    ProxyInfo transparentProxyFactory;
-  }
+struct ProxyContracts {
+  ProxyInfo create3;
+  ProxyInfo proxyAdmin;
+  ProxyInfo transparentProxyFactory;
+}
 
-  struct CCC {
-    address[] approvedSenders;
-    address clEmergencyOracle;
-    Confirmations confirmations;
-    uint256 ethFunds;
-    address guardian;
-    bool onlyImpl;
-    address owner;
-    string salt;
-    address[] sendersToRemove;
-  }
+struct CCC {
+  address[] approvedSenders;
+  address clEmergencyOracle;
+  Confirmations confirmations;
+  uint256 ethFunds;
+  address guardian;
+  bool onlyImpl;
+  address owner;
+  string salt;
+  address[] sendersToRemove;
+}
 
-  struct EmergencyRegistryInfo {
-    address owner;
-  }
+struct EmergencyRegistryInfo {
+  address owner;
+}
 
-  struct ChainDeploymentInfo {
-    AdaptersDeploymentInfo adapters;
-    CCC ccc;
-    uint256 chainId;
-    EmergencyRegistryInfo emergencyRegistry;
-    Connections forwarderConnections;
-    ProxyContracts proxies;
-    Connections receiverConnections;
-    string revision;
-  }
-
-
+struct ChainDeploymentInfo {
+  AdaptersDeploymentInfo adapters;
+  CCC ccc;
+  uint256 chainId;
+  EmergencyRegistryInfo emergencyRegistry;
+  Connections forwarderConnections;
+  ProxyContracts proxies;
+  Connections receiverConnections;
+  string revision;
+}
 
 contract DeployJsonDecodeHelpers {
   using stdJson for string;
@@ -306,7 +304,7 @@ contract DeployJsonDecodeHelpers {
     } else if (chainId == ChainIds.SCROLL) {
       return confirmations.scroll;
     }
-      // Testnets
+    // Testnets
     else if (chainId == TestNetChainIds.ETHEREUM_SEPOLIA) {
       return confirmations.ethereum_sepolia;
     } else if (chainId == TestNetChainIds.POLYGON_MUMBAI) {
@@ -359,7 +357,7 @@ contract DeployJsonDecodeHelpers {
     } else if (chainId == ChainIds.SCROLL) {
       return connections.scroll;
     }
-      // Testnets
+    // Testnets
     else if (chainId == TestNetChainIds.ETHEREUM_SEPOLIA) {
       return connections.ethereum_sepolia;
     } else if (chainId == TestNetChainIds.POLYGON_MUMBAI) {
@@ -452,8 +450,8 @@ contract DeployJsonDecodeHelpers {
         string.concat(endpointAdapterKey, 'providerGasLimit'),
         json
       ),
-      remoteNetworks: PathHelpers.getChainIdsFromNames(chains),
-    salt: this.decodeString(endpointAdapterKey, 'salt')
+      remoteNetworks: PathHelpers.getChainIdsFromNames(chains)
+      //      salt: this.decodeString(endpointAdapterKey, 'salt')
     });
 
     return endpointAdapter;
@@ -472,12 +470,12 @@ contract DeployJsonDecodeHelpers {
 
     return
       HyperlaneAdapterInfo({
-      mailBox: tryDecodeAddress(string.concat(hlAdapterKey, 'mailBox'), json),
-      igp: tryDecodeAddress(string.concat(hlAdapterKey, 'igp'), json),
-      providerGasLimit: tryDecodeUint256(string.concat(hlAdapterKey, 'providerGasLimit'), json),
-      remoteNetworks: PathHelpers.getChainIdsFromNames(chains),
-      salt: this.decodeString(hlAdapterKey, 'salt')
-    });
+        mailBox: tryDecodeAddress(string.concat(hlAdapterKey, 'mailBox'), json),
+        igp: tryDecodeAddress(string.concat(hlAdapterKey, 'igp'), json),
+        providerGasLimit: tryDecodeUint256(string.concat(hlAdapterKey, 'providerGasLimit'), json),
+        remoteNetworks: PathHelpers.getChainIdsFromNames(chains)
+        //      salt: this.decodeString(hlAdapterKey, 'salt')
+      });
   }
 
   function decodeCCIPAdapter(
@@ -493,12 +491,12 @@ contract DeployJsonDecodeHelpers {
 
     return
       CCIPAdapterInfo({
-      ccipRouter: tryDecodeAddress(string.concat(ccipAdapterKey, 'ccipRouter'), json),
-      linkToken: tryDecodeAddress(string.concat(ccipAdapterKey, 'linkToken'), json),
-      providerGasLimit: tryDecodeUint256(string.concat(ccipAdapterKey, 'providerGasLimit'), json),
-      remoteNetworks: PathHelpers.getChainIdsFromNames(chains),
-      salt: this.decodeString(ccipAdapterKey, 'salt')
-    });
+        ccipRouter: tryDecodeAddress(string.concat(ccipAdapterKey, 'ccipRouter'), json),
+        linkToken: tryDecodeAddress(string.concat(ccipAdapterKey, 'linkToken'), json),
+        providerGasLimit: tryDecodeUint256(string.concat(ccipAdapterKey, 'providerGasLimit'), json),
+        remoteNetworks: PathHelpers.getChainIdsFromNames(chains)
+        //      salt: this.decodeString(ccipAdapterKey, 'salt')
+      });
   }
 
   function decodeAdapters(
@@ -602,7 +600,7 @@ contract DeployJsonDecodeHelpers {
       } else if (networkName.eq('polygon_zkevm')) {
         confirmationsByNetwork.polygon_zkevm = confirmations;
       }
-        // test chains
+      // test chains
       else if (networkName.eq('ethereum_sepolia')) {
         confirmationsByNetwork.ethereum_sepolia = confirmations;
       } else if (networkName.eq('polygon_mumbai')) {
@@ -715,7 +713,7 @@ contract DeployJsonDecodeHelpers {
       } else if (networkName.eq('polygon_zkevm')) {
         connections.polygon_zkevm = connectedAdapters;
       }
-        // test chains
+      // test chains
       else if (networkName.eq('ethereum_sepolia')) {
         connections.ethereum_sepolia = connectedAdapters;
       } else if (networkName.eq('polygon_mumbai')) {

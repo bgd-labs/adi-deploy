@@ -91,6 +91,7 @@ abstract contract DeploymentConfigurationBaseScript is DeployJsonDecodeHelpers, 
     string memory revision,
     Vm vm
   ) internal view returns (ChainDeploymentInfo[] memory) {
+    console.log(deploymentJsonPath);
     string memory json = vm.readFile(string(abi.encodePacked(deploymentJsonPath)));
 
     string[] memory deploymentNetworks = decodeChains(json);
@@ -105,10 +106,12 @@ abstract contract DeploymentConfigurationBaseScript is DeployJsonDecodeHelpers, 
       string memory networkKey = string.concat('.', deploymentNetworks[i]);
       // first level of the config object
       string memory networkKey1rstLvl = string.concat(networkKey, '.');
+      console.log(networkKey1rstLvl);
 
       // decode chainId
+      console.log(json);
       deploymentConfigs[i].chainId = decodeChainId(networkKey1rstLvl, json);
-
+      console.log('decoded', deploymentConfigs[i].chainId);
       // decode adapters
       deploymentConfigs[i].adapters = decodeAdapters(networkKey1rstLvl, json);
 
@@ -211,10 +214,11 @@ abstract contract DeploymentConfigurationBaseScript is DeployJsonDecodeHelpers, 
 
     // get chainId
     uint256 chainId = PathHelpers.getChainIdByName(vm.envString('CHAIN_ID'));
-
+    console.log('chainId:', chainId);
     // get configuration
     string memory revision = vm.envString(key);
     string memory deploymentConfigJsonPath = PathHelpers.getDeploymentJsonPathByVersion(revision);
+    console.log('1', chainId);
     ChainDeploymentInfo[] memory config = _getConfigurationConfig(
       deploymentConfigJsonPath,
       revision,
@@ -223,6 +227,7 @@ abstract contract DeploymentConfigurationBaseScript is DeployJsonDecodeHelpers, 
 
     // ----------------- Persist addresses -----------------------------------------------------------------------------
     for (uint256 i = 0; i < config.length; i++) {
+      console.log('2', config[i].chainId);
       // the chain id to deploy to comes from config json, from makefile
       if (config[i].chainId == chainId) {
         vm.startBroadcast();
@@ -230,6 +235,7 @@ abstract contract DeploymentConfigurationBaseScript is DeployJsonDecodeHelpers, 
 
         // fetch current addresses
         Addresses memory currentAddresses = _getCurrentAddressesByChainId(config[i].chainId, vm);
+        console.log('3');
         // fetch revision addresses
         Addresses memory revisionAddresses = _getRevisionAddressesByChainId(
           config[i].chainId,
