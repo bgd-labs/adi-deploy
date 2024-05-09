@@ -206,53 +206,53 @@ abstract contract DeploymentConfigurationBaseScript is DeployJsonDecodeHelpers, 
 
   function run() public virtual {
     console.log('---------------------------------------------');
-//    // get deployment json path
-//    string memory key = 'DEPLOYMENT_VERSION';
-//
-//    // get chainId
-//    uint256 chainId = PathHelpers.getChainIdByName(vm.envString('CHAIN_ID'));
-//
-//    // get configuration
-//    string memory revision = vm.envString(key);
-//    string memory deploymentConfigJsonPath = PathHelpers.getDeploymentJsonPathByVersion(revision);
-//    ChainDeploymentInfo[] memory config = _getConfigurationConfig(
-//      deploymentConfigJsonPath,
-//      revision,
-//      vm
-//    );
-//
-//    // ----------------- Persist addresses -----------------------------------------------------------------------------
-//    for (uint256 i = 0; i < config.length; i++) {
-//      // the chain id to deploy to comes from config json, from makefile
-//      if (config[i].chainId == chainId) {
-//        vm.startBroadcast();
-//        // ---------------------------------------------------------------------------------------------------------------
-//
-//        // fetch current addresses
-//        Addresses memory currentAddresses = _getCurrentAddressesByChainId(config[i].chainId, vm);
-//        // fetch revision addresses
-//        Addresses memory revisionAddresses = _getRevisionAddressesByChainId(
-//          config[i].chainId,
-//          revision,
-//          vm
-//        );
-//        // method to implement the different deployment logic
-//        _execute(currentAddresses, revisionAddresses, config[i]);
-//
-//        // update global params
-//        currentAddresses.chainId = revisionAddresses.chainId = config[i].chainId;
-//        (uint256 numRevision, ) = StringUtils.strToUint(revision);
-//        // TODO: this conflicts with the way we execute scripts in make file. Not sure what to do with it
-//        //      require(
-//        //        !error && currentAddresses.version < numRevision,
-//        //        'New revision must be strictly bigger than current version'
-//        //      );
-//        currentAddresses.version = revisionAddresses.version = numRevision;
-//
-//        // save revision addresses
-//        _setRevisionAddresses(config[i].chainId, revision, revisionAddresses, vm);
-//        // save current addresses
-//        _setCurrentDeploymentAddresses(config[i].chainId, currentAddresses, vm);
+    // get deployment json path
+    string memory key = 'DEPLOYMENT_VERSION';
+
+    // get chainId
+    uint256 chainId = PathHelpers.getChainIdByName(vm.envString('CHAIN_ID'));
+
+    // get configuration
+    string memory revision = vm.envString(key);
+    string memory deploymentConfigJsonPath = PathHelpers.getDeploymentJsonPathByVersion(revision);
+    ChainDeploymentInfo[] memory config = _getConfigurationConfig(
+      deploymentConfigJsonPath,
+      revision,
+      vm
+    );
+
+    // ----------------- Persist addresses -----------------------------------------------------------------------------
+    for (uint256 i = 0; i < config.length; i++) {
+      // the chain id to deploy to comes from config json, from makefile
+      if (config[i].chainId == chainId) {
+        vm.startBroadcast();
+        // ---------------------------------------------------------------------------------------------------------------
+
+        // fetch current addresses
+        Addresses memory currentAddresses = _getCurrentAddressesByChainId(config[i].chainId, vm);
+        // fetch revision addresses
+        Addresses memory revisionAddresses = _getRevisionAddressesByChainId(
+          config[i].chainId,
+          revision,
+          vm
+        );
+        // method to implement the different deployment logic
+        _execute(currentAddresses, revisionAddresses, config[i]);
+
+        // update global params
+        currentAddresses.chainId = revisionAddresses.chainId = config[i].chainId;
+        (uint256 numRevision, ) = StringUtils.strToUint(revision);
+        // TODO: this conflicts with the way we execute scripts in make file. Not sure what to do with it
+        //      require(
+        //        !error && currentAddresses.version < numRevision,
+        //        'New revision must be strictly bigger than current version'
+        //      );
+        currentAddresses.version = revisionAddresses.version = numRevision;
+
+        // save revision addresses
+        _setRevisionAddresses(config[i].chainId, revision, revisionAddresses, vm);
+        // save current addresses
+        _setCurrentDeploymentAddresses(config[i].chainId, currentAddresses, vm);
 
         // ---------------------------------------------------------------------------------------------------------------
         vm.stopBroadcast();

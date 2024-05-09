@@ -69,8 +69,6 @@ contract DeployArbitrumPayload is DeployArbAdapter, ArbitrumScript {
 
     ArbAdapterDeploymentHelper.ArbAdapterArgs memory arbArgs = _getConstructorArgs(
       crossChainController,
-      configurations.currentAddresses,
-      configurations.revisionAddresses,
       configurations.config,
       trustedRemotes
     );

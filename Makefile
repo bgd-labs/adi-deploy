@@ -33,11 +33,11 @@ custom_scroll-testnet := --legacy --with-gas-price 1000000000 # 1 gwei
 #  to use ledger, set LEDGER=true to env
 #  default to testnet deployment, to run production, set PROD=true to env
 define deploy_single_fn
- DEPLOYMENT_VERSION=$(4) CHAIN_ID=$(2) forge script \
- scripts/$(1).s.sol:$(if $(3),$(3),$(1)) \
- --rpc-url $(2) --broadcast --verify --slow -vvvv \
- $(if $(LEDGER),$(BASE_LEDGER),$(BASE_KEY)) \
- $(custom_$(2))
+	DEPLOYMENT_VERSION=$(4) CHAIN_ID=$(2) forge script \
+	scripts/$(1).s.sol:$(3) \
+	--rpc-url $(2) --broadcast --verify --slow -vvvv \
+	$(if $(LEDGER),$(BASE_LEDGER),$(BASE_KEY)) \
+	$(custom_$(2))
 endef
 
 define deploy_fn

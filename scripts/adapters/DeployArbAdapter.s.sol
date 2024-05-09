@@ -15,8 +15,6 @@ contract DeployArbAdapter is BaseAdapterScript {
 
   function _getConstructorArgs(
     address crossChainController,
-    Addresses memory currentAddresses,
-    Addresses memory revisionAddresses,
     ChainDeploymentInfo memory config,
     IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes
   ) internal view returns (ArbAdapterDeploymentHelper.ArbAdapterArgs memory) {
@@ -92,8 +90,6 @@ contract DeployArbAdapter is BaseAdapterScript {
   ) internal override {
     ArbAdapterDeploymentHelper.ArbAdapterArgs memory constructorArgs = _getConstructorArgs(
       crossChainController,
-      currentAddresses,
-      revisionAddresses,
       config,
       trustedRemotes
     );
