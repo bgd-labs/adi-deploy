@@ -1,40 +1,43 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import 'aave-helpers/adi/SimpleReceiverAdapterUpdate.sol';
+import {SimpleReceiverAdapterUpdate, GovV3Helpers} from 'aave-helpers/adi/SimpleReceiverAdapterUpdate.sol';
 import 'aave-helpers/ScriptUtils.sol';
 import {ArbAdapterDeploymentHelper, BaseAdapterStructs} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
 import {TestNetChainIds} from 'adi-scripts/contract_extensions/TestNetChainIds.sol';
 import {IBaseAdapter} from 'adi/adapters/IBaseAdapter.sol';
 import {DeployArbAdapter} from '../adapters/DeployArbAdapter.s.sol';
 
+abstract contract BaseArbPayload {
+  address public immutable PREDICTED_ADDRESS;
+
+  constructor(ArbAdapterDeploymentHelper.ArbAdapterArgs memory arbArgs) {
+    bytes memory adapterCode = ArbAdapterDeploymentHelper.getAdapterCode(arbArgs);
+
+    PREDICTED_ADDRESS = GovV3Helpers.predictDeterministicAddress(adapterCode);
+  }
+}
+
 /**
  * @title Arbitrum bridge adapter update example
  * @author BGD Labs @bgdlabs
  * - Discussion: https://governance.aave.com/t/bgd-technical-maintenance-proposals/15274/31
  */
-contract AaveV3Arbitrum_New_Adapter_Payload is SimpleReceiverAdapterUpdate {
+contract AaveV3Arbitrum_New_Adapter_Payload is BaseArbPayload, SimpleReceiverAdapterUpdate {
   ArbAdapterDeploymentHelper.ArbAdapterArgs public arbAdapterConstructorArgs;
 
   constructor(
     ArbAdapterDeploymentHelper.ArbAdapterArgs memory arbArgs
   )
+    BaseArbPayload(arbArgs)
     SimpleReceiverAdapterUpdate(
       SimpleReceiverAdapterUpdate.ConstructorInput({
         ccc: arbArgs.baseArgs.crossChainController,
-        adapterToRemove: address(0)
+        adapterToRemove: address(0),
+        newAdapter: PREDICTED_ADDRESS
       })
     )
-  {
-    for (uint256 i = 0; i < arbArgs.baseArgs.trustedRemotes.length; i++) {
-      arbAdapterConstructorArgs.baseArgs.trustedRemotes[i] = arbArgs.baseArgs.trustedRemotes[i];
-    }
-    arbAdapterConstructorArgs.baseArgs.crossChainController = arbArgs.baseArgs.crossChainController;
-    arbAdapterConstructorArgs.baseArgs.isTestnet = arbArgs.baseArgs.isTestnet;
-    arbAdapterConstructorArgs.baseArgs.providerGasLimit = arbArgs.baseArgs.providerGasLimit;
-    arbAdapterConstructorArgs.destinationCCC = arbArgs.destinationCCC;
-    arbAdapterConstructorArgs.inbox = arbArgs.inbox;
-  }
+  {}
 
   function getChainsToReceive() public pure override returns (uint256[] memory) {
     uint256[] memory chains = new uint256[](1);
