@@ -7,7 +7,7 @@ libs = ['lib']
 remappings = [
 ]
 fs_permissions = [{ access = "read-write", path = "./"}]
-
+metadata="none"
 solc = "0.8.19"
 
 [rpc_endpoints]
