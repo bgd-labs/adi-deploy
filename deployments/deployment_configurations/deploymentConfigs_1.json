@@ -5,7 +5,8 @@
       "arbitrum_native": {
         "endpoint": "0x6BEbC4925716945D46F0Ec336D5C2564F419682C",
         "providerGasLimit": 150000,
-        "remoteNetworks": []
+        "remoteNetworks": [],
+        "salt": "v1"
       }
     },
     "chainId": 11155111
@@ -17,7 +18,8 @@
         "providerGasLimit": 150000,
         "remoteNetworks": [
           "ethereum_sepolia"
-        ]
+        ],
+        "salt": "v1"
       }
     },
     "chainId": 421614

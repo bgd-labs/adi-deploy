@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import './BaseAdapterScript.sol';
+import {BaseAdapterScript, ChainDeploymentInfo, Addresses, EndpointAdapterInfo, ChainIds, TestNetChainIds, PathHelpers} from './BaseAdapterScript.sol';
 import {ArbAdapterDeploymentHelper, BaseAdapterStructs} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
 import {IBaseAdapter} from 'adi/adapters/IBaseAdapter.sol';
-import {GovV3Helpers} from 'aave-helpers/GovV3Helpers.sol';
+import {Create2Utils} from 'aave-helpers/ScriptUtils.sol';
 
 contract DeployArbAdapter is BaseAdapterScript {
   function REMOTE_NETWORKS(
@@ -88,14 +88,14 @@ contract DeployArbAdapter is BaseAdapterScript {
     ChainDeploymentInfo memory config,
     IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes
   ) internal override {
-    console.log('======');
     ArbAdapterDeploymentHelper.ArbAdapterArgs memory constructorArgs = _getConstructorArgs(
       crossChainController,
       config,
       trustedRemotes
     );
 
-    address arbAdapter = GovV3Helpers.deployDeterministic(
+    address arbAdapter = Create2Utils.create2Deploy(
+      keccak256(abi.encode(config.adapters.arbitrumAdapter.salt)),
       ArbAdapterDeploymentHelper.getAdapterCode(constructorArgs)
     );
 

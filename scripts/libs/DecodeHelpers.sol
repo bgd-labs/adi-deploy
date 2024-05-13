@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import 'forge-std/StdJson.sol';
-import 'forge-std/Vm.sol';
+import {stdJson} from 'forge-std/StdJson.sol';
+import {Vm} from 'forge-std/Vm.sol';
 import './PathHelpers.sol';
 
 enum Adapters {
@@ -25,7 +25,7 @@ struct EndpointAdapterInfo {
   address endpoint;
   uint256 providerGasLimit;
   uint256[] remoteNetworks;
-  //    string salt;
+  string salt;
 }
 
 struct CCIPAdapterInfo {
@@ -33,7 +33,7 @@ struct CCIPAdapterInfo {
   address linkToken;
   uint256 providerGasLimit;
   uint256[] remoteNetworks;
-  //    string salt;
+  string salt;
 }
 
 struct HyperlaneAdapterInfo {
@@ -41,7 +41,7 @@ struct HyperlaneAdapterInfo {
   address igp;
   uint256 providerGasLimit;
   uint256[] remoteNetworks;
-  //    string salt;
+  string salt;
 }
 
 struct Connections {
@@ -450,8 +450,8 @@ contract DeployJsonDecodeHelpers {
         string.concat(endpointAdapterKey, 'providerGasLimit'),
         json
       ),
-      remoteNetworks: PathHelpers.getChainIdsFromNames(chains)
-      //      salt: this.decodeString(endpointAdapterKey, 'salt')
+      remoteNetworks: PathHelpers.getChainIdsFromNames(chains),
+      salt: tryDecodeString(string.concat(endpointAdapterKey, 'salt'), json)
     });
 
     return endpointAdapter;
@@ -473,8 +473,8 @@ contract DeployJsonDecodeHelpers {
         mailBox: tryDecodeAddress(string.concat(hlAdapterKey, 'mailBox'), json),
         igp: tryDecodeAddress(string.concat(hlAdapterKey, 'igp'), json),
         providerGasLimit: tryDecodeUint256(string.concat(hlAdapterKey, 'providerGasLimit'), json),
-        remoteNetworks: PathHelpers.getChainIdsFromNames(chains)
-        //      salt: this.decodeString(hlAdapterKey, 'salt')
+        remoteNetworks: PathHelpers.getChainIdsFromNames(chains),
+        salt: tryDecodeString(string.concat(hlAdapterKey, 'salt'), json)
       });
   }
 
@@ -494,8 +494,8 @@ contract DeployJsonDecodeHelpers {
         ccipRouter: tryDecodeAddress(string.concat(ccipAdapterKey, 'ccipRouter'), json),
         linkToken: tryDecodeAddress(string.concat(ccipAdapterKey, 'linkToken'), json),
         providerGasLimit: tryDecodeUint256(string.concat(ccipAdapterKey, 'providerGasLimit'), json),
-        remoteNetworks: PathHelpers.getChainIdsFromNames(chains)
-        //      salt: this.decodeString(ccipAdapterKey, 'salt')
+        remoteNetworks: PathHelpers.getChainIdsFromNames(chains),
+        salt: tryDecodeString(string.concat(ccipAdapterKey, 'salt'), json)
       });
   }
 
