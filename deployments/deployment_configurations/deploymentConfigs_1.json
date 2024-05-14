@@ -1,6 +1,6 @@
 {
-  "chains": ["arbitrum_sepolia"],
-  "ethereum_sepolia": {
+  "chains": ["arbitrum","ethereum"],
+  "ethereum": {
     "adapters": {
       "arbitrum_native": {
         "endpoint": "0x6BEbC4925716945D46F0Ec336D5C2564F419682C",
@@ -9,20 +9,20 @@
         "salt": "v1"
       }
     },
-    "chainId": 11155111
+    "chainId": 1
   },
-  "arbitrum_sepolia": {
+  "arbitrum": {
     "adapters": {
       "arbitrum_native": {
         "endpoint": "0x6BEbC4925716945D46F0Ec336D5C2564F419682C",
         "providerGasLimit": 150000,
         "remoteNetworks": [
-          "ethereum_sepolia"
+          "ethereum"
         ],
         "salt": "v1"
       }
     },
-    "chainId": 421614
+    "chainId": 42161
   }
 }
 

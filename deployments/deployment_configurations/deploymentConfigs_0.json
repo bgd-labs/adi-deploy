@@ -1,5 +1,29 @@
 {
-  "chains": ["avalanche_fuji"],
+  "chains": ["arbitrum", "ethereum", "avalanche_fuji"],
+  "ethereum": {
+    "adapters": {
+      "arbitrum_native": {
+        "endpoint": "0x6BEbC4925716945D46F0Ec336D5C2564F419682C",
+        "providerGasLimit": 150000,
+        "remoteNetworks": [],
+        "salt": "v0"
+      }
+    },
+    "chainId": 1
+  },
+  "arbitrum": {
+    "adapters": {
+      "arbitrum_native": {
+        "endpoint": "0x6BEbC4925716945D46F0Ec336D5C2564F419682C",
+        "providerGasLimit": 150000,
+        "remoteNetworks": [
+          "ethereum"
+        ],
+        "salt": "v0"
+      }
+    },
+    "chainId": 42161
+  },
   "avalanche_fuji":{
     "adapters": {
       "ccip": {

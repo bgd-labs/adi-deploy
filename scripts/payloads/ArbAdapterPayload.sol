@@ -2,9 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {SimpleReceiverAdapterUpdate} from 'aave-helpers/adi/SimpleReceiverAdapterUpdate.sol';
-import {TestNetChainIds} from 'adi-scripts/contract_extensions/TestNetChainIds.sol';
-
-//import {ChainIds} from 'aave-helpers/ChainIds.sol';
+import {ChainIds} from 'adi/libs/ChainIds.sol';
 
 /**
  * @title Arbitrum bridge adapter update example
@@ -27,7 +25,7 @@ contract AaveV3Arbitrum_New_Adapter_Payload is SimpleReceiverAdapterUpdate {
 
   function getChainsToReceive() public pure override returns (uint256[] memory) {
     uint256[] memory chains = new uint256[](1);
-    chains[0] = TestNetChainIds.ETHEREUM_SEPOLIA;
+    chains[0] = ChainIds.ETHEREUM;
     return chains;
   }
 }

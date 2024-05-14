@@ -42,6 +42,7 @@ abstract contract BaseAdapterScript is DeploymentConfigurationBaseScript {
         remoteRevisionAddresses,
         remoteNetworks[i]
       );
+
       require(remoteCCC != address(0), 'Remote CCC needs to be deployed');
 
       trustedRemotes[i] = IBaseAdapter.TrustedRemotesConfig({

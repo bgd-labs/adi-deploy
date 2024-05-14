@@ -9,6 +9,7 @@ remappings = [
 fs_permissions = [{ access = "read-write", path = "./"}]
 metadata="none"
 solc = "0.8.19"
+ffi = true
 
 [rpc_endpoints]
 ethereum="${RPC_MAINNET}"

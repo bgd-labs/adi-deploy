@@ -1,0 +1,16 @@
+{
+  "chainId": 42161,
+  "forwarderAdaptersByChain": {},
+  "receiverAdaptersByChain": {
+    "1": {
+      "0x212FA9f7a93Aa7856cD9f4DD9d07F32647Be7E96": true,
+      "0xc8a2ADC4261c6b669CdFf69E717E77C9cFeB420d": true
+    }
+  },
+  "receiverConfigs": {
+    "1": {
+      "requiredConfirmations": 1,
+      "validityTimestamp": 0
+    }
+  }
+}
