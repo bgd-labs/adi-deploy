@@ -20,7 +20,7 @@ contract ArbAdapterUpdatePayloadTest is ADITestBase, DeployArbitrumPayload {
       address newAdapter,
       bytes32 salt,
       bytes memory bytecode
-    ) = _getPayloadArgs(ChainIds.ARBITRUM, '1');
+    ) = _getPayloadArgs();
 
     Create2Utils.create2Deploy(salt, bytecode);
 

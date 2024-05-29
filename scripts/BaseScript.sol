@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import 'forge-std/Script.sol';
 import 'forge-std/Vm.sol';
 import 'forge-std/StdJson.sol';
-import {TestNetChainIds} from '../libs/TestNetChainIds.sol';
+import {TestNetChainIds} from './libs/TestNetChainIds.sol';
 import {ChainIds} from 'adi/libs/ChainIds.sol';
 
 struct Network {
@@ -43,7 +43,7 @@ library DeployerHelpers {
     address zksyncAdapter;
   }
 
-  function getPathByChainId(uint256 chainId) internal view returns (string memory) {
+  function getPathByChainId(uint256 chainId) internal pure returns (string memory) {
     if (chainId == ChainIds.ETHEREUM) {
       return './deployments/cc/mainnet/eth.json';
     } else if (chainId == ChainIds.POLYGON) {
@@ -68,8 +68,6 @@ library DeployerHelpers {
       return './deployments/cc/mainnet/scroll.json';
     } else if (chainId == ChainIds.CELO) {
       return './deployments/cc/mainnet/celo.json';
-    } else if (chainId == ChainIds.ZK_SYNC) {
-      return './deployments/cc/mainnet/zksync.json';
     }
     if (chainId == TestNetChainIds.ETHEREUM_SEPOLIA) {
       return './deployments/cc/testnet/sep.json';
@@ -95,8 +93,6 @@ library DeployerHelpers {
       return './deployments/cc/testnet/scroll_sepolia.json';
     } else if (chainId == TestNetChainIds.CELO_ALFAJORES) {
       return './deployments/cc/testnet/celo_alfajores.json';
-    } else if (chainId == TestNetChainIds.ZK_SYNC_SEPOLIA) {
-      return './deployments/cc/testnet/zksync_sep.json';
     } else {
       revert('chain id is not supported');
     }
@@ -178,7 +174,7 @@ library Constants {
 }
 
 abstract contract BaseScript is Script {
-  function TRANSACTION_NETWORK() public view virtual returns (uint256);
+  function TRANSACTION_NETWORK() internal view virtual returns (uint256);
 
   function getAddresses(
     uint256 networkId
@@ -203,7 +199,7 @@ abstract contract BaseScript is Script {
 
   function _execute(DeployerHelpers.Addresses memory addresses) internal virtual;
 
-  function run() public {
+  function run() public virtual {
     vm.startBroadcast();
     // ----------------- Persist addresses -----------------------------------------------------------------------------
     DeployerHelpers.Addresses memory addresses = _getAddresses(TRANSACTION_NETWORK());

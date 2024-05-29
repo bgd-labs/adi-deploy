@@ -5,10 +5,18 @@ import '../BaseScript.sol';
 import 'adi/adapters/IBaseAdapter.sol';
 
 abstract contract BaseAdapterScript is BaseScript {
-  function REMOTE_NETWORKS() public view virtual returns (uint256[] memory);
+  function REMOTE_NETWORKS() internal view virtual returns (uint256[] memory);
 
-  function GET_BASE_GAS_LIMIT() public view virtual returns (uint256) {
+  function PROVIDER_GAS_LIMIT() internal view virtual returns (uint256) {
     return 0;
+  }
+
+  function SALT() internal view virtual returns (string memory) {
+    return 'a.DI Adapter';
+  }
+
+  function isTestnet() internal view virtual returns (bool) {
+    return false;
   }
 
   function _deployAdapter(
@@ -16,93 +24,27 @@ abstract contract BaseAdapterScript is BaseScript {
     IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes
   ) internal virtual;
 
-  function _execute(DeployerHelpers.Addresses memory addresses) internal override {
+  function _getTrustedRemotes() internal view returns (IBaseAdapter.TrustedRemotesConfig[] memory) {
     uint256[] memory remoteNetworks = REMOTE_NETWORKS();
-
     // generate trusted trustedRemotes
     IBaseAdapter.TrustedRemotesConfig[]
       memory trustedRemotes = new IBaseAdapter.TrustedRemotesConfig[](remoteNetworks.length);
 
     for (uint256 i = 0; i < remoteNetworks.length; i++) {
+      // fetch remote addresses
       DeployerHelpers.Addresses memory remoteAddresses = _getAddresses(remoteNetworks[i]);
+
       trustedRemotes[i] = IBaseAdapter.TrustedRemotesConfig({
         originForwarder: remoteAddresses.crossChainController,
-        originChainId: remoteAddresses.chainId
-      });
-    }
-
-    _deployAdapter(addresses, trustedRemotes);
-  }
-}
-
-abstract contract BaseAdapterScript is DeploymentConfigurationBaseScript {
-  function REMOTE_NETWORKS(
-    ChainDeploymentInfo memory config
-  ) internal view virtual returns (uint256[] memory);
-
-  function _deployAdapter(
-    address crossChainController,
-    Addresses memory currentAddresses,
-    Addresses memory revisionAddresses,
-    ChainDeploymentInfo memory config,
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes
-  ) internal virtual;
-
-  function _getTrustedRemotes(
-    ChainDeploymentInfo memory config
-  ) internal view returns (IBaseAdapter.TrustedRemotesConfig[] memory) {
-    uint256[] memory remoteNetworks = REMOTE_NETWORKS(config);
-    // generate trusted trustedRemotes
-    IBaseAdapter.TrustedRemotesConfig[]
-      memory trustedRemotes = new IBaseAdapter.TrustedRemotesConfig[](remoteNetworks.length);
-
-    for (uint256 i = 0; i < remoteNetworks.length; i++) {
-      // fetch current addresses
-      Addresses memory remoteCurrentAddresses = _getCurrentAddressesByChainId(
-        remoteNetworks[i],
-        vm
-      );
-      // fetch revision addresses
-      Addresses memory remoteRevisionAddresses = _getRevisionAddressesByChainId(
-        remoteNetworks[i],
-        config.revision,
-        vm
-      );
-      address remoteCCC = _getCrossChainController(
-        remoteCurrentAddresses,
-        remoteRevisionAddresses,
-        remoteNetworks[i]
-      );
-
-      require(remoteCCC != address(0), 'Remote CCC needs to be deployed');
-
-      trustedRemotes[i] = IBaseAdapter.TrustedRemotesConfig({
-        originForwarder: remoteCCC,
         originChainId: remoteNetworks[i]
       });
     }
     return trustedRemotes;
   }
 
-  function _execute(
-    Addresses memory currentAddresses,
-    Addresses memory revisionAddresses,
-    ChainDeploymentInfo memory config
-  ) internal override {
-    address crossChainController = _getCrossChainController(
-      currentAddresses,
-      revisionAddresses,
-      config.chainId
-    );
+  function _execute(DeployerHelpers.Addresses memory addresses) internal override {
+    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
 
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes(config);
-
-    _deployAdapter(
-      crossChainController,
-      currentAddresses,
-      revisionAddresses,
-      config,
-      trustedRemotes
-    );
+    _deployAdapter(addresses, trustedRemotes);
   }
 }
