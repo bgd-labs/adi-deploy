@@ -1,101 +1,19 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import 'forge-std/Script.sol';
-import 'forge-std/Vm.sol';
 import 'forge-std/StdJson.sol';
-import {TestNetChainIds} from './libs/TestNetChainIds.sol';
-import {ChainIds} from 'adi/libs/ChainIds.sol';
-
-struct Network {
-  string path;
-  string name;
-}
+import 'adi-scripts/BaseScript.sol';
+import {ChainHelpers} from 'aave-helpers/ChainIds.sol';
 
 library DeployerHelpers {
   using stdJson for string;
 
-  struct Addresses {
-    address arbAdapter;
-    address baseAdapter;
-    address ccipAdapter;
-    uint256 chainId;
-    address clEmergencyOracle;
-    address create3Factory;
-    address crossChainController;
-    address crossChainControllerImpl;
-    address emergencyRegistry;
-    address gnosisAdapter;
-    address guardian;
-    address hlAdapter;
-    address lzAdapter;
-    address metisAdapter;
-    address mockDestination;
-    address opAdapter;
-    address owner;
-    address polAdapter;
-    address proxyAdmin;
-    address proxyFactory;
-    address sameChainAdapter;
-    address scrollAdapter;
-    address wormholeAdapter;
-    address zkevmAdapter;
-    address zksyncAdapter;
-  }
-
   function getPathByChainId(uint256 chainId) internal pure returns (string memory) {
-    if (chainId == ChainIds.ETHEREUM) {
-      return './deployments/cc/mainnet/eth.json';
-    } else if (chainId == ChainIds.POLYGON) {
-      return './deployments/cc/mainnet/pol.json';
-    } else if (chainId == ChainIds.AVALANCHE) {
-      return './deployments/cc/mainnet/avax.json';
-    } else if (chainId == ChainIds.ARBITRUM) {
-      return './deployments/cc/mainnet/arb.json';
-    } else if (chainId == ChainIds.OPTIMISM) {
-      return './deployments/cc/mainnet/op.json';
-    } else if (chainId == ChainIds.METIS) {
-      return './deployments/cc/mainnet/metis.json';
-    } else if (chainId == ChainIds.BNB) {
-      return './deployments/cc/mainnet/bnb.json';
-    } else if (chainId == ChainIds.BASE) {
-      return './deployments/cc/mainnet/base.json';
-    } else if (chainId == ChainIds.POLYGON_ZK_EVM) {
-      return './deployments/cc/mainnet/zkevm.json';
-    } else if (chainId == ChainIds.GNOSIS) {
-      return './deployments/cc/mainnet/gnosis.json';
-    } else if (chainId == ChainIds.SCROLL) {
-      return './deployments/cc/mainnet/scroll.json';
-    } else if (chainId == ChainIds.CELO) {
-      return './deployments/cc/mainnet/celo.json';
-    }
-    if (chainId == TestNetChainIds.ETHEREUM_SEPOLIA) {
-      return './deployments/cc/testnet/sep.json';
-    } else if (chainId == TestNetChainIds.POLYGON_MUMBAI) {
-      return './deployments/cc/testnet/mum.json';
-    } else if (chainId == TestNetChainIds.AVALANCHE_FUJI) {
-      return './deployments/cc/testnet/fuji.json';
-    } else if (chainId == TestNetChainIds.ARBITRUM_SEPOLIA) {
-      return './deployments/cc/testnet/arb_sep.json';
-    } else if (chainId == TestNetChainIds.OPTIMISM_SEPOLIA) {
-      return './deployments/cc/testnet/op_sep.json';
-    } else if (chainId == TestNetChainIds.METIS_TESTNET) {
-      return './deployments/cc/testnet/met_test.json';
-    } else if (chainId == TestNetChainIds.BNB_TESTNET) {
-      return './deployments/cc/testnet/bnb_test.json';
-    } else if (chainId == TestNetChainIds.BASE_SEPOLIA) {
-      return './deployments/cc/testnet/base_sep.json';
-    } else if (chainId == TestNetChainIds.POLYGON_ZK_EVM_GOERLI) {
-      return './deployments/cc/testnet/zkevm_go.json';
-    } else if (chainId == TestNetChainIds.GNOSIS_CHIADO) {
-      return './deployments/cc/testnet/gno_chiado.json';
-    } else if (chainId == TestNetChainIds.SCROLL_SEPOLIA) {
-      return './deployments/cc/testnet/scroll_sepolia.json';
-    } else if (chainId == TestNetChainIds.CELO_ALFAJORES) {
-      return './deployments/cc/testnet/celo_alfajores.json';
-    } else {
-      revert('chain id is not supported');
-    }
+    string memory path = string.concat(
+      './deployments/',
+      ChainHelpers.getNetworkNameFromId(chainId)
+    );
+    return string.concat(path, '.json');
   }
 
   function decodeJson(string memory path, Vm vm) internal view returns (Addresses memory) {
@@ -166,43 +84,30 @@ library DeployerHelpers {
   }
 }
 
-library Constants {
-  address public constant OWNER = 0xf71fc92e2949ccF6A5Fd369a0b402ba80Bc61E02;
-  bytes32 public constant ADMIN_SALT = keccak256(bytes('Proxy Admin'));
-  bytes32 public constant CCC_SALT = keccak256(bytes('a.DI Cross Chain Controller'));
-  bytes32 public constant CREATE3_FACTORY_SALT = keccak256(bytes('Create3 Factory'));
-}
-
-abstract contract BaseScript is Script {
-  function TRANSACTION_NETWORK() internal view virtual returns (uint256);
-
-  function getAddresses(
-    uint256 networkId
-  ) external view returns (DeployerHelpers.Addresses memory) {
+abstract contract BaseDeployerScript is BaseScript {
+  function getAddresses(uint256 networkId) external view returns (Addresses memory) {
     return DeployerHelpers.decodeJson(DeployerHelpers.getPathByChainId(networkId), vm);
   }
 
-  function _getAddresses(
-    uint256 networkId
-  ) internal view returns (DeployerHelpers.Addresses memory) {
-    try this.getAddresses(networkId) returns (DeployerHelpers.Addresses memory addresses) {
+  function _getAddresses(uint256 networkId) internal view override returns (Addresses memory) {
+    try this.getAddresses(networkId) returns (Addresses memory addresses) {
       return addresses;
     } catch (bytes memory) {
-      DeployerHelpers.Addresses memory empty;
+      Addresses memory empty;
       return empty;
     }
   }
 
-  function _setAddresses(uint256 networkId, DeployerHelpers.Addresses memory addresses) internal {
+  function _execute(Addresses memory addresses) internal virtual;
+
+  function _setAddresses(uint256 networkId, Addresses memory addresses) internal {
     DeployerHelpers.encodeJson(DeployerHelpers.getPathByChainId(networkId), addresses, vm);
   }
-
-  function _execute(DeployerHelpers.Addresses memory addresses) internal virtual;
 
   function run() public virtual {
     vm.startBroadcast();
     // ----------------- Persist addresses -----------------------------------------------------------------------------
-    DeployerHelpers.Addresses memory addresses = _getAddresses(TRANSACTION_NETWORK());
+    Addresses memory addresses = _getAddresses(TRANSACTION_NETWORK());
     // -----------------------------------------------------------------------------------------------------------------
     _execute(addresses);
     // ----------------- Persist addresses -----------------------------------------------------------------------------

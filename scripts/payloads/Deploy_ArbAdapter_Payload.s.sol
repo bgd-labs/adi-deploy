@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {ArbAdapterDeploymentHelper, BaseAdapterStructs} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
-import {IBaseAdapter} from 'adi/adapters/IBaseAdapter.sol';
-import {Arbitrum, ChainIds, DeployerHelpers} from '../adapters/DeployArbAdapter.s.sol';
+import {ArbAdapterDeploymentHelper, IBaseAdapter} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
+import {Arbitrum, Addresses} from '../adapters/DeployArbAdapter.s.sol';
 import {Create2Utils, ArbitrumScript} from 'aave-helpers/ScriptUtils.sol';
-import {AaveV3Arbitrum_New_Adapter_Payload} from './ArbAdapterPayload.sol';
+import {AaveV3Arbitrum_New_Adapter_Payload, ChainIds} from './ArbAdapterPayload.sol';
 
 /**
  * @dev Deploy Arbitrum
@@ -14,7 +13,7 @@ import {AaveV3Arbitrum_New_Adapter_Payload} from './ArbAdapterPayload.sol';
  */
 contract DeployArbitrumPayload is Arbitrum, ArbitrumScript {
   function _getPayloadArgs() internal view returns (address, address, bytes32, bytes memory) {
-    DeployerHelpers.Addresses memory addresses = _getAddresses(ChainIds.ARBITRUM);
+    Addresses memory addresses = _getAddresses(ChainIds.ARBITRUM);
 
     IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
 

@@ -1,72 +1,18 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import {BaseAdapterScript, DeployerHelpers, ChainIds, TestNetChainIds, IBaseAdapter} from './BaseAdapterScript.sol';
-import {ArbAdapterDeploymentHelper, BaseAdapterStructs} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
-import {Create2Utils} from 'aave-helpers/ScriptUtils.sol';
+import {BaseDeployArbAdapter, Addresses, IBaseAdapter, ChainIds, TestNetChainIds} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
+import {BaseDeployerScript} from '../BaseDeployerScript.sol';
 
-abstract contract BaseDeployArbAdapter is BaseAdapterScript {
-  function INBOX() internal view virtual returns (address) {
-    return address(0);
-  }
+abstract contract DeployArbAdapter is BaseDeployerScript, BaseDeployArbAdapter {
+  function _execute(Addresses memory addresses) internal override {
+    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
 
-  function _getConstructorArgs(
-    address crossChainController,
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes
-  ) internal view returns (ArbAdapterDeploymentHelper.ArbAdapterArgs memory) {
-    require(crossChainController != address(0), 'CCC needs to be deployed');
-
-    DeployerHelpers.Addresses memory remoteAddresses;
-    if (isTestnet()) {
-      if (TRANSACTION_NETWORK() == TestNetChainIds.ETHEREUM_SEPOLIA) {
-        remoteAddresses = _getAddresses(TestNetChainIds.ARBITRUM_SEPOLIA);
-        require(
-          remoteAddresses.crossChainController != address(0),
-          'Arbitrum CCC must be deployed'
-        );
-        require(INBOX() != address(0), 'Arbitrum inbox can not be 0');
-      }
-    } else {
-      if (TRANSACTION_NETWORK() == ChainIds.ETHEREUM) {
-        remoteAddresses = _getAddresses(ChainIds.ARBITRUM);
-        require(
-          remoteAddresses.crossChainController != address(0),
-          'Arbitrum CCC must be deployed'
-        );
-        require(INBOX() != address(0), 'Arbitrum inbox can not be 0');
-      }
-    }
-
-    return
-      ArbAdapterDeploymentHelper.ArbAdapterArgs({
-        baseArgs: BaseAdapterStructs.BaseAdapterArgs({
-          crossChainController: crossChainController,
-          providerGasLimit: PROVIDER_GAS_LIMIT(),
-          trustedRemotes: trustedRemotes,
-          isTestnet: isTestnet()
-        }),
-        inbox: INBOX(),
-        destinationCCC: remoteAddresses.crossChainController
-      });
-  }
-
-  function _deployAdapter(
-    DeployerHelpers.Addresses memory addresses,
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes
-  ) internal override {
-    ArbAdapterDeploymentHelper.ArbAdapterArgs memory constructorArgs = _getConstructorArgs(
-      addresses.crossChainController,
-      trustedRemotes
-    );
-
-    addresses.arbAdapter = Create2Utils.create2Deploy(
-      keccak256(abi.encode(SALT())),
-      ArbAdapterDeploymentHelper.getAdapterCode(constructorArgs)
-    );
+    addresses.arbAdapter = _deployAdapter(addresses, trustedRemotes);
   }
 }
 
-contract Ethereum is BaseDeployArbAdapter {
+contract Ethereum is DeployArbAdapter {
   function INBOX() internal pure override returns (address) {
     return 0x4Dbd4fc535Ac27206064B68FfCf827b0A60BAB3f;
   }
@@ -85,7 +31,7 @@ contract Ethereum is BaseDeployArbAdapter {
   }
 }
 
-contract Arbitrum is BaseDeployArbAdapter {
+contract Arbitrum is DeployArbAdapter {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.ARBITRUM;
   }
@@ -97,7 +43,7 @@ contract Arbitrum is BaseDeployArbAdapter {
   }
 }
 
-contract Ethereum_testnet is BaseDeployArbAdapter {
+contract Ethereum_testnet is DeployArbAdapter {
   function INBOX() internal pure override returns (address) {
     return 0x6BEbC4925716945D46F0Ec336D5C2564F419682C;
   }
@@ -121,7 +67,7 @@ contract Ethereum_testnet is BaseDeployArbAdapter {
   }
 }
 
-contract Arbitrum_testnet is BaseDeployArbAdapter {
+contract Arbitrum_testnet is DeployArbAdapter {
   function isTestnet() internal pure override returns (bool) {
     return true;
   }
@@ -132,7 +78,7 @@ contract Arbitrum_testnet is BaseDeployArbAdapter {
 
   function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
     uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = TestNetChainIds.ETHEREUM_GOERLI;
+    remoteNetworks[0] = TestNetChainIds.ETHEREUM_SEPOLIA;
     return remoteNetworks;
   }
 }

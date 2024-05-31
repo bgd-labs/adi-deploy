@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {SimpleReceiverAdapterUpdate} from 'aave-helpers/adi/SimpleReceiverAdapterUpdate.sol';
-import {ChainIds} from 'adi/libs/ChainIds.sol';
+import {ChainIds} from 'aave-helpers/ChainIds.sol';
 
 /**
  * @title Arbitrum bridge adapter update example
