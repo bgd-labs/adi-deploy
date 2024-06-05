@@ -115,7 +115,7 @@ library DeployerHelpers {
   }
 }
 
-abstract contract BaseDeployerScript is BaseScript {
+abstract contract BaseDeployerScript is BaseScript, Script {
   function getAddresses(uint256 networkId) external view returns (Addresses memory) {
     return DeployerHelpers.decodeJson(DeployerHelpers.getPathByChainId(networkId), vm);
   }
