@@ -5,6 +5,35 @@ import 'forge-std/StdJson.sol';
 import 'adi-scripts/BaseScript.sol';
 import {ChainHelpers} from 'aave-helpers/ChainIds.sol';
 
+struct Addresses {
+  address arbAdapter;
+  address baseAdapter;
+  address ccipAdapter;
+  uint256 chainId;
+  address clEmergencyOracle;
+  address create3Factory;
+  address crossChainController;
+  address crossChainControllerImpl;
+  address emergencyRegistry;
+  address gnosisAdapter;
+  address granularCCCGuardian;
+  address guardian;
+  address hlAdapter;
+  address lzAdapter;
+  address metisAdapter;
+  address mockDestination;
+  address opAdapter;
+  address owner;
+  address polAdapter;
+  address proxyAdmin;
+  address proxyFactory;
+  address sameChainAdapter;
+  address scrollAdapter;
+  address wormholeAdapter;
+  address zkevmAdapter;
+  address zksyncAdapter;
+}
+
 library DeployerHelpers {
   using stdJson for string;
 
@@ -47,7 +76,8 @@ library DeployerHelpers {
       gnosisAdapter: abi.decode(persistedJson.parseRaw('.gnosisAdapter'), (address)),
       scrollAdapter: abi.decode(persistedJson.parseRaw('.scrollAdapter'), (address)),
       wormholeAdapter: abi.decode(persistedJson.parseRaw('.wormholeAdapter'), (address)),
-      zksyncAdapter: abi.decode(persistedJson.parseRaw('.zksyncAdapter'), (address))
+      zksyncAdapter: abi.decode(persistedJson.parseRaw('.zksyncAdapter'), (address)),
+      granularCCCGuardian: abi.decode(persistedJson.parseRaw('.granularCCCGuardian'), (address))
     });
 
     return addresses;
@@ -66,6 +96,7 @@ library DeployerHelpers {
     json.serialize('emergencyRegistry', addresses.emergencyRegistry);
     json.serialize('gnosisAdapter', addresses.gnosisAdapter);
     json.serialize('guardian', addresses.guardian);
+    json.serialize('granularCCCGuardian', addresses.granularCCCGuardian);
     json.serialize('hlAdapter', addresses.hlAdapter);
     json.serialize('lzAdapter', addresses.lzAdapter);
     json.serialize('metisAdapter', addresses.metisAdapter);
@@ -89,7 +120,7 @@ abstract contract BaseDeployerScript is BaseScript {
     return DeployerHelpers.decodeJson(DeployerHelpers.getPathByChainId(networkId), vm);
   }
 
-  function _getAddresses(uint256 networkId) internal view override returns (Addresses memory) {
+  function _getAddresses(uint256 networkId) internal view returns (Addresses memory) {
     try this.getAddresses(networkId) returns (Addresses memory addresses) {
       return addresses;
     } catch (bytes memory) {

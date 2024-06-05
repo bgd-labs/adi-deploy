@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import {BaseDeployArbAdapter, Addresses, IBaseAdapter, ChainIds, TestNetChainIds} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
-import {BaseDeployerScript} from '../BaseDeployerScript.sol';
+import {BaseDeployArbAdapter, IBaseAdapter, ChainIds, TestNetChainIds, RemoteCCC} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
+import {BaseDeployerScript, Addresses} from '../BaseDeployerScript.sol';
 
 abstract contract DeployArbAdapter is BaseDeployerScript, BaseDeployArbAdapter {
   function _execute(Addresses memory addresses) internal override {
     IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
 
-    addresses.arbAdapter = _deployAdapter(addresses, trustedRemotes);
+    addresses.arbAdapter = _deployAdapter(addresses.crossChainController, trustedRemotes);
   }
 }
 
@@ -21,9 +21,8 @@ contract Ethereum is DeployArbAdapter {
     return ChainIds.ETHEREUM;
   }
 
-  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](0);
-    return remoteNetworks;
+  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+    return new RemoteCCC[](0);
   }
 
   function PROVIDER_GAS_LIMIT() internal pure override returns (uint256) {
@@ -36,10 +35,12 @@ contract Arbitrum is DeployArbAdapter {
     return ChainIds.ARBITRUM;
   }
 
-  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = ChainIds.ETHEREUM;
-    return remoteNetworks;
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
+      .crossChainController;
+    return remoteCCCByNetwork;
   }
 }
 
@@ -56,10 +57,8 @@ contract Ethereum_testnet is DeployArbAdapter {
     return TestNetChainIds.ETHEREUM_SEPOLIA;
   }
 
-  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](0);
-
-    return remoteNetworks;
+  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+    return new RemoteCCC[](0);
   }
 
   function PROVIDER_GAS_LIMIT() internal pure override returns (uint256) {
@@ -76,9 +75,11 @@ contract Arbitrum_testnet is DeployArbAdapter {
     return TestNetChainIds.ARBITRUM_SEPOLIA;
   }
 
-  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = TestNetChainIds.ETHEREUM_SEPOLIA;
-    return remoteNetworks;
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = TestNetChainIds.ETHEREUM_SEPOLIA;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(TestNetChainIds.ETHEREUM_SEPOLIA)
+      .crossChainController;
+    return remoteCCCByNetwork;
   }
 }
