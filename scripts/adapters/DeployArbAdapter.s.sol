@@ -28,6 +28,10 @@ contract Ethereum is DeployArbAdapter {
   function PROVIDER_GAS_LIMIT() internal pure override returns (uint256) {
     return 150_000;
   }
+
+  function DESTINATION_CCC() internal view override returns (address) {
+    return _getAddresses(ChainIds.ARBITRUM).crossChainController;
+  }
 }
 
 contract Arbitrum is DeployArbAdapter {
@@ -63,6 +67,10 @@ contract Ethereum_testnet is DeployArbAdapter {
 
   function PROVIDER_GAS_LIMIT() internal pure override returns (uint256) {
     return 150_000;
+  }
+
+  function DESTINATION_CCC() internal view override returns (address) {
+    return _getAddresses(TestNetChainIds.ARBITRUM_SEPOLIA).crossChainController;
   }
 }
 

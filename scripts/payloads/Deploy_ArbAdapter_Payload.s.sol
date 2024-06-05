@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {ArbAdapterDeploymentHelper, IBaseAdapter} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
+import {IBaseAdapter} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
 import {Arbitrum, Addresses} from '../adapters/DeployArbAdapter.s.sol';
 import {Create2Utils, ArbitrumScript} from 'aave-helpers/ScriptUtils.sol';
 import {AaveV3Arbitrum_New_Adapter_Payload, ChainIds} from './ArbAdapterPayload.sol';
@@ -17,12 +17,8 @@ contract DeployArbitrumPayload is Arbitrum, ArbitrumScript {
 
     IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
 
-    ArbAdapterDeploymentHelper.ArbAdapterArgs memory arbArgs = _getConstructorArgs(
-      addresses.crossChainController,
-      trustedRemotes
-    );
+    bytes memory adapterCode = _getAdapterByteCode(addresses.crossChainController, trustedRemotes);
 
-    bytes memory adapterCode = ArbAdapterDeploymentHelper.getAdapterCode(arbArgs);
     bytes32 salt = keccak256(abi.encode(SALT()));
     address newAdapter = Create2Utils.computeCreate2Address(salt, adapterCode);
 
