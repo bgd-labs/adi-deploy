@@ -25,10 +25,6 @@ contract Ethereum is DeployArbAdapter {
     return new RemoteCCC[](0);
   }
 
-  function PROVIDER_GAS_LIMIT() internal pure override returns (uint256) {
-    return 150_000;
-  }
-
   function DESTINATION_CCC() internal view override returns (address) {
     return _getAddresses(ChainIds.ARBITRUM).crossChainController;
   }
@@ -63,10 +59,6 @@ contract Ethereum_testnet is DeployArbAdapter {
 
   function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
     return new RemoteCCC[](0);
-  }
-
-  function PROVIDER_GAS_LIMIT() internal pure override returns (uint256) {
-    return 150_000;
   }
 
   function DESTINATION_CCC() internal view override returns (address) {
