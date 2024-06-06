@@ -25,7 +25,7 @@ contract Ethereum is DeployCCIPAdapter {
     return ChainIds.ETHEREUM;
   }
 
-  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
     RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](2);
     remoteCCCByNetwork[0].chainId = ChainIds.POLYGON;
     remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.POLYGON)
@@ -56,7 +56,7 @@ contract Ethereum_testnet is DeployCCIPAdapter {
     return true;
   }
 
-  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
     RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](2);
     remoteCCCByNetwork[0].chainId = TestNetChainIds.POLYGON_AMOY;
     remoteCCCByNetwork[0].crossChainController = _getAddresses(TestNetChainIds.POLYGON_AMOY)
@@ -83,7 +83,7 @@ contract Avalanche is DeployCCIPAdapter {
     return ChainIds.AVALANCHE;
   }
 
-  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
     RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
     remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
     remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
@@ -110,7 +110,7 @@ contract Avalanche_testnet is DeployCCIPAdapter {
     return true;
   }
 
-  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
     RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
     remoteCCCByNetwork[0].chainId = TestNetChainIds.ETHEREUM_SEPOLIA;
     remoteCCCByNetwork[0].crossChainController = _getAddresses(TestNetChainIds.ETHEREUM_SEPOLIA)
@@ -133,7 +133,7 @@ contract Polygon is DeployCCIPAdapter {
     return ChainIds.POLYGON;
   }
 
-  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
     RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
     remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
     remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
@@ -160,7 +160,7 @@ contract Polygon_testnet is DeployCCIPAdapter {
     return true;
   }
 
-  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
     RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
     remoteCCCByNetwork[0].chainId = TestNetChainIds.ETHEREUM_SEPOLIA;
     remoteCCCByNetwork[0].crossChainController = _getAddresses(TestNetChainIds.ETHEREUM_SEPOLIA)
@@ -183,7 +183,7 @@ contract Binance is DeployCCIPAdapter {
     return ChainIds.BNB;
   }
 
-  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
     RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
     remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
     remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
@@ -206,7 +206,7 @@ contract Binance_testnet is DeployCCIPAdapter {
     return TestNetChainIds.BNB_TESTNET;
   }
 
-  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
     RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
     remoteCCCByNetwork[0].chainId = TestNetChainIds.ETHEREUM_SEPOLIA;
     remoteCCCByNetwork[0].crossChainController = _getAddresses(TestNetChainIds.ETHEREUM_SEPOLIA)

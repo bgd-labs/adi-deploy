@@ -35,7 +35,7 @@ contract Base is DeployCBAdapter {
     return ChainIds.BASE;
   }
 
-  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
     RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
     remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
     remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)

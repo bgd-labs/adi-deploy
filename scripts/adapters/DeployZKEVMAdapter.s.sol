@@ -13,7 +13,7 @@ abstract contract DeployZKEVMAdapter is BaseDeployerScript, BaseZKEVMAdapter {
 }
 
 contract Ethereum is DeployZKEVMAdapter {
-  function ZK_EVM_BRIDGE() internal view override returns (address) {
+  function ZK_EVM_BRIDGE() internal pure override returns (address) {
     return 0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe;
   }
 
@@ -31,7 +31,7 @@ contract Ethereum is DeployZKEVMAdapter {
 }
 
 contract Zkevm is DeployZKEVMAdapter {
-  function ZK_EVM_BRIDGE() internal view override returns (address) {
+  function ZK_EVM_BRIDGE() internal pure override returns (address) {
     return 0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe;
   }
 
