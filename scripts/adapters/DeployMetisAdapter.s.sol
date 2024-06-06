@@ -1,73 +1,45 @@
-contract Ethereum is BaseMetisAdapter {
-  function OVM() public pure override returns (address) {
+// SPDX-License-Identifier: BUSL-1.1
+pragma solidity ^0.8.0;
+
+import '../BaseDeployerScript.sol';
+import 'adi-scripts/Adapters/DeployMetisAdapter.sol';
+
+abstract contract DeployMetisAdapter is BaseDeployerScript, BaseMetisAdapter {
+  function _execute(Addresses memory addresses) internal override {
+    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
+
+    addresses.metisAdapter = _deployAdapter(addresses.crossChainController, trustedRemotes);
+  }
+}
+
+contract Ethereum is DeployMetisAdapter {
+  function OVM() internal pure override returns (address) {
     return 0x081D1101855bD523bA69A9794e0217F0DB6323ff;
   }
 
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.ETHEREUM;
   }
 
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](0);
-
-    return remoteNetworks;
+  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+    return new RemoteCCC[](0);
   }
 }
 
-contract Metis is BaseMetisAdapter {
-  function OVM() public pure override returns (address) {
+contract Metis is DeployMetisAdapter {
+  function OVM() internal pure override returns (address) {
     return 0x4200000000000000000000000000000000000007;
   }
 
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.METIS;
   }
 
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = ChainIds.ETHEREUM;
-
-    return remoteNetworks;
-  }
-}
-
-contract Ethereum_testnet is BaseMetisAdapter {
-  function OVM() public pure override returns (address) {
-    return 0x914Aed79Cd083B5043C75A90616CC2A0477bf86c;
-  }
-
-  function isTestnet() public pure override returns (bool) {
-    return true;
-  }
-
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
-    return TestNetChainIds.ETHEREUM_GOERLI;
-  }
-
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](0);
-
-    return remoteNetworks;
-  }
-}
-
-contract Metis_testnet is BaseMetisAdapter {
-  function OVM() public pure override returns (address) {
-    return 0x4200000000000000000000000000000000000007;
-  }
-
-  function isTestnet() public pure override returns (bool) {
-    return true;
-  }
-
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
-    return TestNetChainIds.METIS_TESTNET;
-  }
-
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = TestNetChainIds.ETHEREUM_GOERLI;
-
-    return remoteNetworks;
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
+      .crossChainController;
+    return remoteCCCByNetwork;
   }
 }

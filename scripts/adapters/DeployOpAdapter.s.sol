@@ -1,73 +1,45 @@
-contract Ethereum is BaseOpAdapter {
-  function OVM() public pure override returns (address) {
+// SPDX-License-Identifier: BUSL-1.1
+pragma solidity ^0.8.0;
+
+import '../BaseDeployerScript.sol';
+import 'adi-scripts/Adapters/DeployOpAdapter.sol';
+
+abstract contract DeployOpAdapter is BaseDeployerScript, BaseOpAdapter {
+  function _execute(Addresses memory addresses) internal override {
+    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
+
+    addresses.opAdapter = _deployAdapter(addresses.crossChainController, trustedRemotes);
+  }
+}
+
+contract Ethereum is DeployOpAdapter {
+  function OVM() internal pure override returns (address) {
     return 0x25ace71c97B33Cc4729CF772ae268934F7ab5fA1;
   }
 
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.ETHEREUM;
   }
 
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](0);
-
-    return remoteNetworks;
+  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+    return new RemoteCCC[](0);
   }
 }
 
-contract Optimism is BaseOpAdapter {
-  function OVM() public pure override returns (address) {
+contract Optimism is DeployOpAdapter {
+  function OVM() internal pure override returns (address) {
     return 0x4200000000000000000000000000000000000007;
   }
 
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.OPTIMISM;
   }
 
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = ChainIds.ETHEREUM;
-
-    return remoteNetworks;
-  }
-}
-
-contract Ethereum_testnet is BaseOpAdapter {
-  function OVM() public pure override returns (address) {
-    return 0x5086d1eEF304eb5284A0f6720f79403b4e9bE294;
-  }
-
-  function isTestnet() public pure override returns (bool) {
-    return true;
-  }
-
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
-    return TestNetChainIds.ETHEREUM_GOERLI;
-  }
-
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](0);
-
-    return remoteNetworks;
-  }
-}
-
-contract Optimism_testnet is BaseOpAdapter {
-  function OVM() public pure override returns (address) {
-    return 0x4200000000000000000000000000000000000007;
-  }
-
-  function isTestnet() public pure override returns (bool) {
-    return true;
-  }
-
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
-    return TestNetChainIds.OPTIMISM_GOERLI;
-  }
-
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = TestNetChainIds.ETHEREUM_GOERLI;
-
-    return remoteNetworks;
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
+      .crossChainController;
+    return remoteCCCByNetwork;
   }
 }

@@ -1,253 +1,273 @@
-contract Ethereum is BaseLZAdapter {
-  function LZ_ENDPOINT() public pure override returns (address) {
+// SPDX-License-Identifier: BUSL-1.1
+pragma solidity ^0.8.0;
+
+import '../BaseDeployerScript.sol';
+import 'adi-scripts/Adapters/DeployLZ.sol';
+
+abstract contract DeployLZAdapter is BaseDeployerScript, BaseLZAdapter {
+  function _execute(Addresses memory addresses) internal override {
+    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
+
+    addresses.lzAdapter = _deployAdapter(addresses.crossChainController, trustedRemotes);
+  }
+}
+
+contract Ethereum is DeployLZAdapter {
+  function LZ_ENDPOINT() internal pure override returns (address) {
     return 0x1a44076050125825900e736c501f859c50fE728c;
   }
 
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.ETHEREUM;
   }
 
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](2);
-    remoteNetworks[0] = ChainIds.POLYGON;
-    remoteNetworks[1] = ChainIds.AVALANCHE;
+  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](2);
+    remoteCCCByNetwork[0].chainId = ChainIds.POLYGON;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.POLYGON)
+      .crossChainController;
 
-    return remoteNetworks;
-  }
+    remoteCCCByNetwork[1].chainId = ChainIds.AVALANCHE;
+    remoteCCCByNetwork[1].crossChainController = _getAddresses(ChainIds.AVALANCHE)
+      .crossChainController;
 
-  function isTestNet() public pure override returns (bool) {
-    return false;
+    return remoteCCCByNetwork;
   }
 }
 
-contract Ethereum_testnet is BaseLZAdapter {
-  function LZ_ENDPOINT() public pure override returns (address) {
+contract Ethereum_testnet is DeployLZAdapter {
+  function LZ_ENDPOINT() internal pure override returns (address) {
     return 0x6EDCE65403992e310A62460808c4b910D972f10f;
   }
 
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;
   }
 
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](2);
-    remoteNetworks[0] = TestNetChainIds.POLYGON_MUMBAI;
-    remoteNetworks[1] = TestNetChainIds.AVALANCHE_FUJI;
+  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](2);
+    remoteCCCByNetwork[0].chainId = TestNetChainIds.POLYGON_AMOY;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(TestNetChainIds.POLYGON_AMOY)
+      .crossChainController;
 
-    return remoteNetworks;
+    remoteCCCByNetwork[1].chainId = TestNetChainIds.AVALANCHE_FUJI;
+    remoteCCCByNetwork[1].crossChainController = _getAddresses(TestNetChainIds.AVALANCHE_FUJI)
+      .crossChainController;
+
+    return remoteCCCByNetwork;
   }
 
-  function isTestNet() public pure override returns (bool) {
+  function isTestnet() internal pure override returns (bool) {
     return true;
   }
 }
 
-contract Avalanche is BaseLZAdapter {
-  function LZ_ENDPOINT() public pure override returns (address) {
+contract Avalanche is DeployLZAdapter {
+  function LZ_ENDPOINT() internal pure override returns (address) {
     return 0x1a44076050125825900e736c501f859c50fE728c;
   }
 
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.AVALANCHE;
   }
 
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = ChainIds.ETHEREUM;
+  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
+      .crossChainController;
 
-    return remoteNetworks;
-  }
-
-  function isTestNet() public pure override returns (bool) {
-    return false;
+    return remoteCCCByNetwork;
   }
 }
 
-contract Avalanche_testnet is BaseLZAdapter {
-  function LZ_ENDPOINT() public pure override returns (address) {
+contract Avalanche_testnet is DeployLZAdapter {
+  function LZ_ENDPOINT() internal pure override returns (address) {
     return 0x6EDCE65403992e310A62460808c4b910D972f10f;
   }
 
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.AVALANCHE_FUJI;
   }
 
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = TestNetChainIds.ETHEREUM_SEPOLIA;
+  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = TestNetChainIds.ETHEREUM_SEPOLIA;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(TestNetChainIds.ETHEREUM_SEPOLIA)
+      .crossChainController;
 
-    return remoteNetworks;
+    return remoteCCCByNetwork;
   }
 
-  function isTestNet() public pure override returns (bool) {
+  function isTestnet() internal pure override returns (bool) {
     return true;
   }
 }
 
-contract Polygon is BaseLZAdapter {
-  function LZ_ENDPOINT() public pure override returns (address) {
+contract Polygon is DeployLZAdapter {
+  function LZ_ENDPOINT() internal pure override returns (address) {
     return 0x1a44076050125825900e736c501f859c50fE728c;
   }
 
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.POLYGON;
   }
 
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = ChainIds.ETHEREUM;
+  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
+      .crossChainController;
 
-    return remoteNetworks;
-  }
-
-  function isTestNet() public pure override returns (bool) {
-    return false;
+    return remoteCCCByNetwork;
   }
 }
 
-contract Polygon_testnet is BaseLZAdapter {
-  function LZ_ENDPOINT() public pure override returns (address) {
+contract Polygon_testnet is DeployLZAdapter {
+  function LZ_ENDPOINT() internal pure override returns (address) {
     return 0x6EDCE65403992e310A62460808c4b910D972f10f;
   }
 
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
-    return TestNetChainIds.POLYGON_MUMBAI;
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return TestNetChainIds.POLYGON_AMOY;
   }
 
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = TestNetChainIds.ETHEREUM_SEPOLIA;
+  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = TestNetChainIds.ETHEREUM_SEPOLIA;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(TestNetChainIds.ETHEREUM_SEPOLIA)
+      .crossChainController;
 
-    return remoteNetworks;
+    return remoteCCCByNetwork;
   }
 
-  function isTestNet() public pure override returns (bool) {
+  function isTestnet() internal pure override returns (bool) {
     return true;
   }
 }
 
-contract Binance is BaseLZAdapter {
-  function LZ_ENDPOINT() public pure override returns (address) {
+contract Binance is DeployLZAdapter {
+  function LZ_ENDPOINT() internal pure override returns (address) {
     return 0x1a44076050125825900e736c501f859c50fE728c;
   }
 
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.BNB;
   }
 
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = ChainIds.ETHEREUM;
+  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
+      .crossChainController;
 
-    return remoteNetworks;
-  }
-
-  function isTestNet() public pure override returns (bool) {
-    return false;
+    return remoteCCCByNetwork;
   }
 }
 
-contract Binance_testnet is BaseLZAdapter {
-  function LZ_ENDPOINT() public pure override returns (address) {
+contract Binance_testnet is DeployLZAdapter {
+  function LZ_ENDPOINT() internal pure override returns (address) {
     return 0x6EDCE65403992e310A62460808c4b910D972f10f;
   }
 
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.BNB_TESTNET;
   }
 
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = TestNetChainIds.ETHEREUM_SEPOLIA;
+  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = TestNetChainIds.ETHEREUM_SEPOLIA;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(TestNetChainIds.ETHEREUM_SEPOLIA)
+      .crossChainController;
 
-    return remoteNetworks;
+    return remoteCCCByNetwork;
   }
 
-  function isTestNet() public pure override returns (bool) {
+  function isTestnet() internal pure override returns (bool) {
     return true;
   }
 }
 
-contract Gnosis is BaseLZAdapter {
-  function LZ_ENDPOINT() public pure override returns (address) {
+contract Gnosis is DeployLZAdapter {
+  function LZ_ENDPOINT() internal pure override returns (address) {
     return 0x1a44076050125825900e736c501f859c50fE728c;
   }
 
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.GNOSIS;
   }
 
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = ChainIds.ETHEREUM;
+  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
+      .crossChainController;
 
-    return remoteNetworks;
-  }
-
-  function isTestNet() public pure override returns (bool) {
-    return false;
+    return remoteCCCByNetwork;
   }
 }
 
-contract Gnosis_testnet is BaseLZAdapter {
-  function LZ_ENDPOINT() public pure override returns (address) {
+contract Gnosis_testnet is DeployLZAdapter {
+  function LZ_ENDPOINT() internal pure override returns (address) {
     return 0x6EDCE65403992e310A62460808c4b910D972f10f;
   }
 
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.GNOSIS_CHIADO;
   }
 
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = TestNetChainIds.ETHEREUM_GOERLI;
+  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = TestNetChainIds.ETHEREUM_SEPOLIA;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(TestNetChainIds.ETHEREUM_SEPOLIA)
+      .crossChainController;
 
-    return remoteNetworks;
+    return remoteCCCByNetwork;
   }
 
-  function isTestNet() public pure override returns (bool) {
+  function isTestnet() internal pure override returns (bool) {
     return true;
   }
 }
 
-contract Celo is BaseLZAdapter {
-  function LZ_ENDPOINT() public pure override returns (address) {
+contract Celo is DeployLZAdapter {
+  function LZ_ENDPOINT() internal pure override returns (address) {
     return 0x1a44076050125825900e736c501f859c50fE728c;
   }
 
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.CELO;
   }
 
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = ChainIds.ETHEREUM;
+  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
+      .crossChainController;
 
-    return remoteNetworks;
-  }
-
-  function isTestNet() public pure override returns (bool) {
-    return false;
+    return remoteCCCByNetwork;
   }
 }
 
-contract Celo_testnet is BaseLZAdapter {
-  function LZ_ENDPOINT() public pure override returns (address) {
+contract Celo_testnet is DeployLZAdapter {
+  function LZ_ENDPOINT() internal pure override returns (address) {
     return 0x6EDCE65403992e310A62460808c4b910D972f10f;
   }
 
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.CELO_ALFAJORES;
   }
 
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = TestNetChainIds.ETHEREUM_SEPOLIA;
+  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = TestNetChainIds.ETHEREUM_SEPOLIA;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(TestNetChainIds.ETHEREUM_SEPOLIA)
+      .crossChainController;
 
-    return remoteNetworks;
+    return remoteCCCByNetwork;
   }
 
-  function isTestNet() public pure override returns (bool) {
+  function isTestnet() internal pure override returns (bool) {
     return true;
   }
 }

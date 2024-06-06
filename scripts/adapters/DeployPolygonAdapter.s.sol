@@ -1,119 +1,49 @@
-contract Ethereum is BasePolygonAdapter {
-  function FX_TUNNEL() public pure override returns (address) {
+// SPDX-License-Identifier: BUSL-1.1
+pragma solidity ^0.8.0;
+
+import '../BaseDeployerScript.sol';
+import 'adi-scripts/Adapters/DeployPolygon.sol';
+
+abstract contract DeployPolygonAdapter is BaseDeployerScript, BasePolygonAdapter {
+  function _execute(Addresses memory addresses) internal override {
+    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
+
+    addresses.polAdapter = _deployAdapter(addresses.crossChainController, trustedRemotes);
+  }
+}
+
+contract Ethereum is DeployPolygonAdapter {
+  function FX_TUNNEL() internal pure override returns (address) {
     return 0xF30FA9e36FdDd4982B722432FD39914e9ab2b033;
   }
 
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.ETHEREUM;
   }
 
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = ChainIds.POLYGON;
-    return remoteNetworks;
-  }
-
-  function _deployAdapter(
-    DeployerHelpers.Addresses memory addresses,
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes
-  ) internal override {
-    addresses.polAdapter = address(
-      new PolygonAdapterEthereum(
-        addresses.crossChainController,
-        FX_TUNNEL(),
-        GET_BASE_GAS_LIMIT(),
-        trustedRemotes
-      )
-    );
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.POLYGON;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.POLYGON)
+      .crossChainController;
+    return remoteCCCByNetwork;
   }
 }
 
-contract Polygon is BasePolygonAdapter {
-  function FX_TUNNEL() public pure override returns (address) {
+contract Polygon is DeployPolygonAdapter {
+  function FX_TUNNEL() internal pure override returns (address) {
     return 0xF30FA9e36FdDd4982B722432FD39914e9ab2b033;
   }
 
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.POLYGON;
   }
 
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = ChainIds.ETHEREUM;
-    return remoteNetworks;
-  }
-
-  function _deployAdapter(
-    DeployerHelpers.Addresses memory addresses,
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes
-  ) internal override {
-    console2.log(addresses.crossChainController);
-
-    addresses.polAdapter = address(
-      new PolygonAdapterPolygon(
-        addresses.crossChainController,
-        FX_TUNNEL(),
-        GET_BASE_GAS_LIMIT(),
-        trustedRemotes
-      )
-    );
-  }
-}
-
-// careful as this is deployed on goerli
-contract Ethereum_testnet is BasePolygonAdapter {
-  function FX_TUNNEL() public pure override returns (address) {}
-
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
-    return TestNetChainIds.ETHEREUM_GOERLI;
-  }
-
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = TestNetChainIds.POLYGON_MUMBAI;
-    return remoteNetworks;
-  }
-
-  function _deployAdapter(
-    DeployerHelpers.Addresses memory addresses,
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes
-  ) internal override {
-    addresses.polAdapter = address(
-      new PolygonAdapterGoerli(
-        addresses.crossChainController,
-        FX_TUNNEL(),
-        GET_BASE_GAS_LIMIT(),
-        trustedRemotes
-      )
-    );
-  }
-}
-
-// careful as the path is with goerli
-contract Polygon_testnet is BasePolygonAdapter {
-  function FX_TUNNEL() public pure override returns (address) {}
-
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
-    return TestNetChainIds.POLYGON_MUMBAI;
-  }
-
-  function REMOTE_NETWORKS() public pure override returns (uint256[] memory) {
-    uint256[] memory remoteNetworks = new uint256[](1);
-    remoteNetworks[0] = TestNetChainIds.ETHEREUM_GOERLI;
-    return remoteNetworks;
-  }
-
-  function _deployAdapter(
-    DeployerHelpers.Addresses memory addresses,
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes
-  ) internal override {
-    addresses.polAdapter = address(
-      new PolygonAdapterMumbai(
-        addresses.crossChainController,
-        FX_TUNNEL(),
-        GET_BASE_GAS_LIMIT(),
-        trustedRemotes
-      )
-    );
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
+      .crossChainController;
+    return remoteCCCByNetwork;
   }
 }
