@@ -3,7 +3,6 @@ pragma solidity ^0.8.0;
 
 import {BaseDeployerScript, Addresses} from '../BaseDeployerScript.sol';
 import {TransparentUpgradeableProxy} from 'solidity-utils/contracts/transparent-proxy/TransparentUpgradeableProxy.sol';
-import {Create3Factory, ICreate3Factory} from 'solidity-utils/contracts/create3/Create3Factory.sol';
 import {TransparentProxyFactory} from 'solidity-utils/contracts/transparent-proxy/TransparentProxyFactory.sol';
 import 'adi-scripts/CCC/DeployCrossChainController.sol';
 
