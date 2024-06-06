@@ -1,4 +1,4 @@
 [submodule "lib/aave-delivery-infrastructure"]
 	path = lib/aave-delivery-infrastructure
 	url = https://github.com/bgd-labs/aave-delivery-infrastructure
-	branch = fix/granular-guardian
+	branch = fix/emergency-registry-scripts
