@@ -1,4 +1,4 @@
 [submodule "lib/aave-delivery-infrastructure"]
 	path = lib/aave-delivery-infrastructure
 	url = https://github.com/bgd-labs/aave-delivery-infrastructure
-	branch = fix/propagate-script-changes-to-all-adapters
+	branch = fix/ccc-scripts
