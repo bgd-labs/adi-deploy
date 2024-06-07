@@ -27,7 +27,7 @@ contract UpdateCCCImpl {
 }
 
 abstract contract BaseCCCUpdatePayload is BaseDeployerScript {
-  function _execute(DeployerHelpers.Addresses memory addresses) internal override {
+  function _execute(Addresses memory addresses) internal override {
     address crossChainControllerImpl;
 
     new UpdateCCCImpl(
@@ -39,7 +39,7 @@ abstract contract BaseCCCUpdatePayload is BaseDeployerScript {
 }
 
 contract Celo is BaseCCCUpdatePayload {
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.CELO;
   }
 }

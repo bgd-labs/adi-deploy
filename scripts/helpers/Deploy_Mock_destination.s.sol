@@ -90,7 +90,7 @@ contract Ethereum_testnet is BaseMockDestination {
 
 contract Arbitrum_testnet is BaseMockDestination {
   function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
-    return TestNetChainIds.ARBITRUM_GOERLI;
+    return TestNetChainIds.ARBITRUM_SEPOLIA;
   }
 }
 
@@ -102,7 +102,7 @@ contract Avalanche_testnet is BaseMockDestination {
 
 contract Optimism_testnet is BaseMockDestination {
   function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
-    return TestNetChainIds.OPTIMISM_GOERLI;
+    return TestNetChainIds.OPTIMISM_SEPOLIA;
   }
 }
 
@@ -126,7 +126,7 @@ contract Binance_testnet is BaseMockDestination {
 
 contract Base_testnet is BaseMockDestination {
   function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
-    return TestNetChainIds.BASE_GOERLI;
+    return TestNetChainIds.BASE_SEPOLIA;
   }
 }
 

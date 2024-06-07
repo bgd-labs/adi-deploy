@@ -7,18 +7,18 @@ import {ICrossChainReceiver} from 'adi/interfaces/ICrossChainReceiver.sol';
 
 abstract contract BaseRemoveBridgeAdapters is BaseDeployerScript {
   function getBridgeAdaptersToDisable()
-    public
+    internal
     view
     virtual
     returns (ICrossChainForwarder.BridgeAdapterToDisable[] memory);
 
   function getReceiverBridgeAdaptersToDisallow()
-    public
+    internal
     view
     virtual
     returns (ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[] memory);
 
-  function _execute(DeployerHelpers.Addresses memory addresses) internal override {
+  function _execute(Addresses memory addresses) internal override {
     ICrossChainForwarder(addresses.crossChainController).disableBridgeAdapters(
       getBridgeAdaptersToDisable()
     );
@@ -29,12 +29,12 @@ abstract contract BaseRemoveBridgeAdapters is BaseDeployerScript {
 }
 
 contract Celo is BaseRemoveBridgeAdapters {
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.CELO;
   }
 
   function getBridgeAdaptersToDisable()
-    public
+    internal
     pure
     override
     returns (ICrossChainForwarder.BridgeAdapterToDisable[] memory)
@@ -45,7 +45,7 @@ contract Celo is BaseRemoveBridgeAdapters {
   }
 
   function getReceiverBridgeAdaptersToDisallow()
-    public
+    internal
     pure
     override
     returns (ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[] memory)
@@ -72,12 +72,12 @@ contract Celo is BaseRemoveBridgeAdapters {
 }
 
 contract Scroll is BaseRemoveBridgeAdapters {
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.ETHEREUM;
   }
 
   function getBridgeAdaptersToDisable()
-    public
+    internal
     pure
     override
     returns (ICrossChainForwarder.BridgeAdapterToDisable[] memory)
@@ -95,7 +95,7 @@ contract Scroll is BaseRemoveBridgeAdapters {
   }
 
   function getReceiverBridgeAdaptersToDisallow()
-    public
+    internal
     pure
     override
     returns (ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[] memory)
@@ -108,12 +108,12 @@ contract Scroll is BaseRemoveBridgeAdapters {
 }
 
 contract Ethereum is BaseRemoveBridgeAdapters {
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.ETHEREUM;
   }
 
   function getBridgeAdaptersToDisable()
-    public
+    internal
     pure
     override
     returns (ICrossChainForwarder.BridgeAdapterToDisable[] memory)
@@ -131,7 +131,7 @@ contract Ethereum is BaseRemoveBridgeAdapters {
   }
 
   function getReceiverBridgeAdaptersToDisallow()
-    public
+    internal
     pure
     override
     returns (ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[] memory)
@@ -144,12 +144,12 @@ contract Ethereum is BaseRemoveBridgeAdapters {
 }
 
 contract Ethereum_testnet is BaseRemoveBridgeAdapters {
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;
   }
 
   function getBridgeAdaptersToDisable()
-    public
+    internal
     pure
     override
     returns (ICrossChainForwarder.BridgeAdapterToDisable[] memory)
@@ -181,7 +181,7 @@ contract Ethereum_testnet is BaseRemoveBridgeAdapters {
   }
 
   function getReceiverBridgeAdaptersToDisallow()
-    public
+    internal
     pure
     override
     returns (ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[] memory)
@@ -216,12 +216,12 @@ contract Ethereum_testnet is BaseRemoveBridgeAdapters {
 }
 
 contract Avalanche_testnet is BaseRemoveBridgeAdapters {
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.AVALANCHE_FUJI;
   }
 
   function getBridgeAdaptersToDisable()
-    public
+    internal
     pure
     override
     returns (ICrossChainForwarder.BridgeAdapterToDisable[] memory)
@@ -248,7 +248,7 @@ contract Avalanche_testnet is BaseRemoveBridgeAdapters {
   }
 
   function getReceiverBridgeAdaptersToDisallow()
-    public
+    internal
     pure
     override
     returns (ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[] memory)
@@ -277,12 +277,12 @@ contract Avalanche_testnet is BaseRemoveBridgeAdapters {
 }
 
 contract Polygon_testnet is BaseRemoveBridgeAdapters {
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.POLYGON_AMOY;
   }
 
   function getBridgeAdaptersToDisable()
-    public
+    internal
     pure
     override
     returns (ICrossChainForwarder.BridgeAdapterToDisable[] memory)
@@ -309,7 +309,7 @@ contract Polygon_testnet is BaseRemoveBridgeAdapters {
   }
 
   function getReceiverBridgeAdaptersToDisallow()
-    public
+    internal
     pure
     override
     returns (ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[] memory)
@@ -338,12 +338,12 @@ contract Polygon_testnet is BaseRemoveBridgeAdapters {
 }
 
 contract Binance_testnet is BaseRemoveBridgeAdapters {
-  function TRANSACTION_NETWORK() public pure override returns (uint256) {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.BNB_TESTNET;
   }
 
   function getBridgeAdaptersToDisable()
-    public
+    internal
     pure
     override
     returns (ICrossChainForwarder.BridgeAdapterToDisable[] memory)
@@ -366,7 +366,7 @@ contract Binance_testnet is BaseRemoveBridgeAdapters {
   }
 
   function getReceiverBridgeAdaptersToDisallow()
-    public
+    internal
     pure
     override
     returns (ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[] memory)
