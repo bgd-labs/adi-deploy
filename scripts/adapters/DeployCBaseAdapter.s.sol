@@ -6,9 +6,7 @@ import '../BaseDeployerScript.sol';
 
 abstract contract DeployCBAdapter is BaseDeployerScript, BaseCBAdapter {
   function _execute(Addresses memory addresses) internal override {
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
-
-    addresses.baseAdapter = _deployAdapter(addresses.crossChainController, trustedRemotes);
+    addresses.baseAdapter = _deployAdapter(addresses.crossChainController);
   }
 }
 

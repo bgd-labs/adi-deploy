@@ -6,9 +6,7 @@ import 'adi-scripts/Adapters/DeployWormholeAdapter.sol';
 
 abstract contract DeployWormholeAdapter is BaseDeployerScript, BaseWormholeAdapter {
   function _execute(Addresses memory addresses) internal override {
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
-
-    addresses.wormholeAdapter = _deployAdapter(addresses.crossChainController, trustedRemotes);
+    addresses.wormholeAdapter = _deployAdapter(addresses.crossChainController);
   }
 }
 

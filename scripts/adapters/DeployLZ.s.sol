@@ -6,9 +6,7 @@ import 'adi-scripts/Adapters/DeployLZ.sol';
 
 abstract contract DeployLZAdapter is BaseDeployerScript, BaseLZAdapter {
   function _execute(Addresses memory addresses) internal override {
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
-
-    addresses.lzAdapter = _deployAdapter(addresses.crossChainController, trustedRemotes);
+    addresses.lzAdapter = _deployAdapter(addresses.crossChainController);
   }
 }
 
