@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import 'forge-std/Script.sol';
-import {ChainIds} from '../BaseDeployerScript.sol';
+import {ChainIds} from '../../BaseDeployerScript.sol';
 import {ICrossChainReceiver} from 'adi/interfaces/ICrossChainReceiver.sol';
 import {ICrossChainForwarder} from 'adi/interfaces/ICrossChainForwarder.sol';
 import {ICrossChainControllerWithEmergencyMode} from 'adi/interfaces/ICrossChainControllerWithEmergencyMode.sol';
