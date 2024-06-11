@@ -6,9 +6,7 @@ import 'adi-scripts/Adapters/DeployZkEVMAdapter.sol';
 
 abstract contract DeployZKEVMAdapter is BaseDeployerScript, BaseZKEVMAdapter {
   function _execute(Addresses memory addresses) internal override {
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
-
-    addresses.polAdapter = _deployAdapter(addresses.crossChainController, trustedRemotes);
+    addresses.polAdapter = _deployAdapter(addresses.crossChainController);
   }
 }
 

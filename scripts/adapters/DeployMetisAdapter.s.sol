@@ -6,9 +6,7 @@ import 'adi-scripts/Adapters/DeployMetisAdapter.sol';
 
 abstract contract DeployMetisAdapter is BaseDeployerScript, BaseMetisAdapter {
   function _execute(Addresses memory addresses) internal override {
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
-
-    addresses.metisAdapter = _deployAdapter(addresses.crossChainController, trustedRemotes);
+    addresses.metisAdapter = _deployAdapter(addresses.crossChainController);
   }
 }
 
