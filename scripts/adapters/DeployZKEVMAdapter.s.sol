@@ -19,7 +19,7 @@ contract Ethereum is DeployZKEVMAdapter {
     return ChainIds.ETHEREUM;
   }
 
-  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
     uint256[] memory networks = new uint256[](1);
     networks[0] = ChainIds.POLYGON_ZK_EVM;
     return networks;
@@ -35,7 +35,7 @@ contract Zkevm is DeployZKEVMAdapter {
     return ChainIds.POLYGON_ZK_EVM;
   }
 
-  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
     uint256[] memory networks = new uint256[](1);
     networks[0] = ChainIds.ETHEREUM;
     return networks;

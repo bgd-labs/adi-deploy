@@ -9,7 +9,7 @@ abstract contract DeploySameChainAdapter is BaseDeployerScript, BaseSameChainAda
     addresses.sameChainAdapter = _deployAdapter(addresses.crossChainController);
   }
 
-  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
     return new uint256[](0);
   }
 }

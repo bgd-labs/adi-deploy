@@ -24,7 +24,7 @@ contract Ethereum is DeployWormholeAdapter {
     return destinationAddresses.crossChainController;
   }
 
-  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
     return new uint256[](0);
   }
 }
@@ -47,7 +47,7 @@ contract Ethereum_testnet is DeployWormholeAdapter {
     return true;
   }
 
-  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
     return new uint256[](0);
   }
 }
@@ -65,7 +65,7 @@ contract Celo is DeployWormholeAdapter {
     return address(0);
   }
 
-  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
     uint256[] memory networks = new uint256[](1);
     networks[0] = ChainIds.ETHEREUM;
     return networks;
@@ -89,7 +89,7 @@ contract Celo_testnet is DeployWormholeAdapter {
     return true;
   }
 
-  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
     uint256[] memory networks = new uint256[](1);
     networks[0] = TestNetChainIds.ETHEREUM_SEPOLIA;
     return networks;

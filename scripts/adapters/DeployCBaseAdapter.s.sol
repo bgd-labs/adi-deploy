@@ -19,7 +19,7 @@ contract Ethereum is DeployCBAdapter {
     return ChainIds.ETHEREUM;
   }
 
-  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
     return new uint256[](0);
   }
 }
@@ -33,7 +33,7 @@ contract Base is DeployCBAdapter {
     return ChainIds.BASE;
   }
 
-  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
     uint256[] memory networks = new uint256[](1);
     networks[0] = ChainIds.ETHEREUM;
     return networks;

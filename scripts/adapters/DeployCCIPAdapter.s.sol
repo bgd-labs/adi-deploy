@@ -23,7 +23,7 @@ contract Ethereum is DeployCCIPAdapter {
     return ChainIds.ETHEREUM;
   }
 
-  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
     uint256[] memory networks = new uint256[](2);
     networks[0] = ChainIds.POLYGON;
     networks[1] = ChainIds.AVALANCHE;
@@ -48,7 +48,7 @@ contract Ethereum_testnet is DeployCCIPAdapter {
     return true;
   }
 
-  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
     uint256[] memory networks = new uint256[](2);
     networks[0] = TestNetChainIds.POLYGON_AMOY;
     networks[1] = TestNetChainIds.AVALANCHE_FUJI;
@@ -69,7 +69,7 @@ contract Avalanche is DeployCCIPAdapter {
     return ChainIds.AVALANCHE;
   }
 
-  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
     uint256[] memory networks = new uint256[](1);
     networks[0] = ChainIds.ETHEREUM;
     return networks;
@@ -93,7 +93,7 @@ contract Avalanche_testnet is DeployCCIPAdapter {
     return true;
   }
 
-  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
     uint256[] memory networks = new uint256[](1);
     networks[0] = TestNetChainIds.ETHEREUM_SEPOLIA;
     return networks;
@@ -113,7 +113,7 @@ contract Polygon is DeployCCIPAdapter {
     return ChainIds.POLYGON;
   }
 
-  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
     uint256[] memory networks = new uint256[](1);
     networks[0] = ChainIds.ETHEREUM;
     return networks;
@@ -137,7 +137,7 @@ contract Polygon_testnet is DeployCCIPAdapter {
     return true;
   }
 
-  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
     uint256[] memory networks = new uint256[](1);
     networks[0] = TestNetChainIds.ETHEREUM_SEPOLIA;
     return networks;
@@ -157,7 +157,7 @@ contract Binance is DeployCCIPAdapter {
     return ChainIds.BNB;
   }
 
-  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
     uint256[] memory networks = new uint256[](1);
     networks[0] = ChainIds.ETHEREUM;
     return networks;
@@ -177,7 +177,7 @@ contract Binance_testnet is DeployCCIPAdapter {
     return TestNetChainIds.BNB_TESTNET;
   }
 
-  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+  function REMOTE_NETWORKS() internal pure override returns (uint256[] memory) {
     uint256[] memory networks = new uint256[](1);
     networks[0] = TestNetChainIds.ETHEREUM_SEPOLIA;
     return networks;
