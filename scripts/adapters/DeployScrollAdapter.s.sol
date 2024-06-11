@@ -6,9 +6,7 @@ import 'adi-scripts/Adapters/DeployScrollAdapter.sol';
 
 abstract contract DeployScrollAdapter is BaseDeployerScript, BaseScrollAdapter {
   function _execute(Addresses memory addresses) internal override {
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
-
-    addresses.scrollAdapter = _deployAdapter(addresses.crossChainController, trustedRemotes);
+    addresses.scrollAdapter = _deployAdapter(addresses.crossChainController);
   }
 }
 

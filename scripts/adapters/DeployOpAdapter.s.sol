@@ -6,9 +6,7 @@ import 'adi-scripts/Adapters/DeployOpAdapter.sol';
 
 abstract contract DeployOpAdapter is BaseDeployerScript, BaseOpAdapter {
   function _execute(Addresses memory addresses) internal override {
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
-
-    addresses.opAdapter = _deployAdapter(addresses.crossChainController, trustedRemotes);
+    addresses.opAdapter = _deployAdapter(addresses.crossChainController);
   }
 }
 

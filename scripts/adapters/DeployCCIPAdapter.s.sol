@@ -6,9 +6,8 @@ import 'adi-scripts/Adapters/DeployCCIP.sol';
 
 abstract contract DeployCCIPAdapter is BaseDeployerScript, BaseCCIPAdapter {
   function _execute(Addresses memory addresses) internal override {
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
 
-    addresses.ccipAdapter = _deployAdapter(addresses.crossChainController, trustedRemotes);
+    addresses.ccipAdapter = _deployAdapter(addresses.crossChainController);
   }
 }
 
