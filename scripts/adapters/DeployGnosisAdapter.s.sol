@@ -6,9 +6,7 @@ import 'adi-scripts/Adapters/DeployGnosisChain.sol';
 
 abstract contract DeployGnosisAdapter is BaseDeployerScript, BaseGnosisChainAdapter {
   function _execute(Addresses memory addresses) internal override {
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
-
-    addresses.gnosisAdapter = _deployAdapter(addresses.crossChainController, trustedRemotes);
+    addresses.gnosisAdapter = _deployAdapter(addresses.crossChainController);
   }
 }
 
