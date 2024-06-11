@@ -1,14 +1,12 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import {BaseDeployArbAdapter, IBaseAdapter, ChainIds, TestNetChainIds, RemoteCCC} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
+import {BaseDeployArbAdapter, IBaseAdapter, ChainIds, TestNetChainIds, RemoteCCC, BaseAdapterArgs} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
 import {BaseDeployerScript, Addresses} from '../BaseDeployerScript.sol';
 
 abstract contract DeployArbAdapter is BaseDeployerScript, BaseDeployArbAdapter {
   function _execute(Addresses memory addresses) internal override {
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
-
-    addresses.arbAdapter = _deployAdapter(addresses.crossChainController, trustedRemotes);
+    addresses.arbAdapter = _deployAdapter(addresses.crossChainController);
   }
 }
 
@@ -25,7 +23,7 @@ contract Ethereum is DeployArbAdapter {
     return new RemoteCCC[](0);
   }
 
-  function DESTINATION_CCC() internal view override returns (address) {
+  function REFUND_ADDRESS() internal view override returns (address) {
     return _getAddresses(ChainIds.ARBITRUM).crossChainController;
   }
 }
@@ -61,7 +59,7 @@ contract Ethereum_testnet is DeployArbAdapter {
     return new RemoteCCC[](0);
   }
 
-  function DESTINATION_CCC() internal view override returns (address) {
+  function REFUND_ADDRESS() internal view override returns (address) {
     return _getAddresses(TestNetChainIds.ARBITRUM_SEPOLIA).crossChainController;
   }
 }

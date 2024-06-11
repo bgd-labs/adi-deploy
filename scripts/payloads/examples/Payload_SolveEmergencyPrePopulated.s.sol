@@ -2,10 +2,10 @@
 pragma solidity ^0.8.0;
 
 import 'forge-std/Script.sol';
+import '../../BaseDeployerScript.sol';
 import {ICrossChainReceiver} from 'adi/interfaces/ICrossChainReceiver.sol';
 import {ICrossChainForwarder} from 'adi/interfaces/ICrossChainForwarder.sol';
 import {ICrossChainControllerWithEmergencyMode} from 'adi/interfaces/ICrossChainControllerWithEmergencyMode.sol';
-import {ChainIds} from 'adi/libs/ChainIds.sol';
 
 /// @dev Remember to set this before running the deployment script.
 address constant CROSS_CHAIN_CONTROLLER = address(0);

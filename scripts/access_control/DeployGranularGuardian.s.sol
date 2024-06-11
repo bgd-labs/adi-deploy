@@ -3,16 +3,6 @@ pragma solidity ^0.8.0;
 
 import '../BaseDeployerScript.sol';
 import 'adi/access_control/GranularGuardianAccessControl.sol';
-import {GovernanceV3Polygon} from 'aave-address-book/GovernanceV3Polygon.sol';
-import {GovernanceV3Ethereum} from 'aave-address-book/GovernanceV3Ethereum.sol';
-import {GovernanceV3Avalanche} from 'aave-address-book/GovernanceV3Avalanche.sol';
-import {GovernanceV3BNB} from 'aave-address-book/GovernanceV3BNB.sol';
-import {GovernanceV3Gnosis} from 'aave-address-book/GovernanceV3Gnosis.sol';
-import {GovernanceV3Arbitrum} from 'aave-address-book/GovernanceV3Arbitrum.sol';
-import {GovernanceV3Optimism} from 'aave-address-book/GovernanceV3Optimism.sol';
-import {GovernanceV3Scroll} from 'aave-address-book/GovernanceV3Scroll.sol';
-import {GovernanceV3Metis} from 'aave-address-book/GovernanceV3Metis.sol';
-import {GovernanceV3Base} from 'aave-address-book/GovernanceV3Base.sol';
 import {MiscPolygon} from 'aave-address-book/MiscPolygon.sol';
 import {MiscAvalanche} from 'aave-address-book/MiscAvalanche.sol';
 import {MiscBNB} from 'aave-address-book/MiscBNB.sol';
@@ -27,7 +17,7 @@ import 'adi-scripts/access_control/Deploy_Granular_CCC_Guardian.sol';
 
 abstract contract DeployGranularGuardian is BaseDeployerScript, BaseDeployGranularGuardian {
   function _execute(Addresses memory addresses) internal override {
-    addresses.granularCCCGuardian = _deployGranularGuardian();
+    addresses.granularCCCGuardian = _deployGranularGuardian(addresses.crossChainController);
   }
 }
 
@@ -48,9 +38,6 @@ contract Ethereum is DeployGranularGuardian {
     return MiscEthereum.PROTOCOL_GUARDIAN;
   }
 
-  function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
-    return GovernanceV3Ethereum.CROSS_CHAIN_CONTROLLER;
-  }
 }
 
 contract Avalanche is DeployGranularGuardian {
@@ -66,9 +53,7 @@ contract Avalanche is DeployGranularGuardian {
     return MiscAvalanche.PROTOCOL_GUARDIAN;
   }
 
-  function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
-    return GovernanceV3Avalanche.CROSS_CHAIN_CONTROLLER;
-  }
+
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.AVALANCHE;
@@ -86,10 +71,6 @@ contract Polygon is DeployGranularGuardian {
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
     return MiscPolygon.PROTOCOL_GUARDIAN;
-  }
-
-  function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
-    return GovernanceV3Polygon.CROSS_CHAIN_CONTROLLER;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -110,10 +91,6 @@ contract Binance is DeployGranularGuardian {
     return MiscBNB.PROTOCOL_GUARDIAN;
   }
 
-  function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
-    return GovernanceV3BNB.CROSS_CHAIN_CONTROLLER;
-  }
-
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.BNB;
   }
@@ -130,10 +107,6 @@ contract Gnosis is DeployGranularGuardian {
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
     return MiscGnosis.PROTOCOL_GUARDIAN;
-  }
-
-  function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
-    return GovernanceV3Gnosis.CROSS_CHAIN_CONTROLLER;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -154,10 +127,6 @@ contract Metis is DeployGranularGuardian {
     return MiscMetis.PROTOCOL_GUARDIAN;
   }
 
-  function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
-    return GovernanceV3Metis.CROSS_CHAIN_CONTROLLER;
-  }
-
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.METIS;
   }
@@ -174,10 +143,6 @@ contract Scroll is DeployGranularGuardian {
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
     return MiscScroll.PROTOCOL_GUARDIAN;
-  }
-
-  function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
-    return GovernanceV3Scroll.CROSS_CHAIN_CONTROLLER;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -198,10 +163,6 @@ contract Optimism is DeployGranularGuardian {
     return MiscOptimism.PROTOCOL_GUARDIAN;
   }
 
-  function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
-    return GovernanceV3Optimism.CROSS_CHAIN_CONTROLLER;
-  }
-
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.OPTIMISM;
   }
@@ -220,10 +181,6 @@ contract Arbitrum is DeployGranularGuardian {
     return MiscArbitrum.PROTOCOL_GUARDIAN;
   }
 
-  function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
-    return GovernanceV3Arbitrum.CROSS_CHAIN_CONTROLLER;
-  }
-
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.ARBITRUM;
   }
@@ -240,10 +197,6 @@ contract Base is DeployGranularGuardian {
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
     return MiscBase.PROTOCOL_GUARDIAN;
-  }
-
-  function CROSS_CHAIN_CONTROLLER() internal pure override returns (address) {
-    return GovernanceV3Base.CROSS_CHAIN_CONTROLLER;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {

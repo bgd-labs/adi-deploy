@@ -6,9 +6,7 @@ import 'adi-scripts/Adapters/DeployPolygon.sol';
 
 abstract contract DeployPolygonAdapter is BaseDeployerScript, BasePolygonAdapter {
   function _execute(Addresses memory addresses) internal override {
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
-
-    addresses.polAdapter = _deployAdapter(addresses.crossChainController, trustedRemotes);
+    addresses.polAdapter = _deployAdapter(addresses.crossChainController);
   }
 }
 
