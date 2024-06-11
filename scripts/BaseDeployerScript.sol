@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import 'forge-std/StdJson.sol';
-import 'forge-std/Vm.sol';
 import 'forge-std/Script.sol';
 import 'adi-scripts/BaseScript.sol';
 import {ChainHelpers} from 'aave-helpers/ChainIds.sol';
 
-struct Addresses {
+  struct Addresses {
   address arbAdapter;
   address baseAdapter;
   address ccipAdapter;
@@ -47,7 +45,7 @@ library DeployerHelpers {
     return string.concat(path, '.json');
   }
 
-  function decodeJson(string memory path, Vm vm) internal view returns (Addresses memory) {
+  function decodeJson(string memory path, VmSafe vm) internal view returns (Addresses memory) {
     string memory persistedJson = vm.readFile(path);
 
     Addresses memory addresses = Addresses({
@@ -85,7 +83,7 @@ library DeployerHelpers {
     return addresses;
   }
 
-  function encodeJson(string memory path, Addresses memory addresses, Vm vm) internal {
+  function encodeJson(string memory path, Addresses memory addresses, VmSafe vm) internal {
     string memory json = 'addresses';
     json.serialize('arbAdapter', addresses.arbAdapter);
     json.serialize('baseAdapter', addresses.baseAdapter);
