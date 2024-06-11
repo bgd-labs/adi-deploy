@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import 'forge-std/Script.sol';
-import 'adi-scripts/BaseScript.sol';
+import 'adi-scripts/Adapters/BaseAdapterScript.sol';
 import {ChainHelpers} from 'aave-helpers/ChainIds.sol';
 
 struct Addresses {
@@ -115,7 +115,20 @@ library DeployerHelpers {
   }
 }
 
-abstract contract BaseDeployerScript is BaseScript, Script {
+abstract contract BaseDeployerScript is BaseAdapterScript, Script {
+  function REMOTE_NETWORKS() internal view virtual returns (uint256[] memory);
+
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    uint256[] memory remoteNetworks = REMOTE_NETWORKS();
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](remoteNetworks.length);
+    for (uint256 i = 0; i < remoteNetworks.length; i++) {
+      remoteCCCByNetwork[i].chainId = remoteNetworks[i];
+      remoteCCCByNetwork[i].crossChainController = _getAddresses(remoteNetworks[i])
+        .crossChainController;
+    }
+    return remoteCCCByNetwork;
+  }
+
   function getAddresses(uint256 networkId) external view returns (Addresses memory) {
     return DeployerHelpers.decodeJson(DeployerHelpers.getPathByChainId(networkId), vm);
   }

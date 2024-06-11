@@ -19,12 +19,10 @@ contract Ethereum is DeployPolygonAdapter {
     return ChainIds.ETHEREUM;
   }
 
-  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
-    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
-    remoteCCCByNetwork[0].chainId = ChainIds.POLYGON;
-    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.POLYGON)
-      .crossChainController;
-    return remoteCCCByNetwork;
+  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+    uint256[] memory networks = new uint256[](1);
+    networks[0] = ChainIds.POLYGON;
+    return networks;
   }
 }
 
@@ -37,11 +35,9 @@ contract Polygon is DeployPolygonAdapter {
     return ChainIds.POLYGON;
   }
 
-  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
-    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
-    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
-    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
-      .crossChainController;
-    return remoteCCCByNetwork;
+  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+    uint256[] memory networks = new uint256[](1);
+    networks[0] = ChainIds.ETHEREUM;
+    return networks;
   }
 }

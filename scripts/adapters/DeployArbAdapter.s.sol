@@ -19,8 +19,8 @@ contract Ethereum is DeployArbAdapter {
     return ChainIds.ETHEREUM;
   }
 
-  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
-    return new RemoteCCC[](0);
+  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+    return new uint256[](0);
   }
 
   function REFUND_ADDRESS() internal view override returns (address) {
@@ -33,12 +33,10 @@ contract Arbitrum is DeployArbAdapter {
     return ChainIds.ARBITRUM;
   }
 
-  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
-    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
-    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
-    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
-      .crossChainController;
-    return remoteCCCByNetwork;
+  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+    uint256[] memory networks = new uint256[](1);
+    networks[0] = ChainIds.ETHEREUM;
+    return networks;
   }
 }
 
@@ -55,8 +53,8 @@ contract Ethereum_testnet is DeployArbAdapter {
     return TestNetChainIds.ETHEREUM_SEPOLIA;
   }
 
-  function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
-    return new RemoteCCC[](0);
+  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+    return new uint256[](0);
   }
 
   function REFUND_ADDRESS() internal view override returns (address) {
@@ -73,11 +71,9 @@ contract Arbitrum_testnet is DeployArbAdapter {
     return TestNetChainIds.ARBITRUM_SEPOLIA;
   }
 
-  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
-    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
-    remoteCCCByNetwork[0].chainId = TestNetChainIds.ETHEREUM_SEPOLIA;
-    remoteCCCByNetwork[0].crossChainController = _getAddresses(TestNetChainIds.ETHEREUM_SEPOLIA)
-      .crossChainController;
-    return remoteCCCByNetwork;
+  function REMOTE_NETWORKS() internal view override returns (uint256[] memory) {
+    uint256[] memory networks = new uint256[](1);
+    networks[0] = TestNetChainIds.ETHEREUM_SEPOLIA;
+    return networks;
   }
 }
