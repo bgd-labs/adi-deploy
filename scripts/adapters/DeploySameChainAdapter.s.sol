@@ -7,8 +7,7 @@ import 'adi-scripts/Adapters/DeploySameChainAdapter.sol';
 abstract contract DeploySameChainAdapter is BaseDeployerScript, BaseSameChainAdapter {
   function _execute(Addresses memory addresses) internal override {
     addresses.sameChainAdapter = _deployAdapter(
-      address(0),
-      new IBaseAdapter.TrustedRemotesConfig[](0)
+      addresses.crossChainController
     );
   }
 }

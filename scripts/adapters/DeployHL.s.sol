@@ -6,9 +6,7 @@ import 'adi-scripts/Adapters/DeployHL.sol';
 
 abstract contract DeployHLAdapter is BaseDeployerScript, BaseHLAdapter {
   function _execute(Addresses memory addresses) internal override {
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
-
-    addresses.hlAdapter = _deployAdapter(addresses.crossChainController, trustedRemotes);
+    addresses.hlAdapter = _deployAdapter(addresses.crossChainController);
   }
 }
 

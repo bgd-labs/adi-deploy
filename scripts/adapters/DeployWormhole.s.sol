@@ -6,9 +6,7 @@ import 'adi-scripts/Adapters/DeployWormholeAdapter.sol';
 
 abstract contract DeployWormholeAdapter is BaseDeployerScript, BaseWormholeAdapter {
   function _execute(Addresses memory addresses) internal override {
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
-
-    addresses.wormholeAdapter = _deployAdapter(addresses.crossChainController, trustedRemotes);
+    addresses.wormholeAdapter = _deployAdapter(addresses.crossChainController);
   }
 }
 
@@ -21,7 +19,7 @@ contract Ethereum is DeployWormholeAdapter {
     return ChainIds.ETHEREUM;
   }
 
-  function DESTINATION_CCC() internal view override returns (address) {
+  function REFUND_ADDRESS() internal view override returns (address) {
     Addresses memory destinationAddresses = _getAddresses(ChainIds.CELO);
     return destinationAddresses.crossChainController;
   }
@@ -40,7 +38,7 @@ contract Ethereum_testnet is DeployWormholeAdapter {
     return TestNetChainIds.ETHEREUM_SEPOLIA;
   }
 
-  function DESTINATION_CCC() internal view override returns (address) {
+  function REFUND_ADDRESS() internal view override returns (address) {
     Addresses memory destinationAddresses = _getAddresses(TestNetChainIds.CELO_ALFAJORES);
     return destinationAddresses.crossChainController;
   }
@@ -63,7 +61,7 @@ contract Celo is DeployWormholeAdapter {
     return ChainIds.CELO;
   }
 
-  function DESTINATION_CCC() internal pure override returns (address) {
+  function REFUND_ADDRESS() internal pure override returns (address) {
     return address(0);
   }
 
@@ -85,7 +83,7 @@ contract Celo_testnet is DeployWormholeAdapter {
     return TestNetChainIds.CELO_ALFAJORES;
   }
 
-  function DESTINATION_CCC() internal pure override returns (address) {
+  function REFUND_ADDRESS() internal pure override returns (address) {
     return address(0);
   }
 
