@@ -5,7 +5,7 @@ import 'forge-std/Script.sol';
 import 'adi-scripts/BaseScript.sol';
 import {ChainHelpers} from 'aave-helpers/ChainIds.sol';
 
-  struct Addresses {
+struct Addresses {
   address arbAdapter;
   address baseAdapter;
   address ccipAdapter;
