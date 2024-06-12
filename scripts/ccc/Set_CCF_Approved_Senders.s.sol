@@ -8,7 +8,7 @@ import '../BaseDeployerScript.sol';
  * @notice This script needs to be implemented from where the senders are known
  */
 abstract contract BaseSetCCFApprovedSenders is BaseDeployerScript {
-  function getSendersToApprove() public virtual returns (address[] memory);
+  function getSendersToApprove() internal virtual returns (address[] memory);
 
   function _execute(Addresses memory addresses) internal override {
     ICrossChainForwarder(addresses.crossChainController).approveSenders(getSendersToApprove());
