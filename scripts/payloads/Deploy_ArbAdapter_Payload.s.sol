@@ -13,16 +13,9 @@ import {AaveV3Arbitrum_New_Adapter_Payload, ChainIds} from './ArbAdapterPayload.
  */
 contract DeployArbitrumPayload is Arbitrum, ArbitrumScript {
   function _getPayloadArgs() internal view returns (address, address, bytes32, bytes memory) {
-    Addresses memory addresses = _getAddresses(ChainIds.ARBITRUM);
-    IBaseAdapter.TrustedRemotesConfig[] memory trustedRemotes = _getTrustedRemotes();
+    Addresses memory addresses = _getAddresses(TRANSACTION_NETWORK());
 
-    BaseAdapterArgs memory baseArgs = BaseAdapterArgs({
-      crossChainController: addresses.crossChainController,
-      providerGasLimit: PROVIDER_GAS_LIMIT(),
-      trustedRemotes: trustedRemotes,
-      isTestnet: isTestnet()
-    });
-    bytes memory adapterCode = _getAdapterByteCode(baseArgs);
+    bytes memory adapterCode = _getAdapterByteCode(addresses.crossChainController);
 
     bytes32 salt = keccak256(abi.encode(SALT()));
     address newAdapter = Create2Utils.computeCreate2Address(salt, adapterCode);
