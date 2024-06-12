@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
-
 import {ADITestBase} from 'aave-helpers/adi/test/ADITestBase.sol';
 import {AaveV3Arbitrum_New_Adapter_Payload} from '../../scripts/payloads/ArbAdapterPayload.sol';
 import {GovernanceV3Arbitrum} from 'aave-address-book/GovernanceV3Arbitrum.sol';
@@ -12,7 +11,6 @@ contract ArbAdapterUpdatePayloadTest is ADITestBase, DeployArbitrumPayload {
 
   function setUp() public {
     vm.createSelectFork(vm.rpcUrl('arbitrum'), 211127276);
-
     (
       address crossChainController,
       address newAdapter,
