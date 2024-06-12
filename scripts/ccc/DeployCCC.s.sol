@@ -22,7 +22,8 @@ abstract contract BaseCCCNetworkDeployment is BaseDeployerScript, BaseCCCDeploy 
           new ICrossChainController.ConfirmationInput[](0),
           new ICrossChainController.ReceiverBridgeAdapterConfigInput[](0),
           new ICrossChainController.ForwarderBridgeAdapterConfigInput[](0),
-          new address[](0)
+          new address[](0),
+          new ICrossChainController.OptimalBandwidthByChain[](0)
         ),
         keccak256(abi.encode(SALT()))
       );
@@ -38,7 +39,8 @@ abstract contract BaseCCCNetworkDeployment is BaseDeployerScript, BaseCCCDeploy 
           new ICrossChainController.ConfirmationInput[](0),
           new ICrossChainController.ReceiverBridgeAdapterConfigInput[](0),
           new ICrossChainController.ForwarderBridgeAdapterConfigInput[](0),
-          new address[](0)
+          new address[](0),
+          new ICrossChainController.OptimalBandwidthByChain[](0)
         ),
         keccak256(abi.encode(SALT()))
       );
