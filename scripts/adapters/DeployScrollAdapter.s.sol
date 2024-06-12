@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import 'adi-scripts/Adapters/DeployArbAdapter.sol';
+import 'adi-scripts/Adapters/DeployScrollAdapter.sol';
 import '../BaseDeployerScript.sol';
 
-abstract contract DeployArbAdapter is BaseDeployerScript, BaseDeployArbAdapter {
-  function _execute(Addresses memory addresses) internal virtual override {
-    addresses.arbAdapter = _deployAdapter(addresses.crossChainController);
+abstract contract DeployScrollAdapter is BaseDeployerScript, BaseScrollAdapter {
+  function _execute(Addresses memory addresses) internal override {
+    addresses.scrollAdapter = _deployAdapter(addresses.crossChainController);
   }
 }
 
-contract Ethereum is DeployArbAdapter {
-  function INBOX() internal pure override returns (address) {
-    return 0x4Dbd4fc535Ac27206064B68FfCf827b0A60BAB3f;
+contract Ethereum is DeployScrollAdapter {
+  function OVM() internal pure override returns (address) {
+    return 0x6774Bcbd5ceCeF1336b5300fb5186a12DDD8b367;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -22,15 +22,15 @@ contract Ethereum is DeployArbAdapter {
   function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
     return new RemoteCCC[](0);
   }
-
-  function REFUND_ADDRESS() internal view override returns (address) {
-    return _getAddresses(ChainIds.ARBITRUM).crossChainController;
-  }
 }
 
-contract Arbitrum is DeployArbAdapter {
+contract Scroll is DeployScrollAdapter {
+  function OVM() internal pure override returns (address) {
+    return 0x781e90f1c8Fc4611c9b7497C3B47F99Ef6969CbC;
+  }
+
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return ChainIds.ARBITRUM;
+    return ChainIds.SCROLL;
   }
 
   function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
@@ -42,9 +42,9 @@ contract Arbitrum is DeployArbAdapter {
   }
 }
 
-contract Ethereum_testnet is DeployArbAdapter {
-  function INBOX() internal pure override returns (address) {
-    return 0x6BEbC4925716945D46F0Ec336D5C2564F419682C;
+contract Ethereum_testnet is DeployScrollAdapter {
+  function OVM() internal pure override returns (address) {
+    return 0x50c7d3e7f7c656493D1D76aaa1a836CedfCBB16A;
   }
 
   function isTestnet() internal pure override returns (bool) {
@@ -58,19 +58,19 @@ contract Ethereum_testnet is DeployArbAdapter {
   function REMOTE_CCC_BY_NETWORK() internal pure override returns (RemoteCCC[] memory) {
     return new RemoteCCC[](0);
   }
-
-  function REFUND_ADDRESS() internal view override returns (address) {
-    return _getAddresses(TestNetChainIds.ARBITRUM_SEPOLIA).crossChainController;
-  }
 }
 
-contract Arbitrum_testnet is DeployArbAdapter {
+contract Scroll_testnet is DeployScrollAdapter {
+  function OVM() internal pure override returns (address) {
+    return 0xBa50f5340FB9F3Bd074bD638c9BE13eCB36E603d;
+  }
+
   function isTestnet() internal pure override returns (bool) {
     return true;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.ARBITRUM_SEPOLIA;
+    return TestNetChainIds.SCROLL_SEPOLIA;
   }
 
   function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
