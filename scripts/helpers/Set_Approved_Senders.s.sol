@@ -5,7 +5,7 @@ import {ICrossChainForwarder} from 'adi/interfaces/ICrossChainForwarder.sol';
 import '../ccc/Set_CCF_Approved_Senders.s.sol';
 
 abstract contract BaseApproveOwnerOnCCF is BaseSetCCFApprovedSenders {
-  function getSendersToApprove() internal view override returns (address[] memory) {
+  function getSendersToApprove() public view override returns (address[] memory) {
     address[] memory addressesToApprove = new address[](1);
     addressesToApprove[0] = _getAddresses(TRANSACTION_NETWORK()).owner;
 
