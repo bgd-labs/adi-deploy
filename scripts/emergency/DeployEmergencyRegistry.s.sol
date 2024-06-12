@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import '../BaseDeployerScript.sol';
 import 'adi-scripts/emergency/Deploy_EmergencyRegistry.sol';
+import '../BaseDeployerScript.sol';
 
 abstract contract DeployEmergencyRegistry is BaseDeployerScript, BaseDeployEmergencyMode {
   function _execute(Addresses memory addresses) internal override {
