@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
-import {BaseDeployArbAdapter, IBaseAdapter, ChainIds, TestNetChainIds, RemoteCCC, BaseAdapterArgs} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
-import {BaseDeployerScript, Addresses} from '../BaseDeployerScript.sol';
+import 'adi-scripts/Adapters/DeployArbAdapter.sol';
+import '../BaseDeployerScript.sol';
 
 abstract contract DeployArbAdapter is BaseDeployerScript, BaseDeployArbAdapter {
-  function _execute(Addresses memory addresses) internal override {
+  function _execute(Addresses memory addresses) internal virtual override {
     addresses.arbAdapter = _deployAdapter(addresses.crossChainController);
   }
 }
