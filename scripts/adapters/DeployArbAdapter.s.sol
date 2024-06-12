@@ -5,7 +5,7 @@ import 'adi-scripts/Adapters/DeployArbAdapter.sol';
 import '../BaseDeployerScript.sol';
 
 abstract contract DeployArbAdapter is BaseDeployerScript, BaseDeployArbAdapter {
-  function _execute(Addresses memory addresses) internal override {
+  function _execute(Addresses memory addresses) internal virtual override {
     addresses.arbAdapter = _deployAdapter(addresses.crossChainController);
   }
 }
