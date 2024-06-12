@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {IBaseAdapter} from 'adi-scripts/Adapters/DeployArbAdapter.sol';
-import {Arbitrum, Addresses, BaseAdapterArgs} from '../adapters/DeployArbAdapter.s.sol';
+import {Arbitrum, Addresses} from '../adapters/DeployArbAdapter.s.sol';
 import {Create2Utils, ArbitrumScript} from 'aave-helpers/ScriptUtils.sol';
 import {AaveV3Arbitrum_New_Adapter_Payload, ChainIds} from './ArbAdapterPayload.sol';
 
