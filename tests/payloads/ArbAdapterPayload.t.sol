@@ -11,7 +11,6 @@ contract ArbAdapterUpdatePayloadTest is ADITestBase, DeployArbitrumPayload {
 
   function setUp() public {
     vm.createSelectFork(vm.rpcUrl('arbitrum'), 211127276);
-
     address crossChainController = _getAddresses(TRANSACTION_NETWORK()).crossChainController;
     address newAdapter = _deployAdapter(crossChainController);
 
