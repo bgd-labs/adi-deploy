@@ -5,7 +5,6 @@ import './BaseDeployerScript.sol';
 import {TransparentProxyFactory} from 'solidity-utils/contracts/transparent-proxy/TransparentProxyFactory.sol';
 import {MiscArbitrum, MiscAvalanche, MiscBase, MiscEthereum, MiscOptimism, MiscPolygon, MiscMetis, MiscGnosis, MiscBNB, MiscScroll, MiscPolygonZkEvm} from 'aave-address-book/AaveAddressBook.sol';
 
-
 abstract contract BaseInitialDeployment is BaseDeployerScript {
   function OWNER() internal virtual returns (address) {
     return address(msg.sender); // as first owner we set deployer, this way its easier to configure
@@ -37,7 +36,6 @@ abstract contract BaseInitialDeployment is BaseDeployerScript {
         keccak256(abi.encode(SALT()))
       )
       : PROXY_ADMIN();
-    addresses.chainId = TRANSACTION_NETWORK();
     addresses.owner = OWNER();
     addresses.guardian = GUARDIAN();
   }
@@ -313,7 +311,6 @@ contract Gnosis_testnet is BaseInitialDeployment {
     return TestNetChainIds.GNOSIS_CHIADO;
   }
 }
-
 
 contract Scroll_testnet is BaseInitialDeployment {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
