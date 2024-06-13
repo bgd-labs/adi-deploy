@@ -12,14 +12,13 @@ test   :; forge test -vvv
 
 # ---------------------------------------------- BASE SCRIPT CONFIGURATION ---------------------------------------------
 
-BASE_LEDGER = --legacy --ledger --mnemonic-indexes $(MNEMONIC_INDEX) --sender $(LEDGER_SENDER)
+BASE_LEDGER = --legacy --mnemonics foo --ledger --mnemonic-indexes $(MNEMONIC_INDEX) --sender $(LEDGER_SENDER)
 BASE_KEY = --private-key ${PRIVATE_KEY}
 
 
 
-custom_ethereum := --with-gas-price 10000000000 # 53 gwei
-custom_polygon :=  --with-gas-price 100000000000 # 560 gwei
-custom_polygon_mumbai :=  --with-gas-price 100000000000 # 560 gwei
+custom_ethereum := --with-gas-price 45000000000 # 53 gwei
+custom_polygon :=  --with-gas-price 190000000000 # 560 gwei
 custom_avalanche := --with-gas-price 27000000000 # 27 gwei
 custom_metis-testnet := --legacy --verifier-url https://goerli.explorer.metisdevops.link/api/
 custom_metis := --verifier-url  https://api.routescan.io/v2/network/mainnet/evm/1088/etherscan
@@ -33,18 +32,26 @@ custom_scroll-testnet := --legacy --with-gas-price 1000000000 # 1 gwei
 #  to use ledger, set LEDGER=true to env
 #  default to testnet deployment, to run production, set PROD=true to env
 define deploy_single_fn
-	DEPLOYMENT_VERSION=$(4) CHAIN_ID=$(2) forge script \
-	scripts/$(1).s.sol:$(3) \
-	--rpc-url $(2) --broadcast --verify --slow -vvvv\
-	$(if $(LEDGER),$(BASE_LEDGER),$(BASE_KEY)) \
-	$(custom_$(2))
+forge script \
+ scripts/$(1).s.sol:$(if $(3),$(if $(PROD),$(3),$(3)_testnet),$(shell UP=$(if $(PROD),$(2),$(2)_testnet); echo $${UP} | perl -nE 'say ucfirst')) \
+ --rpc-url $(if $(PROD),$(2),$(2)-testnet) --broadcast --verify -vvvv \
+ $(if $(LEDGER),$(BASE_LEDGER),$(BASE_KEY)) \
+ $(custom_$(if $(PROD),$(2),$(2)-testnet))
+
 endef
 
+# catapulta
+#define deploy_single_fn
+#npx catapulta@0.3.14 script \
+# scripts/$(1).s.sol:$(if $(3),$(3),$(shell UP=$(if $(PROD),$(2),$(2)_testnet); echo $${UP} | perl -nE 'say ucfirst')) \
+# --network $(2) --slow --skip-git \
+# $(if $(LEDGER),$(BASE_LEDGER),$(BASE_KEY)) \
+# $(custom_$(if $(PROD),$(2),$(2)-testnet))
+#
+#endef
+
 define deploy_fn
-	@for chain in $$(jq -r '.chains[]' deployments/deployment_configurations/deploymentConfigs_$(3).json); do \
-		echo $$chain; \
-		$(call deploy_single_fn,$(1),$$chain,$(2),$(3)); \
-	done
+ $(foreach network,$(2),$(call deploy_single_fn,$(1),$(network),$(3)))
 endef
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -52,71 +59,74 @@ endef
 
 # deploy emergency registry
 deploy-emergency-registry:
-	$(call deploy_fn,Deploy_EmergencyRegistry,DeployEmergencyMode,7)
+	$(call deploy_fn,Deploy_EmergencyRegistry,ethereum)
 
 # Deploy Proxy Factories on all networks
 deploy-proxy-factory:
-	$(call deploy_fn,InitialDeployments,InitialDeployments,3)
+	$(call deploy_fn,InitialDeployments,ethereum avalanche polygon optimism arbitrum metis base binance gnosis zkevm)
 
 # Deploy Cross Chain Infra on all networks
 deploy-cross-chain-infra:
-	$(call deploy_fn,CCC/Deploy_CCC,Deploy_CCC,3)
+	$(call deploy_fn,ccc/Deploy_CCC,ethereum avalanche polygon optimism arbitrum metis base binance gnosis zkevm)
 
 ## Deploy CCIP bridge adapters on all networks
 deploy-ccip-bridge-adapters:
-	$(call deploy_fn,Adapters/DeployCCIP,DeployCCIPAdapter,4)
+	$(call deploy_fn,adapters/DeployCCIP,ethereum avalanche binance polygon binance gnosis)
 
 ## Deploy LayerZero bridge adapters on all networks
 deploy-lz-bridge-adapters:
-	$(call deploy_fn,Adapters/DeployLZ,DeployLZAdapter,1)
+	$(call deploy_fn,adapters/DeployLZ,ethereum avalanche binance polygon binance gnosis)
 
 ## Deploy HyperLane bridge adapters on all networks
 deploy-hl-bridge-adapters:
-	$(call deploy_fn,Adapters/DeployHL,DeployHLAdapter,1)
+	$(call deploy_fn,adapters/DeployHL,ethereum avalanche binance polygon binance gnosis)
 
 ## Deploy SameChain adapters on ethereum
 deploy-same-chain-adapters:
-	$(call deploy_fn,Adapters/DeploySameChainAdapter,DeploySameChainAdapter,1)
+	$(call deploy_fn,adapters/DeploySameChainAdapter,ethereum)
 
 deploy-optimism-adapters:
-	$(call deploy_fn,Adapters/DeployOpAdapter,DeployOpAdapter,1)
+	$(call deploy_fn,adapters/DeployOpAdapter,ethereum optimism)
 
 deploy-arbitrum-adapters:
-	$(call deploy_fn,adapters/DeployArbAdapter,DeployArbAdapter,1)
+	$(call deploy_fn,adapters/DeployArbAdapter,ethereum arbitrum)
 
 deploy-metis-adapters:
-	$(call deploy_fn,Adapters/DeployMetisAdapter,DeployMetisAdapter,1)
+	$(call deploy_fn,adapters/DeployMetisAdapter,ethereum metis)
 
 deploy-polygon-adapters:
-	$(call deploy_fn,Adapters/DeployPolygon,DeployPolygonAdapter,1)
+	$(call deploy_fn,adapters/DeployPolygon,ethereum polygon)
 
 deploy-base-adapters:
-	$(call deploy_fn,Adapters/DeployCBaseAdapter,DeployCBAdapter,1)
+	$(call deploy_fn,adapters/DeployCBaseAdapter,ethereum base)
 
 deploy-gnosis-adapters:
-	$(call deploy_fn,Adapters/DeployGnosisChain,DeployGnosisChainAdapter,1)
+	$(call deploy_fn,adapters/DeployGnosisChain,ethereum gnosis)
 
 deploy-scroll-adapters:
-	$(call deploy_fn,Adapters/DeployScrollAdapter,DeployScrollAdapter,1)
+	$(call deploy_fn,adapters/DeployScrollAdapter,ethereum scroll)
 
 deploy-zkevm-adapters:
-	$(call deploy_fn,Adapters/DeployZkEVMAdapter,DeployZkEVMAdapter,1)
+	$(call deploy_fn,adapters/DeployZkEVMAdapter,ethereum zkevm)
+
+deploy-wormhole-adapters:
+	$(call deploy_fn,adapters/DeployWormholeAdapter,ethereum celo)
 
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters:
-	$(call new_deploy_fn,CCC/Set_CCF_Sender_Adapters,EnableCCFSenderAdapters,4)
+	$(call deploy_fn,CCC/Set_CCF_Sender_Adapters,ethereum)
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters:
-	$(call new_deploy_fn,CCC/Set_CCR_Receivers_Adapters,SetCCRAdapters,5)
+	$(call deploy_fn,CCC/Set_CCR_Receivers_Adapters,ethereum polygon avalanche binance arbitrum optimism base metis gnosis zkevm)
 
 # Sets the required confirmations
 set-ccr-confirmations:
-	$(call new_deploy_fn,CCC/Set_CCR_Confirmations,SetCCRConfirmations,6)
+	$(call deploy_fn,CCC/Set_CCR_Confirmations,ethereum polygon avalanche optimism arbitrum metis base binance gnosis zkevm)
 
-# Funds CCC
-fund-crosschain:
-	$(call deploy_fn,CCC/FundCCC,FundCrossChainController,1)
+# Generate Addresses Json
+write-json-addresses :; forge script scripts/WriteAddresses.s.sol:WriteDeployedAddresses -vvvv
+
 
 ## Deploy and configure all contracts
 deploy-full:
@@ -137,35 +147,116 @@ deploy-full:
 		make fund-crosschain
 		make write-json-addresses
 
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------- TESTNET DEPLOYMENT SCRIPTS ---------------------------------------------------------
+
+# Deploy Proxy Factories on all networks
+deploy-proxy-factory-test:
+	$(call deploy_fn,InitialDeployments,base)
+
+# Deploy Cross Chain Infra on all networks
+deploy-cross-chain-infra-test:
+	$(call deploy_fn,CCC/Deploy_CCC,ethereum)
+
+## Deploy CCIP bridge adapters on all networks
+deploy-ccip-bridge-adapters-test:
+	$(call deploy_fn,adapters/DeployCCIP,ethereum)
+
+## Deploy LayerZero bridge adapters on all networks
+deploy-lz-bridge-adapters-test:
+	$(call deploy_fn,adapters/DeployLZ,ethereum)
+
+## Deploy HyperLane bridge adapters on all networks
+deploy-hl-bridge-adapters-test:
+	$(call deploy_fn,adapters/DeployHL,ethereum)
+
+## Deploy SameChain adapters on ethereum
+deploy-same-chain-adapters-test:
+	$(call deploy_fn,adapters/DeploySameChainAdapter,ethereum)
+
+deploy-scroll-adapters-test:
+	$(call deploy_fn,adapters/DeployScrollAdapter,ethereum)
+
+deploy-wormhole-adapters-test:
+	$(call deploy_fn,adapters/DeployWormholeAdapter,ethereum)
+
+deploy-polygon-adapters-test:
+	$(call deploy_fn,adapters/DeployPolygon,ethereum)
+
+deploy-gnosis-adapters-test:
+	$(call deploy_fn,adapters/DeployGnosisChain,ethereum)
+
+deploy-arbitrum-adapters-test:
+	$(call deploy_fn,adapters/DeployArbAdapter,ethereum)
+
+deploy-optimism-adapters-test:
+	$(call deploy_fn,adapters/DeployOpAdapter,ethereum)
+
+deploy-metis-adapters-test:
+	$(call deploy_fn,adapters/DeployMetisAdapter,ethereum)
+
+deploy-base-adapters-test:
+	$(call deploy_fn,adapters/DeployCBaseAdapter,ethereum)
+
+## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
+set-ccf-sender-adapters-test:
+	$(call deploy_fn,CCC/Set_CCF_Sender_Adapters,avalanche)
+
+# Set the bridge adapters allowed to receive messages
+set-ccr-receiver-adapters-test:
+	$(call deploy_fn,CCC/Set_CCR_Receivers_Adapters,celo)
+
+# Sets the required confirmations
+set-ccr-confirmations-test:
+	$(call deploy_fn,CCC/Set_CCR_Confirmations,ethereum)
+
+
+## Deploy and configure all contracts
+deploy-full-test:
+		#make deploy-proxy-factory-test
+		make deploy-cross-chain-infra-test
+		make deploy-ccip-bridge-adapters-test
+		make deploy-lz-bridge-adapters-test
+		make deploy-hl-bridge-adapters-test
+		make deploy-same-chain-adapters-test
+		make set-ccf-sender-adapters-test
+		make set-ccr-receiver-adapters-test
+		make set-ccr-confirmations-test
+		make fund-crosschain-test
+		make write-json-addresses
+
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------- HELPER SCRIPTS ---------------------------------------------------------
-#remove-bridge-adapters:
-#	$(call deploy_fn,helpers/RemoveBridgeAdapters,ethereum avalanche polygon binance)
+remove-bridge-adapters:
+	$(call deploy_fn,helpers/RemoveBridgeAdapters,celo)
 
-#send-direct-message:
-#	$(call deploy_fn,helpers/Send_Direct_CCMessage,ethereum)
+send-direct-message:
+	$(call deploy_fn,helpers/Send_Direct_CCMessage,avalanche)
 
-#deploy_mock_destination:
-#	$(call deploy_fn,helpers/Deploy_Mock_destination,zkevm)
+deploy_mock_destination:
+	$(call deploy_fn,helpers/Deploy_Mock_destination,ethereum)
 
 set-approved-ccf-senders:
-	$(call new_deploy_fn,CCC/Set_CCF_Approved_Senders,SetCCFApprovedSenders,6)
+	$(call deploy_fn,helpers/Set_Approved_Senders,ethereum)
 
-#send-message:
-#	@$(call deploy_fn,helpers/Testnet_ForwardMessage,ethereum,Testnet_ForwardMessage)
+send-message:
+	@$(call deploy_fn,helpers/Testnet_ForwardMessage,ethereum,Testnet_ForwardMessage)
 
-#deploy_mock_ccc:
-#	$(call deploy_fn,helpers/mocks/Deploy_Mock_CCC,zkevm)
+deploy_mock_ccc:
+	$(call deploy_fn,helpers/mocks/Deploy_Mock_CCC,zkevm)
 
-#send-message-via-adapter:
-#	$(call deploy_fn,helpers/Send_Message_Via_Adapter,ethereum)
+send-message-via-adapter:
+	$(call deploy_fn,helpers/Send_Message_Via_Adapter,ethereum)
 
-#send-message-ccc:
-#	@$(call deploy_fn,CCC/SendMessage,ethereum)
+deploy_ccc_granular_guardian:
+	$(call deploy_fn,helpers/Send_Message_Via_Adapter,avalanche, polygon, binance, gnosis)
 
-remove-adapters-custom:
-	@$(call deploy_fn,CCC/Remove_CCF_Sender_Adapters,ethereum scroll)
+deploy-ccc-revision-and-update:
+	$(call deploy_fn,CCC/UpdateCCC,ethereum)
 
-
-deploy-ledger :; forge script ${contract} --rpc-url ${chain} $(if ${dry},--sender 0x25F2226B597E8F9514B3F68F00f494cF4f286491 -vvvv,--broadcast --ledger --mnemonic-indexes ${MNEMONIC_INDEX} --sender ${LEDGER_SENDER} --verify -vvvv --slow)
-deploy-pk :; forge script ${contract} --rpc-url ${chain} $(if ${dry},--sender 0x25F2226B597E8F9514B3F68F00f494cF4f286491 -vvvv,--broadcast --private-key ${PRIVATE_KEY} --verify -vvvv --slow)
+deploy-ccc-update-payload:
+	$(call deploy_fn,helpers/UpdateCCCImpl_Payload,celo)
