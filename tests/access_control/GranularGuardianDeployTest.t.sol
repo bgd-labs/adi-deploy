@@ -1,0 +1,357 @@
+// SPDX-License-Identifier: BUSL-1.1
+pragma solidity ^0.8.0;
+
+import 'adi/access_control/GranularGuardianAccessControl.sol';
+import 'adi-tests/BaseTest.sol';
+import {OwnableWithGuardian, IWithGuardian} from 'solidity-utils/contracts/access-control/OwnableWithGuardian.sol';
+import {TestUtils} from 'adi-tests/utils/TestUtils.sol';
+import {OwnableWithGuardian} from 'solidity-utils/contracts/access-control/OwnableWithGuardian.sol';
+import {Ethereum, Polygon, Avalanche, Binance} from '../../scripts/access_control/DeployGranularGuardian.s.sol';
+
+abstract contract BaseGGTest is BaseTest {
+  bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
+  GranularGuardianAccessControl public control;
+
+  function CROSS_CHAIN_CONTROLLER() internal view virtual returns (address);
+
+  function _getDefaultAdmin() internal view virtual returns (address);
+
+  function _getRetryGuardian() internal view virtual returns (address);
+
+  function _getSolveEmergencyGuardian() internal view virtual returns (address);
+
+  function _getDestinationChainId() internal view virtual returns (uint256);
+
+  function test_initialization() public {
+    assertEq(control.CROSS_CHAIN_CONTROLLER(), CROSS_CHAIN_CONTROLLER());
+    assertEq(control.hasRole(DEFAULT_ADMIN_ROLE, _getDefaultAdmin()), true);
+    assertEq(control.getRoleAdmin(control.RETRY_ROLE()), DEFAULT_ADMIN_ROLE);
+    assertEq(control.getRoleAdmin(control.SOLVE_EMERGENCY_ROLE()), DEFAULT_ADMIN_ROLE);
+    assertEq(control.getRoleMemberCount(control.RETRY_ROLE()), 1);
+    assertEq(control.getRoleMemberCount(control.SOLVE_EMERGENCY_ROLE()), 1);
+    assertEq(control.getRoleMember(control.RETRY_ROLE(), 0), _getRetryGuardian());
+    assertEq(
+      control.getRoleMember(control.SOLVE_EMERGENCY_ROLE(), 0),
+      _getSolveEmergencyGuardian()
+    );
+  }
+
+  function test_retryEnvelopeWhenWrongCaller(uint256 gasLimit, address caller) public {
+    vm.assume(caller != _getRetryGuardian());
+
+    Envelope memory envelope;
+
+    hoax(caller);
+    vm.expectRevert(
+      bytes(
+        string.concat(
+          'AccessControl: account 0x',
+          TestUtils.toAsciiString(caller),
+          ' is missing role 0xc448b9502bbdf9850cc39823b6ea40cfe96d3ac63008e89edd2b8e98c6cc0af3'
+        )
+      )
+    );
+    control.retryEnvelope(envelope, gasLimit);
+  }
+
+  function test_updateGuardian(address newGuardian) public {
+    _filterAddress(newGuardian);
+    vm.startPrank(_getDefaultAdmin());
+    control.updateGuardian(newGuardian);
+    assertEq(IWithGuardian(CROSS_CHAIN_CONTROLLER()).guardian(), newGuardian);
+    vm.stopPrank();
+  }
+
+  function test_updateGuardianWhenWrongCaller(address newGuardian, address caller) public {
+    vm.assume(caller != _getDefaultAdmin());
+    hoax(caller);
+    vm.expectRevert(
+      bytes(
+        string.concat(
+          'AccessControl: account 0x',
+          TestUtils.toAsciiString(caller),
+          ' is missing role 0x0000000000000000000000000000000000000000000000000000000000000000'
+        )
+      )
+    );
+    control.updateGuardian(newGuardian);
+  }
+}
+
+abstract contract BaseCCCWithEmergency is BaseGGTest {
+  function test_solveEmergency()
+    public
+    generateEmergencyState(CROSS_CHAIN_CONTROLLER())
+    validateEmergencySolved(CROSS_CHAIN_CONTROLLER())
+  {
+    vm.startPrank(_getSolveEmergencyGuardian());
+    control.solveEmergency(
+      new ICrossChainReceiver.ConfirmationInput[](0),
+      new ICrossChainReceiver.ValidityTimestampInput[](0),
+      new ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[](0),
+      new ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[](0),
+      new address[](0),
+      new address[](0),
+      new ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[](0),
+      new ICrossChainForwarder.BridgeAdapterToDisable[](0)
+    );
+    vm.stopPrank();
+  }
+
+  function test_solveEmergencyWhenWrongCaller(address caller) public {
+    vm.assume(caller != _getSolveEmergencyGuardian());
+    hoax(caller);
+    vm.expectRevert(
+      bytes(
+        string.concat(
+          'AccessControl: account 0x',
+          TestUtils.toAsciiString(caller),
+          ' is missing role 0xf4cdc679c22cbf47d6de8e836ce79ffdae51f38408dcde3f0645de7634fa607d'
+        )
+      )
+    );
+    control.solveEmergency(
+      new ICrossChainReceiver.ConfirmationInput[](0),
+      new ICrossChainReceiver.ValidityTimestampInput[](0),
+      new ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[](0),
+      new ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[](0),
+      new address[](0),
+      new address[](0),
+      new ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[](0),
+      new ICrossChainForwarder.BridgeAdapterToDisable[](0)
+    );
+  }
+}
+
+abstract contract BaseCCForwarder is BaseGGTest {
+  function test_retryTx(
+    address destination,
+    uint256 gasLimit
+  )
+    public
+    generateRetryTxState(
+      _getDefaultAdmin(),
+      CROSS_CHAIN_CONTROLLER(),
+      _getDestinationChainId(),
+      destination,
+      gasLimit
+    )
+  {
+    ExtendedTransaction memory extendedTx = _generateExtendedTransaction(
+      TestParams({
+        destination: destination,
+        origin: address(this),
+        originChainId: block.chainid,
+        destinationChainId: _getDestinationChainId(),
+        envelopeNonce: ICrossChainForwarder(CROSS_CHAIN_CONTROLLER()).getCurrentTransactionNonce() -
+          1,
+        transactionNonce: ICrossChainForwarder(CROSS_CHAIN_CONTROLLER())
+          .getCurrentTransactionNonce() - 1
+      })
+    );
+
+    ICrossChainForwarder.ChainIdBridgeConfig[] memory bridgeAdaptersByChain = ICrossChainForwarder(
+      CROSS_CHAIN_CONTROLLER()
+    ).getForwarderBridgeAdaptersByChain(_getDestinationChainId());
+    address[] memory bridgeAdaptersToRetry = new address[](1);
+    bridgeAdaptersToRetry[0] = bridgeAdaptersByChain[0].currentChainBridgeAdapter;
+
+    vm.startPrank(_getRetryGuardian());
+    control.retryTransaction(extendedTx.transactionEncoded, gasLimit, bridgeAdaptersToRetry);
+    vm.stopPrank();
+  }
+
+  function test_retryTxWhenWrongCaller(uint256 gasLimit, address caller) public {
+    address[] memory bridgeAdaptersToRetry = new address[](0);
+    vm.assume(caller != _getRetryGuardian());
+
+    hoax(caller);
+    vm.expectRevert(
+      bytes(
+        string.concat(
+          'AccessControl: account 0x',
+          TestUtils.toAsciiString(caller),
+          ' is missing role 0xc448b9502bbdf9850cc39823b6ea40cfe96d3ac63008e89edd2b8e98c6cc0af3'
+        )
+      )
+    );
+
+    control.retryTransaction(abi.encode('will not get used'), gasLimit, bridgeAdaptersToRetry);
+  }
+
+  function test_retryEnvelope(
+    address destination,
+    uint256 gasLimit
+  )
+    public
+    generateRetryTxState(
+      _getDefaultAdmin(),
+      CROSS_CHAIN_CONTROLLER(),
+      _getDestinationChainId(),
+      destination,
+      gasLimit
+    )
+  {
+    uint256 envNonce = ICrossChainForwarder(CROSS_CHAIN_CONTROLLER()).getCurrentEnvelopeNonce() - 1;
+
+    ExtendedTransaction memory extendedTx = _generateExtendedTransaction(
+      TestParams({
+        destination: destination,
+        origin: address(this),
+        originChainId: block.chainid,
+        destinationChainId: _getDestinationChainId(),
+        envelopeNonce: envNonce,
+        transactionNonce: ICrossChainForwarder(CROSS_CHAIN_CONTROLLER())
+          .getCurrentTransactionNonce() - 1
+      })
+    );
+
+    vm.startPrank(_getRetryGuardian());
+    bytes32 newTxId = control.retryEnvelope(extendedTx.envelope, gasLimit);
+
+    ExtendedTransaction memory extendedTxAfter = _generateExtendedTransaction(
+      TestParams({
+        destination: destination,
+        origin: address(this),
+        originChainId: block.chainid,
+        destinationChainId: _getDestinationChainId(),
+        envelopeNonce: envNonce,
+        transactionNonce: ICrossChainForwarder(CROSS_CHAIN_CONTROLLER())
+          .getCurrentTransactionNonce() - 1
+      })
+    );
+
+    assertEq(extendedTxAfter.transactionId, newTxId);
+    vm.stopPrank();
+  }
+}
+
+abstract contract BaseCCForwarderWithEmergency is BaseCCCWithEmergency, BaseCCForwarder {}
+
+contract EthereumGGTest is BaseCCForwarder, Ethereum {
+  function setUp() public {
+    vm.createSelectFork('ethereum', 20092947);
+    address ccc = CROSS_CHAIN_CONTROLLER();
+    control = GranularGuardianAccessControl(_deployGranularGuardian(ccc));
+    address guardian = OwnableWithGuardian(ccc).guardian();
+
+    hoax(guardian);
+    OwnableWithGuardian(ccc).updateGuardian(address(control));
+  }
+
+  function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
+    return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
+  }
+
+  function _getDestinationChainId() internal pure override returns (uint256) {
+    return ChainIds.POLYGON;
+  }
+
+  function _getDefaultAdmin() internal pure override returns (address) {
+    return DEFAULT_ADMIN();
+  }
+
+  function _getRetryGuardian() internal pure override returns (address) {
+    return RETRY_GUARDIAN();
+  }
+
+  function _getSolveEmergencyGuardian() internal pure override returns (address) {
+    return SOLVE_EMERGENCY_GUARDIAN();
+  }
+}
+
+contract PolygonGGTest is BaseCCForwarder, Polygon {
+  function setUp() public {
+    vm.createSelectFork('polygon', 58168704);
+    address ccc = CROSS_CHAIN_CONTROLLER();
+    control = GranularGuardianAccessControl(_deployGranularGuardian(ccc));
+    address guardian = OwnableWithGuardian(ccc).guardian();
+
+    hoax(guardian);
+    OwnableWithGuardian(ccc).updateGuardian(address(control));
+  }
+
+  function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
+    return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
+  }
+
+  function _getDestinationChainId() internal pure override returns (uint256) {
+    return ChainIds.ETHEREUM;
+  }
+
+  function _getDefaultAdmin() internal pure override returns (address) {
+    return DEFAULT_ADMIN();
+  }
+
+  function _getRetryGuardian() internal pure override returns (address) {
+    return RETRY_GUARDIAN();
+  }
+
+  function _getSolveEmergencyGuardian() internal pure override returns (address) {
+    return SOLVE_EMERGENCY_GUARDIAN();
+  }
+}
+
+contract AvalancheGGTest is BaseCCForwarder, Avalanche {
+  function setUp() public {
+    vm.createSelectFork('avalanche', 46727153);
+    address ccc = CROSS_CHAIN_CONTROLLER();
+    control = GranularGuardianAccessControl(_deployGranularGuardian(ccc));
+    address guardian = OwnableWithGuardian(ccc).guardian();
+
+    hoax(guardian);
+    OwnableWithGuardian(ccc).updateGuardian(address(control));
+  }
+
+  function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
+    return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
+  }
+
+  function _getDestinationChainId() internal pure override returns (uint256) {
+    return ChainIds.ETHEREUM;
+  }
+
+  function _getDefaultAdmin() internal pure override returns (address) {
+    return DEFAULT_ADMIN();
+  }
+
+  function _getRetryGuardian() internal pure override returns (address) {
+    return RETRY_GUARDIAN();
+  }
+
+  function _getSolveEmergencyGuardian() internal pure override returns (address) {
+    return SOLVE_EMERGENCY_GUARDIAN();
+  }
+}
+
+contract BinanceGGTest is BaseCCCWithEmergency, Binance {
+  function setUp() public {
+    vm.createSelectFork('binance', 39618770);
+    address ccc = CROSS_CHAIN_CONTROLLER();
+    control = GranularGuardianAccessControl(_deployGranularGuardian(ccc));
+    address guardian = OwnableWithGuardian(ccc).guardian();
+
+    hoax(guardian);
+    OwnableWithGuardian(ccc).updateGuardian(address(control));
+  }
+
+  function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
+    return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
+  }
+
+  function _getDestinationChainId() internal pure override returns (uint256) {
+    return ChainIds.ETHEREUM;
+  }
+
+  function _getDefaultAdmin() internal pure override returns (address) {
+    return DEFAULT_ADMIN();
+  }
+
+  function _getRetryGuardian() internal pure override returns (address) {
+    return RETRY_GUARDIAN();
+  }
+
+  function _getSolveEmergencyGuardian() internal pure override returns (address) {
+    return SOLVE_EMERGENCY_GUARDIAN();
+  }
+}

@@ -47,7 +47,6 @@ contract Ethereum is DeployGranularGuardian {
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
     return MiscEthereum.PROTOCOL_GUARDIAN;
   }
-
 }
 
 contract Avalanche is DeployGranularGuardian {
@@ -62,8 +61,6 @@ contract Avalanche is DeployGranularGuardian {
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
     return MiscAvalanche.PROTOCOL_GUARDIAN;
   }
-
-
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.AVALANCHE;
