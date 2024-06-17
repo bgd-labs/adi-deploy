@@ -162,7 +162,11 @@ abstract contract BaseCCForwarder is BaseGGTest {
       CROSS_CHAIN_CONTROLLER()
     ).getForwarderBridgeAdaptersByChain(_getDestinationChainId());
     address[] memory bridgeAdaptersToRetry = new address[](1);
-    bridgeAdaptersToRetry[0] = bridgeAdaptersByChain[0].currentChainBridgeAdapter;
+    if (bridgeAdaptersByChain.length > 1) {
+      bridgeAdaptersToRetry[0] = bridgeAdaptersByChain[1].currentChainBridgeAdapter;
+    } else {
+      bridgeAdaptersToRetry[0] = bridgeAdaptersByChain[0].currentChainBridgeAdapter;
+    }
 
     vm.startPrank(_getRetryGuardian());
     control.retryTransaction(extendedTx.transactionEncoded, gasLimit, bridgeAdaptersToRetry);
