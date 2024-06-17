@@ -421,7 +421,7 @@ contract GnosisGGTest is Gnosis, BaseCCCWithEmergency('gnosis', 34501315) {
   }
 }
 
-contract MetisGGTest is Metis, BaseGGTest('meis', 17364742) {
+contract MetisGGTest is Metis, BaseGGTest('metis', 17364742) {
   function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
     return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
   }
