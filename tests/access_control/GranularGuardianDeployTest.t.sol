@@ -12,7 +12,27 @@ abstract contract BaseGGTest is BaseTest {
   bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
   GranularGuardianAccessControl public control;
 
+  string internal NETWORK;
+  uint256 internal immutable BLOCK_NUMBER;
+
+  constructor(string memory network, uint256 blockNumber) {
+    NETWORK = network;
+    BLOCK_NUMBER = blockNumber;
+  }
+
+  function setUp() public {
+    vm.createSelectFork(vm.rpcUrl(NETWORK), BLOCK_NUMBER);
+    address ccc = CROSS_CHAIN_CONTROLLER();
+    control = _deployGG();
+    address guardian = OwnableWithGuardian(ccc).guardian();
+
+    hoax(guardian);
+    OwnableWithGuardian(ccc).updateGuardian(address(control));
+  }
+
   function CROSS_CHAIN_CONTROLLER() internal view virtual returns (address);
+
+  function _deployGG() internal virtual returns (GranularGuardianAccessControl);
 
   function _getDefaultAdmin() internal view virtual returns (address);
 
@@ -21,7 +41,7 @@ abstract contract BaseGGTest is BaseTest {
   function _getSolveEmergencyGuardian() internal view virtual returns (address);
 
   function _getDestinationChainId() internal view virtual returns (uint256) {
-    return address(0);
+    return 0;
   }
 
   function test_initialization() public {
@@ -63,6 +83,8 @@ abstract contract BaseGGTest is BaseTest {
 }
 
 abstract contract BaseCCCWithEmergency is BaseGGTest {
+  constructor(string memory network, uint256 blockNumber) BaseGGTest(network, blockNumber) {}
+
   function test_solveEmergency()
     public
     generateEmergencyState(CROSS_CHAIN_CONTROLLER())
@@ -108,6 +130,8 @@ abstract contract BaseCCCWithEmergency is BaseGGTest {
 }
 
 abstract contract BaseCCForwarder is BaseGGTest {
+  constructor(string memory network, uint256 blockNumber) BaseGGTest(network, blockNumber) {}
+
   function test_retryTx(
     address destination,
     uint256 gasLimit
@@ -228,21 +252,60 @@ abstract contract BaseCCForwarder is BaseGGTest {
   }
 }
 
-abstract contract BaseCCForwarderWithEmergency is BaseCCCWithEmergency, BaseCCForwarder {}
+abstract contract BaseCCForwarderWithEmergency is BaseCCForwarder {
+  constructor(string memory network, uint256 blockNumber) BaseCCForwarder(network, blockNumber) {}
 
-contract EthereumGGTest is BaseCCForwarder, Ethereum {
-  function setUp() public {
-    vm.createSelectFork('ethereum', 20092947);
-    address ccc = CROSS_CHAIN_CONTROLLER();
-    control = GranularGuardianAccessControl(_deployGranularGuardian(ccc));
-    address guardian = OwnableWithGuardian(ccc).guardian();
-
-    hoax(guardian);
-    OwnableWithGuardian(ccc).updateGuardian(address(control));
+  function test_solveEmergency()
+    public
+    generateEmergencyState(CROSS_CHAIN_CONTROLLER())
+    validateEmergencySolved(CROSS_CHAIN_CONTROLLER())
+  {
+    vm.startPrank(_getSolveEmergencyGuardian());
+    control.solveEmergency(
+      new ICrossChainReceiver.ConfirmationInput[](0),
+      new ICrossChainReceiver.ValidityTimestampInput[](0),
+      new ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[](0),
+      new ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[](0),
+      new address[](0),
+      new address[](0),
+      new ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[](0),
+      new ICrossChainForwarder.BridgeAdapterToDisable[](0)
+    );
+    vm.stopPrank();
   }
 
+  function test_solveEmergencyWhenWrongCaller(address caller) public {
+    vm.assume(caller != _getSolveEmergencyGuardian());
+    hoax(caller);
+    vm.expectRevert(
+      bytes(
+        string.concat(
+          'AccessControl: account 0x',
+          TestUtils.toAsciiString(caller),
+          ' is missing role 0xf4cdc679c22cbf47d6de8e836ce79ffdae51f38408dcde3f0645de7634fa607d'
+        )
+      )
+    );
+    control.solveEmergency(
+      new ICrossChainReceiver.ConfirmationInput[](0),
+      new ICrossChainReceiver.ValidityTimestampInput[](0),
+      new ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[](0),
+      new ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[](0),
+      new address[](0),
+      new address[](0),
+      new ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[](0),
+      new ICrossChainForwarder.BridgeAdapterToDisable[](0)
+    );
+  }
+}
+
+contract EthereumGGTest is Ethereum, BaseCCForwarder('ethereum', 20092947) {
   function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
     return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
+  }
+
+  function _deployGG() internal override returns (GranularGuardianAccessControl) {
+    return GranularGuardianAccessControl(_deployGranularGuardian(CROSS_CHAIN_CONTROLLER()));
   }
 
   function _getDestinationChainId() internal pure override returns (uint256) {
@@ -262,19 +325,13 @@ contract EthereumGGTest is BaseCCForwarder, Ethereum {
   }
 }
 
-contract PolygonGGTest is BaseCCForwarderWithEmergency, Polygon {
-  function setUp() public {
-    vm.createSelectFork('polygon', 58168704);
-    address ccc = CROSS_CHAIN_CONTROLLER();
-    control = GranularGuardianAccessControl(_deployGranularGuardian(ccc));
-    address guardian = OwnableWithGuardian(ccc).guardian();
-
-    hoax(guardian);
-    OwnableWithGuardian(ccc).updateGuardian(address(control));
-  }
-
+contract PolygonGGTest is Polygon, BaseCCForwarderWithEmergency('polygon', 58168704) {
   function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
     return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
+  }
+
+  function _deployGG() internal override returns (GranularGuardianAccessControl) {
+    return GranularGuardianAccessControl(_deployGranularGuardian(CROSS_CHAIN_CONTROLLER()));
   }
 
   function _getDestinationChainId() internal pure override returns (uint256) {
@@ -294,19 +351,13 @@ contract PolygonGGTest is BaseCCForwarderWithEmergency, Polygon {
   }
 }
 
-contract AvalancheGGTest is BaseCCForwarderWithEmergency, Avalanche {
-  function setUp() public {
-    vm.createSelectFork('avalanche', 46727153);
-    address ccc = CROSS_CHAIN_CONTROLLER();
-    control = GranularGuardianAccessControl(_deployGranularGuardian(ccc));
-    address guardian = OwnableWithGuardian(ccc).guardian();
-
-    hoax(guardian);
-    OwnableWithGuardian(ccc).updateGuardian(address(control));
-  }
-
+contract AvalancheGGTest is Avalanche, BaseCCForwarderWithEmergency('avalanche', 46727153) {
   function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
     return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
+  }
+
+  function _deployGG() internal override returns (GranularGuardianAccessControl) {
+    return GranularGuardianAccessControl(_deployGranularGuardian(CROSS_CHAIN_CONTROLLER()));
   }
 
   function _getDestinationChainId() internal pure override returns (uint256) {
@@ -326,19 +377,13 @@ contract AvalancheGGTest is BaseCCForwarderWithEmergency, Avalanche {
   }
 }
 
-contract BinanceGGTest is BaseCCCWithEmergency, Binance {
-  function setUp() public {
-    vm.createSelectFork('binance', 39618770);
-    address ccc = CROSS_CHAIN_CONTROLLER();
-    control = GranularGuardianAccessControl(_deployGranularGuardian(ccc));
-    address guardian = OwnableWithGuardian(ccc).guardian();
-
-    hoax(guardian);
-    OwnableWithGuardian(ccc).updateGuardian(address(control));
-  }
-
+contract BinanceGGTest is Binance, BaseCCCWithEmergency('binance', 39618770) {
   function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
     return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
+  }
+
+  function _deployGG() internal override returns (GranularGuardianAccessControl) {
+    return GranularGuardianAccessControl(_deployGranularGuardian(CROSS_CHAIN_CONTROLLER()));
   }
 
   function _getDefaultAdmin() internal pure override returns (address) {
@@ -354,19 +399,13 @@ contract BinanceGGTest is BaseCCCWithEmergency, Binance {
   }
 }
 
-contract GnosisGGTest is BaseCCCWithEmergency, Gnosis {
-  function setUp() public {
-    vm.createSelectFork('gnosis', 34501315);
-    address ccc = CROSS_CHAIN_CONTROLLER();
-    control = GranularGuardianAccessControl(_deployGranularGuardian(ccc));
-    address guardian = OwnableWithGuardian(ccc).guardian();
-
-    hoax(guardian);
-    OwnableWithGuardian(ccc).updateGuardian(address(control));
-  }
-
+contract GnosisGGTest is Gnosis, BaseCCCWithEmergency('gnosis', 34501315) {
   function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
     return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
+  }
+
+  function _deployGG() internal override returns (GranularGuardianAccessControl) {
+    return GranularGuardianAccessControl(_deployGranularGuardian(CROSS_CHAIN_CONTROLLER()));
   }
 
   function _getDefaultAdmin() internal pure override returns (address) {
@@ -382,19 +421,13 @@ contract GnosisGGTest is BaseCCCWithEmergency, Gnosis {
   }
 }
 
-contract MetisGGTest is BaseGGTest, Metis {
-  function setUp() public {
-    vm.createSelectFork('meis', 17364742);
-    address ccc = CROSS_CHAIN_CONTROLLER();
-    control = GranularGuardianAccessControl(_deployGranularGuardian(ccc));
-    address guardian = OwnableWithGuardian(ccc).guardian();
-
-    hoax(guardian);
-    OwnableWithGuardian(ccc).updateGuardian(address(control));
-  }
-
+contract MetisGGTest is Metis, BaseGGTest('meis', 17364742) {
   function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
     return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
+  }
+
+  function _deployGG() internal override returns (GranularGuardianAccessControl) {
+    return GranularGuardianAccessControl(_deployGranularGuardian(CROSS_CHAIN_CONTROLLER()));
   }
 
   function _getDefaultAdmin() internal pure override returns (address) {
@@ -410,19 +443,13 @@ contract MetisGGTest is BaseGGTest, Metis {
   }
 }
 
-contract ScrollGGTest is BaseGGTest, Scroll {
-  function setUp() public {
-    vm.createSelectFork('scroll', 6626264);
-    address ccc = CROSS_CHAIN_CONTROLLER();
-    control = GranularGuardianAccessControl(_deployGranularGuardian(ccc));
-    address guardian = OwnableWithGuardian(ccc).guardian();
-
-    hoax(guardian);
-    OwnableWithGuardian(ccc).updateGuardian(address(control));
-  }
-
+contract ScrollGGTest is Scroll, BaseGGTest('scroll', 6626264) {
   function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
     return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
+  }
+
+  function _deployGG() internal override returns (GranularGuardianAccessControl) {
+    return GranularGuardianAccessControl(_deployGranularGuardian(CROSS_CHAIN_CONTROLLER()));
   }
 
   function _getDefaultAdmin() internal pure override returns (address) {
@@ -438,19 +465,13 @@ contract ScrollGGTest is BaseGGTest, Scroll {
   }
 }
 
-contract OptimismGGTest is BaseGGTest, Optimism {
-  function setUp() public {
-    vm.createSelectFork('optimism', 121491625);
-    address ccc = CROSS_CHAIN_CONTROLLER();
-    control = GranularGuardianAccessControl(_deployGranularGuardian(ccc));
-    address guardian = OwnableWithGuardian(ccc).guardian();
-
-    hoax(guardian);
-    OwnableWithGuardian(ccc).updateGuardian(address(control));
-  }
-
+contract OptimismGGTest is Optimism, BaseGGTest('optimism', 121491625) {
   function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
     return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
+  }
+
+  function _deployGG() internal override returns (GranularGuardianAccessControl) {
+    return GranularGuardianAccessControl(_deployGranularGuardian(CROSS_CHAIN_CONTROLLER()));
   }
 
   function _getDefaultAdmin() internal pure override returns (address) {
@@ -466,19 +487,13 @@ contract OptimismGGTest is BaseGGTest, Optimism {
   }
 }
 
-contract ArbitrumGGTest is BaseGGTest, Arbitrum {
-  function setUp() public {
-    vm.createSelectFork('arbitrum', 222622842);
-    address ccc = CROSS_CHAIN_CONTROLLER();
-    control = GranularGuardianAccessControl(_deployGranularGuardian(ccc));
-    address guardian = OwnableWithGuardian(ccc).guardian();
-
-    hoax(guardian);
-    OwnableWithGuardian(ccc).updateGuardian(address(control));
-  }
-
+contract ArbitrumGGTest is Arbitrum, BaseGGTest('arbitrum', 222622842) {
   function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
     return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
+  }
+
+  function _deployGG() internal override returns (GranularGuardianAccessControl) {
+    return GranularGuardianAccessControl(_deployGranularGuardian(CROSS_CHAIN_CONTROLLER()));
   }
 
   function _getDefaultAdmin() internal pure override returns (address) {
@@ -494,19 +509,13 @@ contract ArbitrumGGTest is BaseGGTest, Arbitrum {
   }
 }
 
-contract BaseGGTest is BaseGGTest, Base {
-  function setUp() public {
-    vm.createSelectFork('base', 15896446);
-    address ccc = CROSS_CHAIN_CONTROLLER();
-    control = GranularGuardianAccessControl(_deployGranularGuardian(ccc));
-    address guardian = OwnableWithGuardian(ccc).guardian();
-
-    hoax(guardian);
-    OwnableWithGuardian(ccc).updateGuardian(address(control));
-  }
-
+contract CBaseGGTest is Base, BaseGGTest('base', 15896446) {
   function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
     return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
+  }
+
+  function _deployGG() internal override returns (GranularGuardianAccessControl) {
+    return GranularGuardianAccessControl(_deployGranularGuardian(CROSS_CHAIN_CONTROLLER()));
   }
 
   function _getDefaultAdmin() internal pure override returns (address) {
