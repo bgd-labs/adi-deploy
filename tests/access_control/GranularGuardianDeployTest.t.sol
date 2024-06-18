@@ -6,7 +6,7 @@ import 'adi-tests/BaseTest.sol';
 import {OwnableWithGuardian, IWithGuardian} from 'solidity-utils/contracts/access-control/OwnableWithGuardian.sol';
 import {TestUtils} from 'adi-tests/utils/TestUtils.sol';
 import {OwnableWithGuardian} from 'solidity-utils/contracts/access-control/OwnableWithGuardian.sol';
-import {Ethereum, Polygon, Avalanche, Binance, Gnosis, Metis, Scroll, Optimism, Arbitrum, Base} from '../../scripts/access_control/DeployGranularGuardian.s.sol';
+import {Ethereum, Polygon, Avalanche, Binance, Gnosis, Metis, Scroll, Optimism, Arbitrum, Base} from '../../scripts/access_control/network_scripts/GranularGuardianNetworkDeploys.s.sol';
 
 abstract contract BaseGGTest is BaseTest {
   bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
