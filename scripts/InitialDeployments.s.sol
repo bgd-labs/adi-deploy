@@ -22,7 +22,7 @@ abstract contract BaseInitialDeployment is BaseDeployerScript {
     return address(0);
   }
 
-  function SALT() internal pure virtual returns (string memory) {
+  function SALT() internal pure returns (string memory) {
     return 'Proxy Admin';
   }
 
