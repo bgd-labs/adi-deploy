@@ -3,6 +3,16 @@ pragma solidity ^0.8.0;
 
 import 'adi/access_control/GranularGuardianAccessControl.sol';
 import 'adi-scripts/access_control/Deploy_Granular_CCC_Guardian.sol';
+import {GovernanceV3Ethereum} from 'aave-address-book/GovernanceV3Ethereum.sol';
+import {GovernanceV3Polygon} from 'aave-address-book/GovernanceV3Polygon.sol';
+import {GovernanceV3Avalanche} from 'aave-address-book/GovernanceV3Avalanche.sol';
+import {GovernanceV3Binance} from 'aave-address-book/GovernanceV3Binance.sol';
+import {GovernanceV3Gnosis} from 'aave-address-book/GovernanceV3Gnosis.sol';
+import {GovernanceV3Arbitrum} from 'aave-address-book/GovernanceV3Arbitrum.sol';
+import {GovernanceV3Optimism} from 'aave-address-book/GovernanceV3Optimism.sol';
+import {GovernanceV3Base} from 'aave-address-book/GovernanceV3Base.sol';
+import {GovernanceV3Scroll} from 'aave-address-book/GovernanceV3Scroll.sol';
+import {GovernanceV3Metis} from 'aave-address-book/GovernanceV3Metis.sol';
 import {MiscPolygon} from 'aave-address-book/MiscPolygon.sol';
 import {MiscAvalanche} from 'aave-address-book/MiscAvalanche.sol';
 import {MiscBNB} from 'aave-address-book/MiscBNB.sol';
@@ -27,7 +37,7 @@ contract Ethereum is DeployGranularGuardian {
   }
 
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return MiscEthereum.PROTOCOL_GUARDIAN;
+    return GovernanceV3Ethereum.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
@@ -42,7 +52,7 @@ contract Ethereum is DeployGranularGuardian {
 
 contract Avalanche is DeployGranularGuardian {
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return MiscAvalanche.PROTOCOL_GUARDIAN;
+    return GovernanceV3Avalanche.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
@@ -62,7 +72,7 @@ contract Avalanche is DeployGranularGuardian {
 
 contract Polygon is DeployGranularGuardian {
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return MiscPolygon.PROTOCOL_GUARDIAN;
+    return GovernanceV3Polygon.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
@@ -80,7 +90,7 @@ contract Polygon is DeployGranularGuardian {
 
 contract Binance is DeployGranularGuardian {
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return MiscBNB.PROTOCOL_GUARDIAN;
+    return GovernanceV3Binance.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
@@ -98,7 +108,7 @@ contract Binance is DeployGranularGuardian {
 
 contract Gnosis is DeployGranularGuardian {
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return MiscGnosis.PROTOCOL_GUARDIAN;
+    return GovernanceV3Gnosis.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
@@ -116,7 +126,7 @@ contract Gnosis is DeployGranularGuardian {
 
 contract Metis is DeployGranularGuardian {
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return MiscMetis.PROTOCOL_GUARDIAN;
+    return GovernanceV3Metis.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
@@ -134,7 +144,7 @@ contract Metis is DeployGranularGuardian {
 
 contract Scroll is DeployGranularGuardian {
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return MiscScroll.PROTOCOL_GUARDIAN;
+    return GovernanceV3Scroll.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
@@ -152,7 +162,7 @@ contract Scroll is DeployGranularGuardian {
 
 contract Optimism is DeployGranularGuardian {
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return MiscOptimism.PROTOCOL_GUARDIAN;
+    return GovernanceV3Optimism.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
@@ -170,7 +180,7 @@ contract Optimism is DeployGranularGuardian {
 
 contract Arbitrum is DeployGranularGuardian {
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return MiscArbitrum.PROTOCOL_GUARDIAN;
+    return GovernanceV3Arbitrum.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
@@ -188,7 +198,7 @@ contract Arbitrum is DeployGranularGuardian {
 
 contract Base is DeployGranularGuardian {
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return MiscBase.PROTOCOL_GUARDIAN;
+    return GovernanceV3Base.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
