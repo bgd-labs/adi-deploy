@@ -125,6 +125,7 @@ abstract contract BaseDeployerScript is BaseScript, Script {
       return addresses;
     } catch (bytes memory) {
       Addresses memory empty;
+      empty.chainId = TRANSACTION_NETWORK();
       return empty;
     }
   }
