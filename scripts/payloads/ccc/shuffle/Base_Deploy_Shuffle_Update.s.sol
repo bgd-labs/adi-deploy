@@ -11,11 +11,20 @@ import 'adi-scripts/CCC/DeployCrossChainController.sol';
  * - Discussion:
  * - Snapshot:
  */
-abstract contract Base_Deploy_Add_Shuffle_to_CCC_Payload is BaseDeployerScript, BaseCCCDeploy {
+abstract contract Base_Deploy_Shuffle_Update_Payload is BaseDeployerScript, BaseCCCDeploy {
+  function _deployPayload(
+    address crossChainController,
+    address proxyAdmin,
+    address crossChainControllerImpl
+  ) internal returns (address) {
+    return
+      new Add_Shuffle_to_CCC_Payload(crossChainController, proxyAdmin, crossChainControllerImpl);
+  }
+
   function _execute(Addresses memory addresses) internal virtual override {
     addresses.crossChainControllerImpl = _deployCCCImpl();
 
-    new Add_Shuffle_to_CCC_Payload(
+    _deployPayload(
       addresses.crossChainController,
       addresses.proxyAdmin,
       addresses.crossChainControllerImpl
