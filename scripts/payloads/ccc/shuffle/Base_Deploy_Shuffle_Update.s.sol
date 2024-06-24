@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import '../BaseDeployerScript.sol';
+import '../../../BaseDeployerScript.sol';
 import '../../../../src/ccc_payloads/shuffle/ShuffleCCCUpdatePayload.sol';
 import 'adi-scripts/CCC/DeployCrossChainController.sol';
 
