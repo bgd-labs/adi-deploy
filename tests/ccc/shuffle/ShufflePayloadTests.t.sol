@@ -30,11 +30,11 @@ abstract contract BaseShufflePayloadTest is ADITestBase {
   }
 }
 
-contract EthereumShufflePayloadTest is Ethereum, BaseShufflePayloadTest('mainnet', 20160400) {
-  function _getPayload() internal view override returns (Add_Shuffle_to_CCC_Payload) {
+contract EthereumShufflePayloadTest is Ethereum, BaseShufflePayloadTest('ethereum', 20160400) {
+  function _getPayload() internal override returns (Add_Shuffle_to_CCC_Payload) {
     Addresses memory addresses = _getAddresses(TRANSACTION_NETWORK());
     address cccImpl = _deployCCCImpl();
     crossChainController = addresses.crossChainController;
-    return new Add_Shuffle_to_CCC_Payload(crossChainController, addresses.proxyAdmin, cccImpl);
+    return _deployPayload(crossChainController, addresses.proxyAdmin, cccImpl);
   }
 }

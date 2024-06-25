@@ -16,7 +16,7 @@ abstract contract Base_Deploy_Shuffle_Update_Payload is BaseDeployerScript, Base
     address crossChainController,
     address proxyAdmin,
     address crossChainControllerImpl
-  ) internal returns (address) {
+  ) internal returns (Add_Shuffle_to_CCC_Payload) {
     return
       new Add_Shuffle_to_CCC_Payload(crossChainController, proxyAdmin, crossChainControllerImpl);
   }
