@@ -2,14 +2,14 @@
 pragma solidity ^0.8.0;
 
 import '../../../src/ccc_payloads/shuffle/ShuffleCCCUpdatePayload.sol';
-import {Ethereum} from '../../../scripts/payloads/ccc/shuffle/Network_Deployments.s.sol';
+import {Addresses, Ethereum} from '../../../scripts/payloads/ccc/shuffle/Network_Deployments.s.sol';
 import 'aave-helpers/adi/test/ADITestBase.sol';
 
-contract BaseShufflePayloadTest is ADITestBase {
+abstract contract BaseShufflePayloadTest is ADITestBase {
   Add_Shuffle_to_CCC_Payload internal payload;
   address internal crossChainController;
 
-  string internal immutable NETWORK;
+  string internal NETWORK;
   uint256 internal immutable BLOCK_NUMBER;
 
   constructor(string memory network, uint256 blockNumber) {
