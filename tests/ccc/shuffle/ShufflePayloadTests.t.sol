@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import '../../../src/ccc_payloads/shuffle/ShuffleCCCUpdatePayload.sol';
+import {Add_Shuffle_to_CCC_Payload} from '../../../src/ccc_payloads/shuffle/ShuffleCCCUpdatePayload.sol';
 import {Addresses, Ethereum} from '../../../scripts/payloads/ccc/shuffle/Network_Deployments.s.sol';
 import 'aave-helpers/adi/test/ADITestBase.sol';
 
