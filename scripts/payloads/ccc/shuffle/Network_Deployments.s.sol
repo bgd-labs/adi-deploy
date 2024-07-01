@@ -3,6 +3,8 @@ pragma solidity ^0.8.0;
 
 import './Base_Deploy_Shuffle_Update.s.sol';
 
+// TODO: add optimal bandwidth to the networks
+
 contract Ethereum is Base_Deploy_Shuffle_Update_Payload {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.ETHEREUM;

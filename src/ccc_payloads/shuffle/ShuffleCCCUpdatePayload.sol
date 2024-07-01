@@ -12,10 +12,13 @@ import {ICrossChainForwarder} from 'adi/interfaces/ICrossChainForwarder.sol';
  * - Snapshot:
  */
 contract Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
+  ICrossChainForwarder.OptimalBandwidthByChain[] public optimalBandwidths;
+
   constructor(
     address crossChainController,
     address proxyAdmin,
-    address newCCCImpl
+    address newCCCImpl,
+    ICrossChainForwarder.OptimalBandwidthByChain[] memory _optimalBandwidths
   )
     BaseCCCUpdate(
       CCCUpdateArgs({
@@ -24,13 +27,13 @@ contract Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
         newCCCImpl: newCCCImpl
       })
     )
-  {}
+  {
+    for (uint256 i = 0; i < _optimalBandwidths.length; i++) {
+      optimalBandwidths[i] = _optimalBandwidths[i];
+    }
+  }
 
-  function getInitializeSignature() public pure override returns (bytes memory) {
-    return
-      abi.encodeWithSelector(
-        IReinitialize.initializeRevision.selector,
-        new ICrossChainForwarder.OptimalBandwidthByChain[](0) // TODO: this provably needs to be passed as param, as will depend on the network
-      );
+  function getInitializeSignature() public view override returns (bytes memory) {
+    return abi.encodeWithSelector(IReinitialize.initializeRevision.selector, optimalBandwidths);
   }
 }
