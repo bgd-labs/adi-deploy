@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 import 'aave-helpers/adi/BaseCCCUpdate.sol';
 import {IReinitialize} from 'adi/revisions/update_to_rev_3/IReinitialize.sol';
 import {ICrossChainForwarder} from 'adi/interfaces/ICrossChainForwarder.sol';
+import 'forge-std/console.sol';
 
 /**
  * @title Ethereum payload to update ccc with new shuffle mechanism
@@ -12,13 +13,11 @@ import {ICrossChainForwarder} from 'adi/interfaces/ICrossChainForwarder.sol';
  * - Snapshot:
  */
 contract Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
-  ICrossChainForwarder.OptimalBandwidthByChain[] public optimalBandwidths;
-
   constructor(
     address crossChainController,
     address proxyAdmin,
     address newCCCImpl,
-    ICrossChainForwarder.OptimalBandwidthByChain[] memory _optimalBandwidths
+    ICrossChainForwarder.OptimalBandwidthByChain[] memory optimalBandwidths
   )
     BaseCCCUpdate(
       CCCUpdateArgs({
@@ -28,12 +27,12 @@ contract Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
       })
     )
   {
-    for (uint256 i = 0; i < _optimalBandwidths.length; i++) {
-      optimalBandwidths[i] = _optimalBandwidths[i];
-    }
-  }
-
-  function getInitializeSignature() public view override returns (bytes memory) {
-    return abi.encodeWithSelector(IReinitialize.initializeRevision.selector, optimalBandwidths);
+    console.log('------', optimalBandwidths.length);
+    initializeSignature = abi.encodeWithSelector(
+      IReinitialize.initializeRevision.selector,
+      optimalBandwidths
+    );
+    console.log('-----asdfasdfaf');
+    console.logBytes(initializeSignature);
   }
 }

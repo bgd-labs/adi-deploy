@@ -19,13 +19,13 @@ contract ArbAdapterUpdatePayloadTest is ADITestBase, DeployArbitrumPayload {
     payload = new AaveV3Arbitrum_New_Adapter_Payload(crossChainController, newAdapter);
   }
 
-
   function test_defaultTest() public {
     defaultTest(
       'test_adi_diffs',
       GovernanceV3Arbitrum.CROSS_CHAIN_CONTROLLER,
       address(payload),
-      true
+      true,
+      vm
     );
   }
 }
