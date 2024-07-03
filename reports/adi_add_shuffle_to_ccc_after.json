@@ -1,6 +1,6 @@
 {
   "chainId": 1,
-  "crossChainControllerImpl": "0x8B471FdD45F993092263BE5D51afb3D052324bCD",
+  "crossChainControllerImpl": "0x92F4736b72D131D836B3e4d4C3C23fE53150Ce4d",
   "forwarderAdaptersByChain": {
     "1": {
       "0x6cfbd2aA4691fc18B9C209bDd43DC3943C228FCf": "0x6cfbd2aA4691fc18B9C209bDd43DC3943C228FCf"
