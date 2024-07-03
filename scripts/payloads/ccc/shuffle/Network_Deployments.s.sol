@@ -9,7 +9,7 @@ contract Ethereum is Base_Deploy_Shuffle_Update_Payload {
     return ChainIds.ETHEREUM;
   }
 
-  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+  function _getShufflePayloadByteCode() internal pure override returns (bytes memory) {
     return type(Ethereum_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }
@@ -23,7 +23,7 @@ contract Polygon is Base_Deploy_Shuffle_Update_Payload {
     return ChainIds.POLYGON;
   }
 
-  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+  function _getShufflePayloadByteCode() internal pure override returns (bytes memory) {
     return type(Polygon_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }
@@ -37,7 +37,7 @@ contract Avalanche is Base_Deploy_Shuffle_Update_Payload {
     return ChainIds.AVALANCHE;
   }
 
-  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+  function _getShufflePayloadByteCode() internal pure override returns (bytes memory) {
     return type(Avalanche_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }
@@ -47,7 +47,7 @@ contract Arbitrum is Base_Deploy_Shuffle_Update_Payload {
     return ChainIds.ARBITRUM;
   }
 
-  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+  function _getShufflePayloadByteCode() internal pure override returns (bytes memory) {
     return type(Arbitrum_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }
@@ -57,7 +57,7 @@ contract Optimism is Base_Deploy_Shuffle_Update_Payload {
     return ChainIds.OPTIMISM;
   }
 
-  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+  function _getShufflePayloadByteCode() internal pure override returns (bytes memory) {
     return type(Optimism_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }
@@ -67,7 +67,7 @@ contract Metis is Base_Deploy_Shuffle_Update_Payload {
     return ChainIds.METIS;
   }
 
-  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+  function _getShufflePayloadByteCode() internal pure override returns (bytes memory) {
     return type(Metis_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }
@@ -81,7 +81,7 @@ contract Binance is Base_Deploy_Shuffle_Update_Payload {
     return ChainIds.BNB;
   }
 
-  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+  function _getShufflePayloadByteCode() internal pure override returns (bytes memory) {
     return type(Binance_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }
@@ -91,7 +91,7 @@ contract Base is Base_Deploy_Shuffle_Update_Payload {
     return ChainIds.BASE;
   }
 
-  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+  function _getShufflePayloadByteCode() internal pure override returns (bytes memory) {
     return type(Base_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }
@@ -105,7 +105,7 @@ contract Gnosis is Base_Deploy_Shuffle_Update_Payload {
     return ChainIds.GNOSIS;
   }
 
-  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+  function _getShufflePayloadByteCode() internal pure override returns (bytes memory) {
     return type(Gnosis_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }
@@ -115,7 +115,7 @@ contract Scroll is Base_Deploy_Shuffle_Update_Payload {
     return ChainIds.SCROLL;
   }
 
-  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+  function _getShufflePayloadByteCode() internal pure override returns (bytes memory) {
     return type(Scroll_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }
@@ -129,7 +129,7 @@ contract Celo is Base_Deploy_Shuffle_Update_Payload {
     return ChainIds.CELO;
   }
 
-  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+  function _getShufflePayloadByteCode() internal pure override returns (bytes memory) {
     return type(Celo_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }

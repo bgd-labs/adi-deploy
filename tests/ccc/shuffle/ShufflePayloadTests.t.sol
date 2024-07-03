@@ -26,7 +26,6 @@ abstract contract BaseShufflePayloadTest is ADITestBase {
   }
 
   function test_defaultTest() public {
-    console.log('----------------------', address(payload));
     defaultTest('add_shuffle_to_ccc', crossChainController, address(payload), true, vm);
   }
 }

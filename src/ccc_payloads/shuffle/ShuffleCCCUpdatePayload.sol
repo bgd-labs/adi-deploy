@@ -15,7 +15,7 @@ import {ChainIds} from 'aave-helpers/ChainIds.sol';
 contract Ethereum_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
-  function getInitializeSignature() public override returns (bytes memory) {
+  function getInitializeSignature() public pure override returns (bytes memory) {
     ICrossChainForwarder.OptimalBandwidthByChain[]
       memory optimalBandwidths = new ICrossChainForwarder.OptimalBandwidthByChain[](5);
 
@@ -50,7 +50,7 @@ contract Ethereum_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 contract Polygon_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
-  function getInitializeSignature() public override returns (bytes memory) {
+  function getInitializeSignature() public pure override returns (bytes memory) {
     ICrossChainForwarder.OptimalBandwidthByChain[]
       memory optimalBandwidths = new ICrossChainForwarder.OptimalBandwidthByChain[](1);
     optimalBandwidths[0] = ICrossChainForwarder.OptimalBandwidthByChain({
@@ -64,7 +64,7 @@ contract Polygon_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 contract Avalanche_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
-  function getInitializeSignature() public override returns (bytes memory) {
+  function getInitializeSignature() public pure override returns (bytes memory) {
     ICrossChainForwarder.OptimalBandwidthByChain[]
       memory optimalBandwidths = new ICrossChainForwarder.OptimalBandwidthByChain[](1);
     optimalBandwidths[0] = ICrossChainForwarder.OptimalBandwidthByChain({
@@ -78,7 +78,7 @@ contract Avalanche_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 contract Arbitrum_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
-  function getInitializeSignature() public override returns (bytes memory) {
+  function getInitializeSignature() public pure override returns (bytes memory) {
     ICrossChainForwarder.OptimalBandwidthByChain[]
       memory optimalBandwidths = new ICrossChainForwarder.OptimalBandwidthByChain[](0);
 
@@ -89,7 +89,7 @@ contract Arbitrum_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 contract Optimism_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
-  function getInitializeSignature() public override returns (bytes memory) {
+  function getInitializeSignature() public pure override returns (bytes memory) {
     ICrossChainForwarder.OptimalBandwidthByChain[]
       memory optimalBandwidths = new ICrossChainForwarder.OptimalBandwidthByChain[](0);
 
@@ -100,7 +100,7 @@ contract Optimism_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 contract Metis_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
-  function getInitializeSignature() public override returns (bytes memory) {
+  function getInitializeSignature() public pure override returns (bytes memory) {
     ICrossChainForwarder.OptimalBandwidthByChain[]
       memory optimalBandwidths = new ICrossChainForwarder.OptimalBandwidthByChain[](0);
 
@@ -111,7 +111,7 @@ contract Metis_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 contract Binance_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
-  function getInitializeSignature() public override returns (bytes memory) {
+  function getInitializeSignature() public pure override returns (bytes memory) {
     ICrossChainForwarder.OptimalBandwidthByChain[]
       memory optimalBandwidths = new ICrossChainForwarder.OptimalBandwidthByChain[](0);
 
@@ -122,7 +122,7 @@ contract Binance_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 contract Base_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
-  function getInitializeSignature() public override returns (bytes memory) {
+  function getInitializeSignature() public pure override returns (bytes memory) {
     ICrossChainForwarder.OptimalBandwidthByChain[]
       memory optimalBandwidths = new ICrossChainForwarder.OptimalBandwidthByChain[](0);
 
@@ -133,7 +133,7 @@ contract Base_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 contract Gnosis_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
-  function getInitializeSignature() public override returns (bytes memory) {
+  function getInitializeSignature() public pure override returns (bytes memory) {
     ICrossChainForwarder.OptimalBandwidthByChain[]
       memory optimalBandwidths = new ICrossChainForwarder.OptimalBandwidthByChain[](0);
 
@@ -144,7 +144,7 @@ contract Gnosis_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 contract Scroll_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
-  function getInitializeSignature() public override returns (bytes memory) {
+  function getInitializeSignature() public pure override returns (bytes memory) {
     ICrossChainForwarder.OptimalBandwidthByChain[]
       memory optimalBandwidths = new ICrossChainForwarder.OptimalBandwidthByChain[](0);
 
@@ -155,7 +155,7 @@ contract Scroll_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 contract Celo_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
-  function getInitializeSignature() public override returns (bytes memory) {
+  function getInitializeSignature() public pure override returns (bytes memory) {
     ICrossChainForwarder.OptimalBandwidthByChain[]
       memory optimalBandwidths = new ICrossChainForwarder.OptimalBandwidthByChain[](0);
 
