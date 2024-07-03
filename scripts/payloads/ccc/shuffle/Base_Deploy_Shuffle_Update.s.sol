@@ -3,17 +3,17 @@ pragma solidity ^0.8.0;
 
 import '../../../BaseDeployerScript.sol';
 import 'adi-scripts/CCC/DeployCrossChainController.sol';
-import {CrossChainController} from 'adi/revisions/update_to_rev_3/CrossChainController.sol';
-import {CrossChainControllerWithEmergencyMode} from 'adi/revisions/update_to_rev_3/CrossChainControllerWithEmergencyMode.sol';
+import {CrossChainControllerUpgradeRev3} from 'adi/revisions/update_to_rev_3/CrossChainController.sol';
+import {CrossChainControllerWithEmergencyModeUpgradeRev3} from 'adi/revisions/update_to_rev_3/CrossChainControllerWithEmergencyMode.sol';
 import {CCCUpdateArgs} from 'aave-helpers/adi/BaseCCCUpdate.sol';
 
 // Library to get the code of ccc revision 3 (shuffle)
 library CCCUpdateDeploymentHelper {
   function getCCCImplCode(address emergencyOracle) internal pure returns (bytes memory) {
     bytes memory cccImplCode = emergencyOracle == address(0)
-      ? abi.encodePacked(type(CrossChainController).creationCode, abi.encode())
+      ? abi.encodePacked(type(CrossChainControllerUpgradeRev3).creationCode, abi.encode())
       : abi.encodePacked(
-        type(CrossChainControllerWithEmergencyMode).creationCode,
+        type(CrossChainControllerWithEmergencyModeUpgradeRev3).creationCode,
         abi.encode(emergencyOracle)
       );
 
