@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {Add_Shuffle_to_CCC_Payload} from '../../../src/ccc_payloads/shuffle/ShuffleCCCUpdatePayload.sol';
 import {Addresses, Ethereum} from '../../../scripts/payloads/ccc/shuffle/Network_Deployments.s.sol';
 import 'aave-helpers/adi/test/ADITestBase.sol';
+import 'forge-std/console.sol';
 
 abstract contract BaseShufflePayloadTest is ADITestBase {
-  Add_Shuffle_to_CCC_Payload internal payload;
+  address internal payload;
   address internal crossChainController;
 
   string internal NETWORK;
@@ -17,7 +17,7 @@ abstract contract BaseShufflePayloadTest is ADITestBase {
     BLOCK_NUMBER = blockNumber;
   }
 
-  function _getPayload() internal virtual returns (Add_Shuffle_to_CCC_Payload);
+  function _getPayload() internal virtual returns (address);
 
   function setUp() public {
     vm.createSelectFork(vm.rpcUrl(NETWORK), BLOCK_NUMBER);
@@ -32,11 +32,10 @@ abstract contract BaseShufflePayloadTest is ADITestBase {
 }
 
 contract EthereumShufflePayloadTest is Ethereum, BaseShufflePayloadTest('ethereum', 20160500) {
-  function _getPayload() internal override returns (Add_Shuffle_to_CCC_Payload) {
+  function _getPayload() internal override returns (address) {
     Addresses memory addresses = _getAddresses(TRANSACTION_NETWORK());
     address cccImpl = _deployCCCImpl();
     crossChainController = addresses.crossChainController;
-    console.log('impl', cccImpl);
     return _deployPayload(crossChainController, addresses.proxyAdmin, cccImpl);
   }
 }

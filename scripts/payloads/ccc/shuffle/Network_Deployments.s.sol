@@ -2,12 +2,15 @@
 pragma solidity ^0.8.0;
 
 import './Base_Deploy_Shuffle_Update.s.sol';
-
-// TODO: add optimal bandwidth to the networks
+import '../../../../src/ccc_payloads/shuffle/ShuffleCCCUpdatePayload.sol';
 
 contract Ethereum is Base_Deploy_Shuffle_Update_Payload {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.ETHEREUM;
+  }
+
+  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+    return type(Ethereum_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }
 
@@ -19,6 +22,10 @@ contract Polygon is Base_Deploy_Shuffle_Update_Payload {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.POLYGON;
   }
+
+  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+    return type(Polygon_Add_Shuffle_to_CCC_Payload).creationCode;
+  }
 }
 
 contract Avalanche is Base_Deploy_Shuffle_Update_Payload {
@@ -29,11 +36,19 @@ contract Avalanche is Base_Deploy_Shuffle_Update_Payload {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.AVALANCHE;
   }
+
+  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+    return type(Avalanche_Add_Shuffle_to_CCC_Payload).creationCode;
+  }
 }
 
 contract Arbitrum is Base_Deploy_Shuffle_Update_Payload {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.ARBITRUM;
+  }
+
+  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+    return type(Arbitrum_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }
 
@@ -41,11 +56,19 @@ contract Optimism is Base_Deploy_Shuffle_Update_Payload {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.OPTIMISM;
   }
+
+  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+    return type(Optimism_Add_Shuffle_to_CCC_Payload).creationCode;
+  }
 }
 
 contract Metis is Base_Deploy_Shuffle_Update_Payload {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.METIS;
+  }
+
+  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+    return type(Metis_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }
 
@@ -57,11 +80,19 @@ contract Binance is Base_Deploy_Shuffle_Update_Payload {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.BNB;
   }
+
+  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+    return type(Binance_Add_Shuffle_to_CCC_Payload).creationCode;
+  }
 }
 
 contract Base is Base_Deploy_Shuffle_Update_Payload {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.BASE;
+  }
+
+  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+    return type(Base_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }
 
@@ -73,17 +104,19 @@ contract Gnosis is Base_Deploy_Shuffle_Update_Payload {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.GNOSIS;
   }
-}
 
-contract Zkevm is Base_Deploy_Shuffle_Update_Payload {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return ChainIds.POLYGON_ZK_EVM;
+  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+    return type(Gnosis_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }
 
 contract Scroll is Base_Deploy_Shuffle_Update_Payload {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.SCROLL;
+  }
+
+  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+    return type(Scroll_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }
 
@@ -95,70 +128,8 @@ contract Celo is Base_Deploy_Shuffle_Update_Payload {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.CELO;
   }
-}
 
-contract Ethereum_testnet is Base_Deploy_Shuffle_Update_Payload {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.ETHEREUM_SEPOLIA;
-  }
-}
-
-contract Polygon_testnet is Base_Deploy_Shuffle_Update_Payload {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.POLYGON_AMOY;
-  }
-}
-
-contract Avalanche_testnet is Base_Deploy_Shuffle_Update_Payload {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.AVALANCHE_FUJI;
-  }
-}
-
-contract Arbitrum_testnet is Base_Deploy_Shuffle_Update_Payload {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.ARBITRUM_SEPOLIA;
-  }
-}
-
-contract Optimism_testnet is Base_Deploy_Shuffle_Update_Payload {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.OPTIMISM_SEPOLIA;
-  }
-}
-
-contract Metis_testnet is Base_Deploy_Shuffle_Update_Payload {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.METIS_TESTNET;
-  }
-}
-
-contract Binance_testnet is Base_Deploy_Shuffle_Update_Payload {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.BNB_TESTNET;
-  }
-}
-
-contract Base_testnet is Base_Deploy_Shuffle_Update_Payload {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.BASE_SEPOLIA;
-  }
-}
-
-contract Gnosis_testnet is Base_Deploy_Shuffle_Update_Payload {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.GNOSIS_CHIADO;
-  }
-}
-
-contract Scroll_testnet is Base_Deploy_Shuffle_Update_Payload {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.SCROLL_SEPOLIA;
-  }
-}
-
-contract Celo_testnet is Base_Deploy_Shuffle_Update_Payload {
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.CELO_ALFAJORES;
+  function _getShufflePayloadByteCode() internal override returns (bytes memory) {
+    return type(Celo_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }

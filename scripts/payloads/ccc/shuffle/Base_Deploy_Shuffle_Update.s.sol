@@ -2,10 +2,10 @@
 pragma solidity ^0.8.0;
 
 import '../../../BaseDeployerScript.sol';
-import '../../../../src/ccc_payloads/shuffle/ShuffleCCCUpdatePayload.sol';
 import 'adi-scripts/CCC/DeployCrossChainController.sol';
 import {CrossChainController} from 'adi/revisions/update_to_rev_3/CrossChainController.sol';
 import {CrossChainControllerWithEmergencyMode} from 'adi/revisions/update_to_rev_3/CrossChainControllerWithEmergencyMode.sol';
+import {CCCUpdateArgs} from 'aave-helpers/adi/BaseCCCUpdate.sol';
 
 // Library to get the code of ccc revision 3 (shuffle)
 library CCCUpdateDeploymentHelper {
@@ -28,28 +28,25 @@ library CCCUpdateDeploymentHelper {
  * - Snapshot:
  */
 abstract contract Base_Deploy_Shuffle_Update_Payload is BaseDeployerScript, BaseCCCDeploy {
-  function _getOptimalBandwidths()
-    internal
-    pure
-    virtual
-    returns (ICrossChainForwarder.OptimalBandwidthByChain[] memory)
-  {
-    return new ICrossChainForwarder.OptimalBandwidthByChain[](0);
-  }
+  function _getShufflePayloadByteCode() internal virtual returns (bytes memory);
 
   function _deployPayload(
     address crossChainController,
     address proxyAdmin,
     address crossChainControllerImpl
-  ) internal returns (Add_Shuffle_to_CCC_Payload) {
-    // TODO: provably makes sense to also deploy with create2 here
-    return
-      new Add_Shuffle_to_CCC_Payload(
-        crossChainController,
-        proxyAdmin,
-        crossChainControllerImpl,
-        _getOptimalBandwidths()
-      );
+  ) internal returns (address) {
+    bytes memory adapterCode = abi.encodePacked(
+      _getShufflePayloadByteCode(),
+      abi.encode(
+        CCCUpdateArgs({
+          crossChainController: crossChainController,
+          proxyAdmin: proxyAdmin,
+          crossChainControllerImpl: crossChainControllerImpl
+        })
+      )
+    );
+
+    return _deployByteCode(adapterCode, 'CCC Shuffle Update Payload');
   }
 
   function _deployCCCImpl() internal virtual override returns (address) {
