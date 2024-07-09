@@ -33,7 +33,7 @@ abstract contract BaseShufflePayloadTest is ADITestBase {
 contract EthereumShufflePayloadTest is Ethereum, BaseShufflePayloadTest('ethereum', 20160500) {
   function _getPayload() internal override returns (address) {
     Addresses memory addresses = _getAddresses(TRANSACTION_NETWORK());
-    address cccImpl = _deployCCCImpl();
+    address cccImpl = _deployCrossChainControllerImpl();
     crossChainController = addresses.crossChainController;
     return _deployPayload(crossChainController, addresses.proxyAdmin, cccImpl);
   }
