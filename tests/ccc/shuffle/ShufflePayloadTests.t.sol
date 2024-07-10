@@ -133,7 +133,7 @@ contract MetisShufflePayloadTest is Metis, BaseShufflePayloadTest('metis', 17614
   }
 }
 
-contract BinanceShufflePayloadTest is Binance, BaseShufflePayloadTest('binance', 40346927) {
+contract BinanceShufflePayloadTest is Binance, BaseShufflePayloadTest('binance', 40352032) {
   //  function _getDeployedPayload() internal pure override returns (address) {
   //    return address(0);
   //  }
