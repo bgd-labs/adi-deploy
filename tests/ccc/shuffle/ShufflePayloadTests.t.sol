@@ -105,7 +105,7 @@ contract ArbitrumShufflePayloadTest is Arbitrum, BaseShufflePayloadTest('arbitru
   }
 }
 
-contract OptimismShufflePayloadTest is Optimism, BaseShufflePayloadTest('arbitrum', 122500476) {
+contract OptimismShufflePayloadTest is Optimism, BaseShufflePayloadTest('optimism', 122500476) {
   //  function _getDeployedPayload() internal pure override returns (address) {
   //    return address(0);
   //  }
@@ -133,7 +133,7 @@ contract MetisShufflePayloadTest is Metis, BaseShufflePayloadTest('metis', 17614
   }
 }
 
-contract BinanceShufflePayloadTest is Binance, BaseShufflePayloadTest('binance', 40345866) {
+contract BinanceShufflePayloadTest is Binance, BaseShufflePayloadTest('binance', 40346927) {
   //  function _getDeployedPayload() internal pure override returns (address) {
   //    return address(0);
   //  }
