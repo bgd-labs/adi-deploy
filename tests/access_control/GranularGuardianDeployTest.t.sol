@@ -381,7 +381,7 @@ contract AvalancheGGTest is Avalanche, BaseCCForwarderWithEmergency('avalanche',
   }
 }
 
-contract BinanceGGTest is Binance, BaseCCCWithEmergency('binance', 40353153) {
+contract BinanceGGTest is Binance, BaseCCCWithEmergency('binance', 40353415) {
   function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
     return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
   }
@@ -403,7 +403,7 @@ contract BinanceGGTest is Binance, BaseCCCWithEmergency('binance', 40353153) {
   }
 }
 
-contract GnosisGGTest is Gnosis, BaseCCCWithEmergency('gnosis', 34896058) {
+contract GnosisGGTest is Gnosis, BaseCCCWithEmergency('gnosis', 34896209) {
   function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
     return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
   }
@@ -447,7 +447,7 @@ contract MetisGGTest is Metis, BaseGGTest('metis', 17364742) {
   }
 }
 
-contract ScrollGGTest is Scroll, BaseGGTest('scroll', 6626264) {
+contract ScrollGGTest is Scroll, BaseGGTest('scroll', 7306114) {
   function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
     return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
   }
