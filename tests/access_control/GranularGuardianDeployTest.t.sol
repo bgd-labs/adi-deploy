@@ -85,13 +85,13 @@ abstract contract BaseGGTest is BaseTest {
 abstract contract BaseCCCWithEmergency is BaseGGTest {
   constructor(string memory network, uint256 blockNumber) BaseGGTest(network, blockNumber) {}
 
-  function test_solveEmergency()
+  function test_solveEmergencyDeprecated()
     public
     generateEmergencyState(CROSS_CHAIN_CONTROLLER())
     validateEmergencySolved(CROSS_CHAIN_CONTROLLER())
   {
     vm.startPrank(_getSolveEmergencyGuardian());
-    control.solveEmergency(
+    control.solveEmergencyDeprecated(
       new ICrossChainReceiver.ConfirmationInput[](0),
       new ICrossChainReceiver.ValidityTimestampInput[](0),
       new ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[](0),
@@ -104,7 +104,7 @@ abstract contract BaseCCCWithEmergency is BaseGGTest {
     vm.stopPrank();
   }
 
-  function test_solveEmergencyWhenWrongCaller(address caller) public {
+  function test_solveEmergencyDeprecatedWhenWrongCaller(address caller) public {
     vm.assume(caller != _getSolveEmergencyGuardian());
     hoax(caller);
     vm.expectRevert(
@@ -116,7 +116,7 @@ abstract contract BaseCCCWithEmergency is BaseGGTest {
         )
       )
     );
-    control.solveEmergency(
+    control.solveEmergencyDeprecated(
       new ICrossChainReceiver.ConfirmationInput[](0),
       new ICrossChainReceiver.ValidityTimestampInput[](0),
       new ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[](0),
@@ -259,13 +259,13 @@ abstract contract BaseCCForwarder is BaseGGTest {
 abstract contract BaseCCForwarderWithEmergency is BaseCCForwarder {
   constructor(string memory network, uint256 blockNumber) BaseCCForwarder(network, blockNumber) {}
 
-  function test_solveEmergency()
+  function test_solveEmergencyDeprecated()
     public
     generateEmergencyState(CROSS_CHAIN_CONTROLLER())
     validateEmergencySolved(CROSS_CHAIN_CONTROLLER())
   {
     vm.startPrank(_getSolveEmergencyGuardian());
-    control.solveEmergency(
+    control.solveEmergencyDeprecated(
       new ICrossChainReceiver.ConfirmationInput[](0),
       new ICrossChainReceiver.ValidityTimestampInput[](0),
       new ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[](0),
@@ -278,7 +278,7 @@ abstract contract BaseCCForwarderWithEmergency is BaseCCForwarder {
     vm.stopPrank();
   }
 
-  function test_solveEmergencyWhenWrongCaller(address caller) public {
+  function test_solveEmergencyWhenWrongCallerDeprecated(address caller) public {
     vm.assume(caller != _getSolveEmergencyGuardian());
     hoax(caller);
     vm.expectRevert(
@@ -290,7 +290,7 @@ abstract contract BaseCCForwarderWithEmergency is BaseCCForwarder {
         )
       )
     );
-    control.solveEmergency(
+    control.solveEmergencyDeprecated(
       new ICrossChainReceiver.ConfirmationInput[](0),
       new ICrossChainReceiver.ValidityTimestampInput[](0),
       new ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[](0),
@@ -381,7 +381,7 @@ contract AvalancheGGTest is Avalanche, BaseCCForwarderWithEmergency('avalanche',
   }
 }
 
-contract BinanceGGTest is Binance, BaseCCCWithEmergency('binance', 39618770) {
+contract BinanceGGTest is Binance, BaseCCCWithEmergency('binance', 40353153) {
   function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
     return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
   }
@@ -403,7 +403,7 @@ contract BinanceGGTest is Binance, BaseCCCWithEmergency('binance', 39618770) {
   }
 }
 
-contract GnosisGGTest is Gnosis, BaseCCCWithEmergency('gnosis', 34501315) {
+contract GnosisGGTest is Gnosis, BaseCCCWithEmergency('gnosis', 34896058) {
   function CROSS_CHAIN_CONTROLLER() internal view override returns (address) {
     return _getAddresses(TRANSACTION_NETWORK()).crossChainController;
   }
