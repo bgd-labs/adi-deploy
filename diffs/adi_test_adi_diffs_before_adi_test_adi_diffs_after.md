@@ -4,7 +4,7 @@
 {
   "receiverAdaptersByChain": {
     "1": {
-      "0x1Cfe182fa075EF185adFD605806241e2d181ffC2": {
+      "0xA83F1E89EB2E904983dEEDc50517Fd7bDD5946c6": {
         "from": null,
         "to": true
       }

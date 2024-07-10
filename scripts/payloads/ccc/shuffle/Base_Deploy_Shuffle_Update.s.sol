@@ -43,9 +43,11 @@ abstract contract Base_Deploy_Shuffle_Update_Payload is BaseDeployerScript {
 
   function _deployPayload(
     address crossChainController,
-    address proxyAdmin,
-    address crossChainControllerImpl
+    address proxyAdmin
   ) internal returns (address) {
+    bytes memory cccImplCode = CCCUpdateDeploymentHelper.getCCCImplCode(CL_EMERGENCY_ORACLE());
+    address crossChainControllerImpl = _deployByteCode(cccImplCode, SALT());
+
     bytes memory payloadCode = abi.encodePacked(
       _getShufflePayloadByteCode(),
       abi.encode(
@@ -60,18 +62,7 @@ abstract contract Base_Deploy_Shuffle_Update_Payload is BaseDeployerScript {
     return _deployByteCode(payloadCode, PAYLOAD_SALT());
   }
 
-  function _deployCrossChainControllerImpl() internal returns (address) {
-    bytes memory cccImplCode = CCCUpdateDeploymentHelper.getCCCImplCode(CL_EMERGENCY_ORACLE());
-
-    return _deployByteCode(cccImplCode, SALT());
-  }
-
   function _execute(Addresses memory addresses) internal virtual override {
-    addresses.crossChainControllerImpl = _deployCrossChainControllerImpl();
-    _deployPayload(
-      addresses.crossChainController,
-      addresses.proxyAdmin,
-      addresses.crossChainControllerImpl
-    );
+    _deployPayload(addresses.crossChainController, addresses.proxyAdmin);
   }
 }

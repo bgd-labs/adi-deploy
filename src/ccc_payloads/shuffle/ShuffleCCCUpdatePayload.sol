@@ -47,6 +47,9 @@ contract Ethereum_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   }
 }
 
+// Use all currently registered bridges to account for the manual trigger of the native polygon bridge. This way we ensure
+// that with current configuration it can reach consensus on destination network (ethereum). On a future AIP this can be lowered
+// once the manual trigger of polygon native bridge is solved
 contract Polygon_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
@@ -55,7 +58,7 @@ contract Polygon_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
       memory optimalBandwidths = new ICrossChainForwarder.OptimalBandwidthByChain[](1);
     optimalBandwidths[0] = ICrossChainForwarder.OptimalBandwidthByChain({
       chainId: ChainIds.ETHEREUM,
-      optimalBandwidth: 3 // remember the problem with polygon native???
+      optimalBandwidth: 4
     });
     return abi.encodeWithSelector(IReinitialize.initializeRevision.selector, optimalBandwidths);
   }
