@@ -3,6 +3,10 @@ pragma solidity ^0.8.0;
 
 import './Base_Deploy_Shuffle_Update.s.sol';
 import '../../../../src/ccc_payloads/shuffle/ShuffleCCCUpdatePayload.sol';
+import {GovernanceV3Polygon} from 'aave-address-book/GovernanceV3Polygon.sol';
+import {GovernanceV3Avalanche} from 'aave-address-book/GovernanceV3Avalanche.sol';
+import {GovernanceV3BNB} from 'aave-address-book/GovernanceV3BNB.sol';
+import {GovernanceV3Gnosis} from 'aave-address-book/GovernanceV3Gnosis.sol';
 
 contract Ethereum is Base_Deploy_Shuffle_Update_Payload {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -16,7 +20,7 @@ contract Ethereum is Base_Deploy_Shuffle_Update_Payload {
 
 contract Polygon is Base_Deploy_Shuffle_Update_Payload {
   function CL_EMERGENCY_ORACLE() internal pure override returns (address) {
-    return 0xDAFA1989A504c48Ee20a582f2891eeB25E2fA23F;
+    return GovernanceV3Polygon.CL_EMERGENCY_ORACLE;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -30,7 +34,7 @@ contract Polygon is Base_Deploy_Shuffle_Update_Payload {
 
 contract Avalanche is Base_Deploy_Shuffle_Update_Payload {
   function CL_EMERGENCY_ORACLE() internal pure override returns (address) {
-    return 0x41185495Bc8297a65DC46f94001DC7233775EbEe;
+    return GovernanceV3Avalanche.CL_EMERGENCY_ORACLE;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -74,7 +78,7 @@ contract Metis is Base_Deploy_Shuffle_Update_Payload {
 
 contract Binance is Base_Deploy_Shuffle_Update_Payload {
   function CL_EMERGENCY_ORACLE() internal pure override returns (address) {
-    return 0xcabb46FfB38c93348Df16558DF156e9f68F9F7F1;
+    return GovernanceV3BNB.CL_EMERGENCY_ORACLE;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -98,7 +102,7 @@ contract Base is Base_Deploy_Shuffle_Update_Payload {
 
 contract Gnosis is Base_Deploy_Shuffle_Update_Payload {
   function CL_EMERGENCY_ORACLE() internal pure override returns (address) {
-    return 0xF937ffAeA1363e4Fa260760bDFA2aA8Fc911F84D;
+    return GovernanceV3Gnosis.CL_EMERGENCY_ORACLE;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -117,19 +121,5 @@ contract Scroll is Base_Deploy_Shuffle_Update_Payload {
 
   function _getShufflePayloadByteCode() internal pure override returns (bytes memory) {
     return type(Scroll_Add_Shuffle_to_CCC_Payload).creationCode;
-  }
-}
-
-contract Celo is Base_Deploy_Shuffle_Update_Payload {
-  function CL_EMERGENCY_ORACLE() internal pure override returns (address) {
-    return 0x91b21900E91CD302EBeD05E45D8f270ddAED944d;
-  }
-
-  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return ChainIds.CELO;
-  }
-
-  function _getShufflePayloadByteCode() internal pure override returns (bytes memory) {
-    return type(Celo_Add_Shuffle_to_CCC_Payload).creationCode;
   }
 }
