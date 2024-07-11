@@ -20,12 +20,6 @@ library CCCUpdateDeploymentHelper {
   }
 }
 
-/**
- * @title Ethereum payload to update ccc with new shuffle mechanism
- * @author BGD Labs @bgdlabs
- * - Discussion:
- * - Snapshot:
- */
 abstract contract Base_Deploy_Shuffle_Update_Payload is BaseDeployerScript {
   function _getShufflePayloadByteCode() internal virtual returns (bytes memory);
 

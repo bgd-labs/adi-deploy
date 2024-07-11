@@ -7,10 +7,9 @@ import {ICrossChainForwarder} from 'adi/interfaces/ICrossChainForwarder.sol';
 import {ChainIds} from 'aave-helpers/ChainIds.sol';
 
 /**
- * @title Ethereum payload to update ccc with new shuffle mechanism
+ * @title Ethereum payload to update CrossChainController with new shuffle mechanism
  * @author BGD Labs @bgdlabs
  * - Discussion:
- * - Snapshot:
  */
 contract Ethereum_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
@@ -21,7 +20,7 @@ contract Ethereum_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 
     optimalBandwidths[0] = ICrossChainForwarder.OptimalBandwidthByChain({
       chainId: ChainIds.POLYGON,
-      optimalBandwidth: 3 // remember the problem with polygon native???
+      optimalBandwidth: 3
     });
     optimalBandwidths[1] = ICrossChainForwarder.OptimalBandwidthByChain({
       chainId: ChainIds.AVALANCHE,
@@ -35,7 +34,7 @@ contract Ethereum_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
       chainId: ChainIds.GNOSIS,
       optimalBandwidth: 2
     });
-    // not yet connected but we can set it up??
+    // not yet connected but we can set it up
     optimalBandwidths[4] = ICrossChainForwarder.OptimalBandwidthByChain({
       chainId: ChainIds.CELO,
       optimalBandwidth: 2
@@ -47,7 +46,12 @@ contract Ethereum_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   }
 }
 
-// Use all currently registered bridges to account for the manual trigger of the native polygon bridge. This way we ensure
+/**
+ * @title Ethereum payload to update CrossChainController with new shuffle mechanism
+ * @author BGD Labs @bgdlabs
+ * - Discussion:
+ */
+/// @dev Use all currently registered bridges to account for the manual trigger of the native polygon bridge. This way we ensure
 // that with current configuration it can reach consensus on destination network (ethereum). On a future AIP this can be lowered
 // once the manual trigger of polygon native bridge is solved
 contract Polygon_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
@@ -64,6 +68,11 @@ contract Polygon_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   }
 }
 
+/**
+ * @title Ethereum payload to update CrossChainController with new shuffle mechanism
+ * @author BGD Labs @bgdlabs
+ * - Discussion:
+ */
 contract Avalanche_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
@@ -78,6 +87,11 @@ contract Avalanche_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   }
 }
 
+/**
+ * @title Ethereum payload to update CrossChainController with new shuffle mechanism
+ * @author BGD Labs @bgdlabs
+ * - Discussion:
+ */
 contract Arbitrum_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
@@ -89,6 +103,11 @@ contract Arbitrum_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   }
 }
 
+/**
+ * @title Ethereum payload to update CrossChainController with new shuffle mechanism
+ * @author BGD Labs @bgdlabs
+ * - Discussion:
+ */
 contract Optimism_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
@@ -100,6 +119,11 @@ contract Optimism_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   }
 }
 
+/**
+ * @title Ethereum payload to update CrossChainController with new shuffle mechanism
+ * @author BGD Labs @bgdlabs
+ * - Discussion:
+ */
 contract Metis_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
@@ -111,6 +135,11 @@ contract Metis_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   }
 }
 
+/**
+ * @title Ethereum payload to update CrossChainController with new shuffle mechanism
+ * @author BGD Labs @bgdlabs
+ * - Discussion:
+ */
 contract Binance_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
@@ -122,6 +151,11 @@ contract Binance_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   }
 }
 
+/**
+ * @title Ethereum payload to update CrossChainController with new shuffle mechanism
+ * @author BGD Labs @bgdlabs
+ * - Discussion:
+ */
 contract Base_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
@@ -133,6 +167,11 @@ contract Base_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   }
 }
 
+/**
+ * @title Ethereum payload to update CrossChainController with new shuffle mechanism
+ * @author BGD Labs @bgdlabs
+ * - Discussion:
+ */
 contract Gnosis_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
@@ -144,18 +183,12 @@ contract Gnosis_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   }
 }
 
+/**
+ * @title Ethereum payload to update CrossChainController with new shuffle mechanism
+ * @author BGD Labs @bgdlabs
+ * - Discussion:
+ */
 contract Scroll_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
-  constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
-
-  function getInitializeSignature() public pure override returns (bytes memory) {
-    ICrossChainForwarder.OptimalBandwidthByChain[]
-      memory optimalBandwidths = new ICrossChainForwarder.OptimalBandwidthByChain[](0);
-
-    return abi.encodeWithSelector(IReinitialize.initializeRevision.selector, optimalBandwidths);
-  }
-}
-
-contract Celo_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
 
   function getInitializeSignature() public pure override returns (bytes memory) {
