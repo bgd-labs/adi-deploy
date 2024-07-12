@@ -54,8 +54,8 @@ metis={ key="any", chain=1088, url='https://andromeda-explorer.metis.io/' }
 metis-testnet={ key="any", chain=599, url='https://goerli.explorer.metisdevops.link/' }
 fantom={key="${ETHERSCAN_API_KEY_FANTOM}",chain=250}
 fantom-testnet={key="${ETHERSCAN_API_KEY_FANTOM}",chain=250}
-binance={key="${ETHERSCAN_API_KEY_BINANCE}",chain=56}
-binance-testnet={key="${ETHERSCAN_API_KEY_BINANCE}",chain=97}
+binance={key="${ETHERSCAN_API_KEY_BNB}",chain=56}
+binance-testnet={key="${ETHERSCAN_API_KEY_BNB}",chain=97}
 base={key="${ETHERSCAN_API_KEY_BASE}",chain=8453, url='https://developer-access-mainnet.base.org'}
 base-testnet={key="${ETHERSCAN_API_KEY_BASE}",chain=8453, url='https://developer-access-mainnet.base.org'}
 gnosis={key="${ETHERSCAN_API_KEY_GNOSIS}",chain=100}

@@ -17,12 +17,12 @@ BASE_KEY = --private-key ${PRIVATE_KEY}
 
 
 
-custom_ethereum := --with-gas-price 15000000000 # 53 gwei
-custom_polygon :=  --with-gas-price 190000000000 # 560 gwei
-custom_avalanche := --with-gas-price 27000000000 # 27 gwei
-custom_metis-testnet := --legacy --verifier-url https://goerli.explorer.metisdevops.link/api/
-custom_metis := --verifier-url  https://api.routescan.io/v2/network/mainnet/evm/1088/etherscan
-custom_scroll-testnet := --legacy --with-gas-price 1000000000 # 1 gwei
+#custom_ethereum := --with-gas-price 15000000000 # 53 gwei
+#custom_polygon :=  --with-gas-price 190000000000 # 560 gwei
+#custom_avalanche := --with-gas-price 27000000000 # 27 gwei
+#custom_metis-testnet := --legacy --verifier-url https://goerli.explorer.metisdevops.link/api/
+#custom_metis := --verifier-url  https://api.routescan.io/v2/network/mainnet/evm/1088/etherscan
+#custom_scroll-testnet := --legacy --with-gas-price 1000000000 # 1 gwei
 
 # params:
 #  1 - path/file_name
@@ -42,7 +42,11 @@ custom_scroll-testnet := --legacy --with-gas-price 1000000000 # 1 gwei
 
 # catapulta
 define deploy_single_fn
+<<<<<<< HEAD
 npx catapulta@0.4.1 script \
+=======
+npx catapulta@latest script \
+>>>>>>> 7dbfbb6741b409480df33ec97ff98944c530d1c1
  scripts/$(1).s.sol:$(if $(3),$(3),$(shell UP=$(if $(PROD),$(2),$(2)_testnet); echo $${UP} | perl -nE 'say ucfirst')) \
  --network $(2) --slow --skip-git \
  $(if $(LEDGER),$(BASE_LEDGER),$(BASE_KEY)) \
@@ -260,3 +264,6 @@ deploy-ccc-revision-and-update:
 
 deploy-ccc-update-payload:
 	$(call deploy_fn,helpers/UpdateCCCImpl_Payload,celo)
+
+deploy-ccc-shuffle-payload:
+	$(call deploy_fn,payloads/ccc/shuffle/Network_Deployments,metis)
