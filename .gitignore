@@ -16,3 +16,5 @@ node_modules
 # ignore foundry deploy artifacts
 broadcast/
 input.json
+
+run-latest.json

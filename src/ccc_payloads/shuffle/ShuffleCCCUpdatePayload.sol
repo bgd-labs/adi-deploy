@@ -9,7 +9,7 @@ import {ChainIds} from 'aave-helpers/ChainIds.sol';
 /**
  * @title Ethereum payload to update CrossChainController with new shuffle mechanism
  * @author BGD Labs @bgdlabs
- * - Discussion:
+ * - Discussion: https://governance.aave.com/t/bgd-technical-maintenance-proposals/15274/39
  */
 contract Ethereum_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
@@ -49,7 +49,7 @@ contract Ethereum_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 /**
  * @title Ethereum payload to update CrossChainController with new shuffle mechanism
  * @author BGD Labs @bgdlabs
- * - Discussion:
+ * - Discussion: https://governance.aave.com/t/bgd-technical-maintenance-proposals/15274/39
  */
 /// @dev Use all currently registered bridges to account for the manual trigger of the native polygon bridge. This way we ensure
 // that with current configuration it can reach consensus on destination network (ethereum). On a future AIP this can be lowered
@@ -71,7 +71,7 @@ contract Polygon_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 /**
  * @title Ethereum payload to update CrossChainController with new shuffle mechanism
  * @author BGD Labs @bgdlabs
- * - Discussion:
+ * - Discussion: https://governance.aave.com/t/bgd-technical-maintenance-proposals/15274/39
  */
 contract Avalanche_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
@@ -90,7 +90,7 @@ contract Avalanche_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 /**
  * @title Ethereum payload to update CrossChainController with new shuffle mechanism
  * @author BGD Labs @bgdlabs
- * - Discussion:
+ * - Discussion: https://governance.aave.com/t/bgd-technical-maintenance-proposals/15274/39
  */
 contract Arbitrum_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
@@ -106,7 +106,7 @@ contract Arbitrum_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 /**
  * @title Ethereum payload to update CrossChainController with new shuffle mechanism
  * @author BGD Labs @bgdlabs
- * - Discussion:
+ * - Discussion: https://governance.aave.com/t/bgd-technical-maintenance-proposals/15274/39
  */
 contract Optimism_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
@@ -122,7 +122,7 @@ contract Optimism_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 /**
  * @title Ethereum payload to update CrossChainController with new shuffle mechanism
  * @author BGD Labs @bgdlabs
- * - Discussion:
+ * - Discussion: https://governance.aave.com/t/bgd-technical-maintenance-proposals/15274/39
  */
 contract Metis_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
@@ -138,7 +138,7 @@ contract Metis_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 /**
  * @title Ethereum payload to update CrossChainController with new shuffle mechanism
  * @author BGD Labs @bgdlabs
- * - Discussion:
+ * - Discussion: https://governance.aave.com/t/bgd-technical-maintenance-proposals/15274/39
  */
 contract Binance_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
@@ -154,7 +154,7 @@ contract Binance_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 /**
  * @title Ethereum payload to update CrossChainController with new shuffle mechanism
  * @author BGD Labs @bgdlabs
- * - Discussion:
+ * - Discussion: https://governance.aave.com/t/bgd-technical-maintenance-proposals/15274/39
  */
 contract Base_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
@@ -170,7 +170,7 @@ contract Base_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 /**
  * @title Ethereum payload to update CrossChainController with new shuffle mechanism
  * @author BGD Labs @bgdlabs
- * - Discussion:
+ * - Discussion: https://governance.aave.com/t/bgd-technical-maintenance-proposals/15274/39
  */
 contract Gnosis_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
@@ -186,7 +186,7 @@ contract Gnosis_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
 /**
  * @title Ethereum payload to update CrossChainController with new shuffle mechanism
  * @author BGD Labs @bgdlabs
- * - Discussion:
+ * - Discussion: https://governance.aave.com/t/bgd-technical-maintenance-proposals/15274/39
  */
 contract Scroll_Add_Shuffle_to_CCC_Payload is BaseCCCUpdate {
   constructor(CCCUpdateArgs memory cccUpdateArgs) BaseCCCUpdate(cccUpdateArgs) {}
