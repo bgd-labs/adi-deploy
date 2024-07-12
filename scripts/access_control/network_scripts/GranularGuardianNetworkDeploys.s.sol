@@ -37,7 +37,7 @@ contract Ethereum is DeployGranularGuardian {
   }
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
-    return MiscEthereum.PROTOCOL_GUARDIAN;
+    return 0xCe52ab41C40575B072A18C9700091Ccbe4A06710;
   }
 }
 
@@ -51,7 +51,7 @@ contract Avalanche is DeployGranularGuardian {
   }
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
-    return MiscAvalanche.PROTOCOL_GUARDIAN;
+    return 0x360c0a69Ed2912351227a0b745f890CB2eBDbcFe;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -69,7 +69,7 @@ contract Polygon is DeployGranularGuardian {
   }
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
-    return MiscPolygon.PROTOCOL_GUARDIAN;
+    return 0x1A0581dd5C7C3DA4Ba1CDa7e0BcA7286afc4973b;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -87,7 +87,7 @@ contract Binance is DeployGranularGuardian {
   }
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
-    return MiscBNB.PROTOCOL_GUARDIAN;
+    return 0x1A0581dd5C7C3DA4Ba1CDa7e0BcA7286afc4973b;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -105,7 +105,7 @@ contract Gnosis is DeployGranularGuardian {
   }
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
-    return MiscGnosis.PROTOCOL_GUARDIAN;
+    return 0x1A0581dd5C7C3DA4Ba1CDa7e0BcA7286afc4973b;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -123,7 +123,7 @@ contract Metis is DeployGranularGuardian {
   }
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
-    return MiscMetis.PROTOCOL_GUARDIAN;
+    return 0x360c0a69Ed2912351227a0b745f890CB2eBDbcFe;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -141,7 +141,7 @@ contract Scroll is DeployGranularGuardian {
   }
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
-    return MiscScroll.PROTOCOL_GUARDIAN;
+    return 0x1A0581dd5C7C3DA4Ba1CDa7e0BcA7286afc4973b;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -159,7 +159,7 @@ contract Optimism is DeployGranularGuardian {
   }
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
-    return MiscOptimism.PROTOCOL_GUARDIAN;
+    return 0x360c0a69Ed2912351227a0b745f890CB2eBDbcFe;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -177,7 +177,7 @@ contract Arbitrum is DeployGranularGuardian {
   }
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
-    return MiscArbitrum.PROTOCOL_GUARDIAN;
+    return 0x1A0581dd5C7C3DA4Ba1CDa7e0BcA7286afc4973b;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
@@ -195,7 +195,7 @@ contract Base is DeployGranularGuardian {
   }
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
-    return MiscBase.PROTOCOL_GUARDIAN;
+    return 0x360c0a69Ed2912351227a0b745f890CB2eBDbcFe;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
