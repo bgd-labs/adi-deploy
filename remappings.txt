@@ -1,0 +1,11 @@
+solidity-utils/=lib/aave-delivery-infrastructure/lib/aave-helpers/lib/solidity-utils/src/
+ds-test/=lib/aave-delivery-infrastructure/lib/aave-helpers/lib/forge-std/lib/ds-test/src/
+forge-std/=lib/aave-delivery-infrastructure/lib/aave-helpers/lib/forge-std/src/
+openzeppelin-contracts/=lib/aave-delivery-infrastructure/lib/openzeppelin-contracts/
+aave-helpers/=lib/aave-delivery-infrastructure/lib/aave-helpers/src/
+aave-address-book/=lib/aave-delivery-infrastructure/lib/aave-helpers/lib/aave-address-book/src/
+adi/=lib/aave-delivery-infrastructure/src/contracts/
+adi-scripts/=lib/aave-delivery-infrastructure/scripts/
+adi-tests/=lib/aave-delivery-infrastructure/tests/
+
+
