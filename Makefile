@@ -42,11 +42,7 @@ BASE_KEY = --private-key ${PRIVATE_KEY}
 
 # catapulta
 define deploy_single_fn
-<<<<<<< HEAD
-npx catapulta@0.4.1 script \
-=======
 npx catapulta@latest script \
->>>>>>> 7dbfbb6741b409480df33ec97ff98944c530d1c1
  scripts/$(1).s.sol:$(if $(3),$(3),$(shell UP=$(if $(PROD),$(2),$(2)_testnet); echo $${UP} | perl -nE 'say ucfirst')) \
  --network $(2) --slow --skip-git \
  $(if $(LEDGER),$(BASE_LEDGER),$(BASE_KEY)) \
