@@ -144,6 +144,12 @@ contract Celo is BaseCCCNetworkDeployment {
   }
 }
 
+contract Zksync is BaseCCCNetworkDeployment {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.ZK_SYNC;
+  }
+}
+
 contract Ethereum_testnet is BaseCCCNetworkDeployment {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;

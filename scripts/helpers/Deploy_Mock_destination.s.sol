@@ -82,6 +82,12 @@ contract Scroll is BaseMockDestination {
   }
 }
 
+contract Zksync is BaseMockDestination {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return ChainIds.ZK_SYNC;
+  }
+}
+
 contract Ethereum_testnet is BaseMockDestination {
   function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;

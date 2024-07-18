@@ -202,3 +202,21 @@ contract Base is DeployGranularGuardian {
     return ChainIds.BASE;
   }
 }
+
+contract Zksync is DeployGranularGuardian {
+  function DEFAULT_ADMIN() internal pure override returns (address) {
+    return GovernanceV3Zksync.EXECUTOR_LVL_1;
+  }
+
+  function RETRY_GUARDIAN() internal pure override returns (address) {
+    return address(0); // TODO: bgd guardian
+  }
+
+  function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
+    return address(0); // TODO: add correct guadian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.ZK_SYNC;
+  }
+}
