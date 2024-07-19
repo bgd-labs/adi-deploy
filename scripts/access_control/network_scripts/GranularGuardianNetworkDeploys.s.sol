@@ -205,7 +205,7 @@ contract Base is DeployGranularGuardian {
 
 contract Zksync is DeployGranularGuardian {
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return GovernanceV3Zksync.EXECUTOR_LVL_1;
+    return address(0); //GovernanceV3Zksync.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
