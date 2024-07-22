@@ -6,7 +6,15 @@ import '../BaseDeployerScript.sol';
 
 abstract contract DeployZkSyncAdapter is BaseDeployerScript, BaseZkSyncAdapter {
   function _execute(Addresses memory addresses) internal virtual override {
-    addresses.zksyncAdapter = _deployAdapter(addresses.crossChainController);
+    addresses.zksyncAdapter = _deployWithoutCreate2(
+      BaseAdapterArgs({
+        crossChainController: addresses.crossChainController,
+        providerGasLimit: PROVIDER_GAS_LIMIT(),
+        trustedRemotes: _getTrustedRemotes(),
+        isTestnet: isTestnet()
+      })
+    );
+    _deployAdapter(addresses.crossChainController);
   }
 }
 
