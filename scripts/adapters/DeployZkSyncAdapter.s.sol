@@ -6,15 +6,18 @@ import '../BaseDeployerScript.sol';
 
 abstract contract DeployZkSyncAdapter is BaseDeployerScript, BaseZkSyncAdapter {
   function _execute(Addresses memory addresses) internal virtual override {
-    addresses.zksyncAdapter = _deployWithoutCreate2(
-      BaseAdapterArgs({
-        crossChainController: addresses.crossChainController,
-        providerGasLimit: PROVIDER_GAS_LIMIT(),
-        trustedRemotes: _getTrustedRemotes(),
-        isTestnet: isTestnet()
-      })
-    );
-    _deployAdapter(addresses.crossChainController);
+    if (TRANSACTION_NETWORK() == ChainIds.ZK_SYNC) {
+      addresses.zksyncAdapter = _deployWithoutCreate2(
+        BaseAdapterArgs({
+          crossChainController: addresses.crossChainController,
+          providerGasLimit: PROVIDER_GAS_LIMIT(),
+          trustedRemotes: _getTrustedRemotes(),
+          isTestnet: isTestnet()
+        })
+      );
+    } else {
+      _deployAdapter(addresses.crossChainController);
+    }
   }
 }
 
@@ -37,7 +40,7 @@ contract Ethereum is DeployZkSyncAdapter {
   }
 
   function BRIDGE_HUB() internal pure override returns (address) {
-    return 0x32400084C286CF3E17e7B677ea9583e60a000324; // TODO: REPLACE WITH CORRECT ADDRESS WHEN DEPLOYED TO MAINNET
+    return 0x303a465B659cBB0ab36eE643eA362c509EEb5213;
   }
 }
 
@@ -55,7 +58,7 @@ contract Zksync is DeployZkSyncAdapter {
   }
 
   function BRIDGE_HUB() internal pure override returns (address) {
-    return 0x32400084C286CF3E17e7B677ea9583e60a000324; // TODO: REPLACE WITH CORRECT ADDRESS WHEN DEPLOYED TO MAINNET
+    return 0x303a465B659cBB0ab36eE643eA362c509EEb5213; // Set to mainnet address, but not used on zkSync
   }
 }
 
@@ -96,7 +99,7 @@ contract Zksync_testnet is DeployZkSyncAdapter {
   }
 
   function BRIDGE_HUB() internal pure override returns (address) {
-    return 0x9A6DE0f62Aa270A8bCB1e2610078650D539B1Ef9; // TODO: REPLACE WITH CORRECT ADDRESS WHEN DEPLOYED TO MAINNET
+    return 0x35A54c8C757806eB6820629bc82d90E056394C92; // Set to mainnet address, but not used on zkSync
   }
 
   function isTestnet() internal pure override returns (bool) {

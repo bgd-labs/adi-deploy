@@ -16,9 +16,9 @@ abstract contract BaseSetCCRAdapters is BaseDeployerScript {
     address[] memory receiverBridgeAdaptersToAllow = getReceiverBridgeAdaptersToAllow(addresses);
 
     ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[]
-    memory bridgeAdapterConfig = new ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[](
-      receiverBridgeAdaptersToAllow.length
-    );
+      memory bridgeAdapterConfig = new ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[](
+        receiverBridgeAdaptersToAllow.length
+      );
     for (uint256 i = 0; i < receiverBridgeAdaptersToAllow.length; i++) {
       bridgeAdapterConfig[i] = ICrossChainReceiver.ReceiverBridgeAdapterConfigInput({
         bridgeAdapter: receiverBridgeAdaptersToAllow[i],
@@ -308,6 +308,28 @@ contract Celo is BaseSetCCRAdapters {
     receiverBridgeAdaptersToAllow[1] = addresses.hlAdapter;
     receiverBridgeAdaptersToAllow[2] = addresses.wormholeAdapter;
     receiverBridgeAdaptersToAllow[3] = addresses.ccipAdapter;
+
+    return receiverBridgeAdaptersToAllow;
+  }
+}
+
+contract Zksync is BaseSetCCRAdapters {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return ChainIds.ZK_SYNC;
+  }
+
+  function getChainIds() public pure virtual override returns (uint256[] memory) {
+    uint256[] memory chainIds = new uint256[](1);
+    chainIds[0] = ChainIds.ETHEREUM;
+
+    return chainIds;
+  }
+
+  function getReceiverBridgeAdaptersToAllow(
+    Addresses memory addresses
+  ) public pure override returns (address[] memory) {
+    address[] memory receiverBridgeAdaptersToAllow = new address[](1);
+    receiverBridgeAdaptersToAllow[0] = addresses.zksyncAdapter;
 
     return receiverBridgeAdaptersToAllow;
   }

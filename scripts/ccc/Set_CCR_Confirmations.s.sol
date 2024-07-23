@@ -16,9 +16,9 @@ abstract contract BaseSetCCRConfirmations is BaseDeployerScript {
   function _execute(Addresses memory addresses) internal override {
     ConfirmationsByChain[] memory confirmationsByChain = getConfirmationsByChainIds();
     ICrossChainReceiver.ConfirmationInput[]
-    memory confirmationsInput = new ICrossChainReceiver.ConfirmationInput[](
-      confirmationsByChain.length
-    );
+      memory confirmationsInput = new ICrossChainReceiver.ConfirmationInput[](
+        confirmationsByChain.length
+      );
 
     for (uint256 i = 0; i < confirmationsByChain.length; i++) {
       confirmationsInput[i] = ICrossChainReceiver.ConfirmationInput({
@@ -37,10 +37,10 @@ contract Ethereum is BaseSetCCRConfirmations {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](2);
     chainIds[0] = ConfirmationsByChain({chainId: ChainIds.POLYGON, confirmations: 3});
@@ -56,10 +56,10 @@ contract Polygon is BaseSetCCRConfirmations {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({chainId: ChainIds.ETHEREUM, confirmations: 3});
@@ -74,10 +74,10 @@ contract Avalanche is BaseSetCCRConfirmations {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({chainId: ChainIds.ETHEREUM, confirmations: 2});
@@ -92,10 +92,10 @@ contract Optimism is BaseSetCCRConfirmations {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({chainId: ChainIds.ETHEREUM, confirmations: 1});
@@ -110,10 +110,10 @@ contract Arbitrum is BaseSetCCRConfirmations {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({chainId: ChainIds.ETHEREUM, confirmations: 1});
@@ -128,10 +128,10 @@ contract Metis is BaseSetCCRConfirmations {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({chainId: ChainIds.ETHEREUM, confirmations: 1});
@@ -146,10 +146,10 @@ contract Binance is BaseSetCCRConfirmations {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({chainId: ChainIds.ETHEREUM, confirmations: 2});
@@ -164,10 +164,10 @@ contract Base is BaseSetCCRConfirmations {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({chainId: ChainIds.ETHEREUM, confirmations: 1});
@@ -182,10 +182,10 @@ contract Gnosis is BaseSetCCRConfirmations {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({chainId: ChainIds.ETHEREUM, confirmations: 2});
@@ -200,10 +200,10 @@ contract Zkevm is BaseSetCCRConfirmations {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({chainId: ChainIds.ETHEREUM, confirmations: 1});
@@ -218,10 +218,10 @@ contract Scroll is BaseSetCCRConfirmations {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({chainId: ChainIds.ETHEREUM, confirmations: 1});
@@ -236,13 +236,31 @@ contract Celo is BaseSetCCRConfirmations {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({chainId: ChainIds.ETHEREUM, confirmations: 2});
+
+    return chainIds;
+  }
+}
+
+contract Zksync is BaseSetCCRConfirmations {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return ChainIds.ZK_SYNC;
+  }
+
+  function getConfirmationsByChainIds()
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
+  {
+    ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
+    chainIds[0] = ConfirmationsByChain({chainId: ChainIds.ETHEREUM, confirmations: 1});
 
     return chainIds;
   }
@@ -254,10 +272,10 @@ contract Ethereum_testnet is Ethereum {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](2);
     chainIds[0] = ConfirmationsByChain({chainId: TestNetChainIds.POLYGON_AMOY, confirmations: 1});
@@ -273,10 +291,10 @@ contract Polygon_testnet is Polygon {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({
@@ -294,10 +312,10 @@ contract Avalanche_testnet is Avalanche {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({
@@ -315,10 +333,10 @@ contract Optimism_testnet is Optimism {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({
@@ -336,10 +354,10 @@ contract Arbitrum_testnet is Arbitrum {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({
@@ -357,10 +375,10 @@ contract Metis_testnet is Metis {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({
@@ -378,10 +396,10 @@ contract Binance_testnet is Binance {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({
@@ -399,10 +417,10 @@ contract Base_testnet is Base {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({
@@ -420,10 +438,10 @@ contract Gnosis_testnet is BaseSetCCRConfirmations {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({
@@ -441,10 +459,10 @@ contract Scroll_testnet is BaseSetCCRConfirmations {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({
@@ -462,10 +480,10 @@ contract Celo_testnet is BaseSetCCRConfirmations {
   }
 
   function getConfirmationsByChainIds()
-  public
-  virtual
-  override
-  returns (ConfirmationsByChain[] memory)
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
   {
     ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
     chainIds[0] = ConfirmationsByChain({

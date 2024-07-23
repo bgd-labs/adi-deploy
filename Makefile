@@ -113,6 +113,9 @@ deploy-zkevm-adapters:
 deploy-wormhole-adapters:
 	$(call deploy_fn,adapters/DeployWormholeAdapter,ethereum celo)
 
+deploy-zksync-adapters-test:
+	$(call deploy_fn,adapters/DeployZkSyncAdapter,zksync)
+
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters:
 	$(call deploy_fn,CCC/Set_CCF_Sender_Adapters,ethereum)
@@ -203,15 +206,15 @@ deploy-base-adapters-test:
 
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters-test:
-	$(call deploy_fn,CCC/Set_CCF_Sender_Adapters,avalanche)
+	$(call deploy_fn,ccc/Set_CCF_Sender_Adapters,avalanche)
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters-test:
-	$(call deploy_fn,CCC/Set_CCR_Receivers_Adapters,celo)
+	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,zksync)
 
 # Sets the required confirmations
 set-ccr-confirmations-test:
-	$(call deploy_fn,CCC/Set_CCR_Confirmations,ethereum)
+	$(call deploy_fn,ccc/Set_CCR_Confirmations,zksync)
 
 
 ## Deploy and configure all contracts
@@ -239,7 +242,7 @@ send-direct-message:
 	$(call deploy_fn,helpers/Send_Direct_CCMessage,avalanche)
 
 deploy_mock_destination:
-	$(call deploy_fn,helpers/Deploy_Mock_destination,ethereum)
+	$(call deploy_fn,helpers/Deploy_Mock_destination,zksync)
 
 set-approved-ccf-senders:
 	$(call deploy_fn,helpers/Set_Approved_Senders,ethereum)
