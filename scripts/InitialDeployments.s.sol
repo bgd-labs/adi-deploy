@@ -259,14 +259,13 @@ contract Celo is BaseInitialDeployment {
 }
 
 contract Zksync is BaseInitialDeployment {
-  //  function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
-  //    return address(0);
-  //  }
+  function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
+    return 0x8Ef21C75Ce360078cAD162565ED0c27617eCccE0;
+  }
 
-  //
-  //  function PROXY_ADMIN() internal pure override returns (address) {
-  //    return 0x01d678F1bbE148C96e7501F1Ac41661904F84F61;
-  //  }
+  function PROXY_ADMIN() internal pure override returns (address) {
+    return 0x158d6c497317367CEa3CBAb0BD84E6de236F060D;
+  }
 
   //  function GUARDIAN() internal pure override returns (address) {
   //    return;
