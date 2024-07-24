@@ -114,15 +114,15 @@ deploy-wormhole-adapters:
 	$(call deploy_fn,adapters/DeployWormholeAdapter,ethereum celo)
 
 deploy-zksync-adapters-test:
-	$(call deploy_fn,adapters/DeployZkSyncAdapter,zksync)
+	$(call deploy_fn,adapters/DeployZkSyncAdapter,ethereum)
 
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters:
-	$(call deploy_fn,CCC/Set_CCF_Sender_Adapters,ethereum)
+	$(call deploy_fn,ccc/Set_CCF_Sender_Adapters,ethereum)
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters:
-	$(call deploy_fn,CCC/Set_CCR_Receivers_Adapters,ethereum polygon avalanche binance arbitrum optimism base metis gnosis zkevm)
+	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,ethereum polygon avalanche binance arbitrum optimism base metis gnosis zkevm)
 
 # Sets the required confirmations
 set-ccr-confirmations:
@@ -206,7 +206,7 @@ deploy-base-adapters-test:
 
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters-test:
-	$(call deploy_fn,ccc/Set_CCF_Sender_Adapters,avalanche)
+	$(call deploy_fn,ccc/Set_CCF_Sender_Adapters,ethereum)
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters-test:

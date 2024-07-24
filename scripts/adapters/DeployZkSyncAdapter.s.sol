@@ -16,7 +16,7 @@ abstract contract DeployZkSyncAdapter is BaseDeployerScript, BaseZkSyncAdapter {
         })
       );
     } else {
-      _deployAdapter(addresses.crossChainController);
+      addresses.zksyncAdapter = _deployAdapter(addresses.crossChainController);
     }
   }
 }
