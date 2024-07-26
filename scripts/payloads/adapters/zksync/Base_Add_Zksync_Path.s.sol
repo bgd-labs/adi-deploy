@@ -22,13 +22,13 @@ abstract contract Base_Deploy_Add_ZkSync_Path_Payload is BaseDeployerScript {
   function _getAdapterAddress(address crossChainController) internal virtual returns (address);
 
   function _execute(Addresses memory addresses) internal virtual override {
-    //    Addresses memory destinationAddresses = _getAddresses(DESTINATION_CHAIN_ID());
+    Addresses memory destinationAddresses = _getAddresses(DESTINATION_CHAIN_ID());
 
     _deployPayload(
       AddForwarderAdapterArgs({
         crossChainController: addresses.crossChainController,
-        currentChainBridgeAdapter: addresses.zksyncAdapter,
-        destinationChainBridgeAdapter: _getAdapterAddress(addresses.crossChainController), //destinationAddresses.zksyncAdapter,
+        currentChainBridgeAdapter: _getAdapterAddress(addresses.crossChainController), //addresses.zksyncAdapter,
+        destinationChainBridgeAdapter: destinationAddresses.zksyncAdapter,
         destinationChainId: DESTINATION_CHAIN_ID()
       })
     );
