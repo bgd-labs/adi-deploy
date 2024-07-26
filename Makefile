@@ -257,7 +257,7 @@ send-message-via-adapter:
 	$(call deploy_fn,helpers/Send_Message_Via_Adapter,ethereum)
 
 deploy_ccc_granular_guardian:
-	$(call deploy_fn,access_control/DeployGranularGuardian,ethereum avalanche polygon binance gnosis metis scroll optimism arbitrum base)
+	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,zksync)
 
 deploy-ccc-revision-and-update:
 	$(call deploy_fn,CCC/UpdateCCC,ethereum)

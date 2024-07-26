@@ -205,15 +205,15 @@ contract Base is DeployGranularGuardian {
 
 contract Zksync is DeployGranularGuardian {
   function DEFAULT_ADMIN() internal pure override returns (address) {
-    return address(0); //GovernanceV3Zksync.EXECUTOR_LVL_1;
+    return 0x04cE39789e11a49595cD0ECEf6f4Bd54ABF4d020; //GovernanceV3Zksync.EXECUTOR_LVL_1;
   }
 
   function RETRY_GUARDIAN() internal pure override returns (address) {
-    return address(0); // TODO: bgd guardian
+    return 0x2451337aD5fE8b563bEB3b9c4A2B8789294879Ec; //  bgd guardian
   }
 
   function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
-    return address(0); // TODO: add correct guadian
+    return 0x4257bf0746D783f0D962913d7d8AFA408B62547E;
   }
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
