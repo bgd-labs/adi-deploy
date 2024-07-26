@@ -147,7 +147,7 @@ abstract contract BaseDeployerScript is BaseScript, Script {
   function _computeByteCodeAddress(
     bytes memory byteCode,
     string memory salt
-  ) internal override returns (address) {
+  ) internal pure override returns (address) {
     bytes32 encodedSalt = keccak256(abi.encode(salt));
     return Create2Utils.computeCreate2Address(encodedSalt, byteCode);
   }
