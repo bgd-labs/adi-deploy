@@ -63,12 +63,13 @@ abstract contract BaseAddZkSyncPathPayloadTest is ADITestBase {
       predictedPayload.DESTINATION_CHAIN_BRIDGE_ADAPTER(),
       deployedPayload.DESTINATION_CHAIN_BRIDGE_ADAPTER()
     );
+    assertEq(_getDeployedPayload(), _getPayload());
   }
 }
 
 contract EthereumAddZkSyncPathPayloadTest is
   PayloadEthereumScript,
-  BaseAddZkSyncPathPayloadTest('ethereum', 20412168)
+  BaseAddZkSyncPathPayloadTest('ethereum', 20413186)
 {
   function _getDeployedPayload() internal pure override returns (address) {
     return 0x65Cf9DE21c5F4377BF7E4d1421cEde57d9D5962A;
