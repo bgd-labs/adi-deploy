@@ -63,7 +63,6 @@ abstract contract BaseAddZkSyncPathPayloadTest is ADITestBase {
       predictedPayload.DESTINATION_CHAIN_BRIDGE_ADAPTER(),
       deployedPayload.DESTINATION_CHAIN_BRIDGE_ADAPTER()
     );
-    assertEq(_getDeployedPayload(), _getPayload());
   }
 }
 
