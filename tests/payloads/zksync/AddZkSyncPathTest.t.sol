@@ -43,9 +43,9 @@ abstract contract BaseAddZkSyncPathPayloadTest is ADITestBase {
     );
   }
 
-  //  function test_samePayloadAddress() public {
-  //    assertEq(_payload, _getDeployedPayload());
-  //  }
+  function test_samePayloadAddress() public {
+    assertEq(_payload, _getDeployedPayload());
+  }
 }
 
 contract EthereumAddZkSyncPathPayloadTest is
@@ -53,7 +53,7 @@ contract EthereumAddZkSyncPathPayloadTest is
   BaseAddZkSyncPathPayloadTest('ethereum', 20412168)
 {
   function _getDeployedPayload() internal pure override returns (address) {
-    return address(0); // TODO: add payload address when deployed
+    return 0x65Cf9DE21c5F4377BF7E4d1421cEde57d9D5962A;
   }
 
   function _getCurrentNetworkAddresses() internal view override returns (Addresses memory) {
