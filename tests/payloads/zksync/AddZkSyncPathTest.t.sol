@@ -1,23 +1,10 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
+import 'forge-std/console.sol';
 import {ADITestBase} from 'aave-helpers/adi/test/ADITestBase.sol';
-import {Ethereum as ZkSyncAdapterEthereum} from '../../../scripts/adapters/DeployZkSyncAdapter.s.sol';
 import {Addresses, Ethereum as PayloadEthereumScript} from '../../../scripts/payloads/adapters/zksync/Network_Deployments.s.sol';
 import {AddForwarderAdapterArgs} from 'aave-helpers/adi/SimpleAddForwarderAdapter.sol';
-
-contract ZkSyncAdapter is ZkSyncAdapterEthereum {
-  address internal immutable CCC;
-
-  constructor(address currentNetworkCCC) {
-    CCC = currentNetworkCCC;
-  }
-
-  // wrapping to make the method public, so that we can access the computed address
-  function computeAdapterAddress() public returns (address) {
-    return _computeAdapterAddress(CCC);
-  }
-}
 
 abstract contract BaseAddZkSyncPathPayloadTest is ADITestBase {
   address internal _payload;
@@ -76,12 +63,11 @@ contract EthereumAddZkSyncPathPayloadTest is
   function _getPayload() internal override returns (address) {
     Addresses memory currentAddresses = _getCurrentNetworkAddresses();
     Addresses memory destinationAddresses = _getAddresses(DESTINATION_CHAIN_ID());
-    ZkSyncAdapter zkSyncEthereumAdapter = new ZkSyncAdapter(currentAddresses.crossChainController);
 
     AddForwarderAdapterArgs memory args = AddForwarderAdapterArgs({
       crossChainController: currentAddresses.crossChainController,
-      currentChainBridgeAdapter: zkSyncEthereumAdapter.computeAdapterAddress(),
-      destinationChainBridgeAdapter: destinationAddresses.zksyncAdapter,
+      currentChainBridgeAdapter: 0x6aD9d4147467f08b165e1b6364584C5d28898b84,
+      destinationChainBridgeAdapter: 0x1BC5C10CAe378fDbd7D52ec4F9f34590a619c68E,
       destinationChainId: DESTINATION_CHAIN_ID()
     });
     return _deployPayload(args);
