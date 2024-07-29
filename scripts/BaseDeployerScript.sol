@@ -4,7 +4,6 @@ pragma solidity ^0.8.0;
 import 'forge-std/Script.sol';
 import 'adi-scripts/BaseScript.sol';
 import {ChainHelpers} from 'solidity-utils/contracts/utils/ChainHelpers.sol';
-import {Create2Utils} from 'aave-helpers/ScriptUtils.sol';
 
 struct Addresses {
   address arbAdapter;
@@ -135,21 +134,6 @@ abstract contract BaseDeployerScript is BaseScript, Script {
 
   function _setAddresses(uint256 networkId, Addresses memory addresses) internal {
     DeployerHelpers.encodeJson(DeployerHelpers.getPathByChainId(networkId), addresses, vm);
-  }
-
-  function _deployByteCode(
-    bytes memory byteCode,
-    string memory salt
-  ) internal override returns (address) {
-    return Create2Utils.create2Deploy(keccak256(abi.encode(salt)), byteCode);
-  }
-
-  function _computeByteCodeAddress(
-    bytes memory byteCode,
-    string memory salt
-  ) internal pure override returns (address) {
-    bytes32 encodedSalt = keccak256(abi.encode(salt));
-    return Create2Utils.computeCreate2Address(encodedSalt, byteCode);
   }
 
   function run() public virtual {
