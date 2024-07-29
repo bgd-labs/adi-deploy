@@ -2,9 +2,22 @@
 pragma solidity ^0.8.0;
 
 import {ADITestBase} from 'aave-helpers/adi/test/ADITestBase.sol';
-import {Addresses, Ethereum} from '../../../scripts/payloads/adapters/zksync/Network_Deployments.s.sol';
-import {AddForwarderAdapterArgs} from 'aave-helpers/adi/SimpleAddForwarderAdapter.sol';
 import {Ethereum as ZkSyncAdapterEthereum} from '../../../scripts/adapters/DeployZkSyncAdapter.s.sol';
+import {Addresses, Ethereum as PayloadEthereumScript} from '../../../scripts/payloads/adapters/zksync/Network_Deployments.s.sol';
+import {AddForwarderAdapterArgs} from 'aave-helpers/adi/SimpleAddForwarderAdapter.sol';
+
+contract ZkSyncAdapter is ZkSyncAdapterEthereum {
+  address internal immutable CCC;
+
+  constructor(address currentNetworkCCC) {
+    CCC = currentNetworkCCC;
+  }
+
+  // wrapping to make the method public, so that we can access the computed address
+  function computeAdapterAddress() public returns (address) {
+    return _computeAdapterAddress(CCC);
+  }
+}
 
 abstract contract BaseAddZkSyncPathPayloadTest is ADITestBase {
   address internal _payload;
@@ -49,7 +62,7 @@ abstract contract BaseAddZkSyncPathPayloadTest is ADITestBase {
 }
 
 contract EthereumAddZkSyncPathPayloadTest is
-  Ethereum,
+  PayloadEthereumScript,
   BaseAddZkSyncPathPayloadTest('ethereum', 20384332)
 {
   function _getDeployedPayload() internal pure override returns (address) {
@@ -61,16 +74,13 @@ contract EthereumAddZkSyncPathPayloadTest is
   }
 
   function _getPayload() internal override returns (address) {
-    ZkSyncAdapterEthereum zkSyncEthereumAdapter = new ZkSyncAdapterEthereum();
-
     Addresses memory currentAddresses = _getCurrentNetworkAddresses();
     Addresses memory destinationAddresses = _getAddresses(DESTINATION_CHAIN_ID());
+    ZkSyncAdapter zkSyncEthereumAdapter = new ZkSyncAdapter(currentAddresses.crossChainController);
 
     AddForwarderAdapterArgs memory args = AddForwarderAdapterArgs({
       crossChainController: currentAddresses.crossChainController,
-      currentChainBridgeAdapter: zkSyncEthereumAdapter._computeAdapterAddress(
-        currentAddresses.crossChainController
-      ), //currentAddresses.zksyncAdapter,
+      currentChainBridgeAdapter: zkSyncEthereumAdapter.computeAdapterAddress(),
       destinationChainBridgeAdapter: destinationAddresses.zksyncAdapter,
       destinationChainId: DESTINATION_CHAIN_ID()
     });
