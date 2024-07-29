@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 import {ADITestBase} from 'aave-helpers/adi/test/ADITestBase.sol';
 import {Addresses, Ethereum} from '../../../scripts/payloads/adapters/zksync/Network_Deployments.s.sol';
 import {AddForwarderAdapterArgs} from 'aave-helpers/adi/SimpleAddForwarderAdapter.sol';
+import {Ethereum as ZkSyncAdapterEthereum} from '../../../scripts/adapters/DeployZkSyncAdapter.s.sol';
 
 abstract contract BaseAddZkSyncPathPayloadTest is ADITestBase {
   address internal _payload;
@@ -60,12 +61,16 @@ contract EthereumAddZkSyncPathPayloadTest is
   }
 
   function _getPayload() internal override returns (address) {
+    ZkSyncAdapterEthereum zkSyncEthereumAdapter = new ZkSyncAdapterEthereum();
+
     Addresses memory currentAddresses = _getCurrentNetworkAddresses();
     Addresses memory destinationAddresses = _getAddresses(DESTINATION_CHAIN_ID());
 
     AddForwarderAdapterArgs memory args = AddForwarderAdapterArgs({
       crossChainController: currentAddresses.crossChainController,
-      currentChainBridgeAdapter: currentAddresses.zksyncAdapter,
+      currentChainBridgeAdapter: zkSyncEthereumAdapter._computeAdapterAddress(
+        currentAddresses.crossChainController
+      ), //currentAddresses.zksyncAdapter,
       destinationChainBridgeAdapter: destinationAddresses.zksyncAdapter,
       destinationChainId: DESTINATION_CHAIN_ID()
     });

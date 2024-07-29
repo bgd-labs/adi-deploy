@@ -267,3 +267,6 @@ deploy-ccc-update-payload:
 
 deploy-ccc-shuffle-payload:
 	$(call deploy_fn,payloads/ccc/shuffle/Network_Deployments,metis)
+
+deploy-zksync-path-payload:
+	$(call deploy_fn,payloads/adapters/zksync/Network_Deployments,ethereum)
