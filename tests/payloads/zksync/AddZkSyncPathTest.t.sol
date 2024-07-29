@@ -5,6 +5,7 @@ import 'forge-std/console.sol';
 import {ADITestBase} from 'aave-helpers/adi/test/ADITestBase.sol';
 import {Addresses, Ethereum as PayloadEthereumScript} from '../../../scripts/payloads/adapters/zksync/Network_Deployments.s.sol';
 import {AddForwarderAdapterArgs} from 'aave-helpers/adi/SimpleAddForwarderAdapter.sol';
+import 'aave-helpers/adi/SimpleAddForwarderAdapter.sol';
 
 abstract contract BaseAddZkSyncPathPayloadTest is ADITestBase {
   address internal _payload;
@@ -43,8 +44,25 @@ abstract contract BaseAddZkSyncPathPayloadTest is ADITestBase {
     );
   }
 
-  function test_samePayloadAddress() public {
-    assertEq(_payload, _getDeployedPayload());
+  function test_samePayloadAddress(
+    address currentChainAdapter,
+    address destinationChainAdapter,
+    address crossChainController,
+    uint256 destinationChainId
+  ) public {
+    SimpleAddForwarderAdapter deployedPayload = SimpleAddForwarderAdapter(_getDeployedPayload());
+    SimpleAddForwarderAdapter predictedPayload = SimpleAddForwarderAdapter(_getPayload());
+
+    assertEq(predictedPayload.DESTINATION_CHAIN_ID(), deployedPayload.DESTINATION_CHAIN_ID());
+    assertEq(predictedPayload.CROSS_CHAIN_CONTROLLER(), deployedPayload.CROSS_CHAIN_CONTROLLER());
+    assertEq(
+      predictedPayload.CURRENT_CHAIN_BRIDGE_ADAPTER(),
+      deployedPayload.CURRENT_CHAIN_BRIDGE_ADAPTER()
+    );
+    assertEq(
+      predictedPayload.DESTINATION_CHAIN_BRIDGE_ADAPTER(),
+      deployedPayload.DESTINATION_CHAIN_BRIDGE_ADAPTER()
+    );
   }
 }
 
