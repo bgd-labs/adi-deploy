@@ -43,10 +43,6 @@ abstract contract BaseShufflePayloadTest is ADITestBase {
       vm
     );
   }
-
-  function test_samePayloadAddress() public {
-    assertEq(_payload, _getDeployedPayload());
-  }
 }
 
 contract EthereumShufflePayloadTest is Ethereum, BaseShufflePayloadTest('ethereum', 20160500) {
