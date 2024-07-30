@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import 'forge-std/console.sol';
-import {ADITestBase} from 'aave-helpers/adi/test/ADITestBase.sol';
+import {ADITestBase} from '../../adi/ADITestBase.sol';
 import {Addresses, Ethereum as PayloadEthereumScript} from '../../../scripts/payloads/adapters/zksync/Network_Deployments.s.sol';
 import '../../../src/templates/SimpleAddForwarderAdapter.sol';
 

@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {Addresses, Ethereum, Polygon, Avalanche, Arbitrum, Optimism, Metis, Binance, Base, Gnosis, Scroll} from '../../../scripts/payloads/ccc/shuffle/Network_Deployments.s.sol';
-import 'aave-helpers/adi/test/ADITestBase.sol';
+import '../../adi/ADITestBase.sol';
 import 'forge-std/console.sol';
 
 abstract contract BaseShufflePayloadTest is ADITestBase {
