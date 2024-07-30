@@ -258,6 +258,24 @@ contract Celo is BaseInitialDeployment {
   }
 }
 
+contract Zksync is BaseInitialDeployment {
+  function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
+    return 0x8Ef21C75Ce360078cAD162565ED0c27617eCccE0;
+  }
+
+  function PROXY_ADMIN() internal pure override returns (address) {
+    return 0x158d6c497317367CEa3CBAb0BD84E6de236F060D;
+  }
+
+  //  function GUARDIAN() internal pure override returns (address) {
+  //    return;
+  //  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.ZK_SYNC;
+  }
+}
+
 contract Ethereum_testnet is BaseInitialDeployment {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return TestNetChainIds.ETHEREUM_SEPOLIA;

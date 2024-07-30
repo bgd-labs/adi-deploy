@@ -23,6 +23,7 @@ BASE_KEY = --private-key ${PRIVATE_KEY}
 #custom_metis-testnet := --legacy --verifier-url https://goerli.explorer.metisdevops.link/api/
 #custom_metis := --verifier-url  https://api.routescan.io/v2/network/mainnet/evm/1088/etherscan
 #custom_scroll-testnet := --legacy --with-gas-price 1000000000 # 1 gwei
+custom_zksync := --zksync
 
 # params:
 #  1 - path/file_name
@@ -31,24 +32,24 @@ BASE_KEY = --private-key ${PRIVATE_KEY}
 #  to define custom params per network add vars custom_network-name
 #  to use ledger, set LEDGER=true to env
 #  default to testnet deployment, to run production, set PROD=true to env
-#define deploy_single_fn
-#forge script \
-# scripts/$(1).s.sol:$(if $(3),$(if $(PROD),$(3),$(3)_testnet),$(shell UP=$(if $(PROD),$(2),$(2)_testnet); echo $${UP} | perl -nE 'say ucfirst')) \
-# --rpc-url $(if $(PROD),$(2),$(2)-testnet) --broadcast --verify -vvvv \
-# $(if $(LEDGER),$(BASE_LEDGER),$(BASE_KEY)) \
-# $(custom_$(if $(PROD),$(2),$(2)-testnet))
-#
-#endef
-
-# catapulta
 define deploy_single_fn
-npx catapulta@latest script \
- scripts/$(1).s.sol:$(if $(3),$(3),$(shell UP=$(if $(PROD),$(2),$(2)_testnet); echo $${UP} | perl -nE 'say ucfirst')) \
- --network $(2) --slow --skip-git \
+forge script \
+ scripts/$(1).s.sol:$(if $(3),$(if $(PROD),$(3),$(3)_testnet),$(shell UP=$(if $(PROD),$(2),$(2)_testnet); echo $${UP} | perl -nE 'say ucfirst')) \
+ --rpc-url $(if $(PROD),$(2),$(2)-testnet) --broadcast --verify -vvvv \
  $(if $(LEDGER),$(BASE_LEDGER),$(BASE_KEY)) \
  $(custom_$(if $(PROD),$(2),$(2)-testnet))
 
 endef
+
+# catapulta
+#define deploy_single_fn
+#npx catapulta@latest script \
+# scripts/$(1).s.sol:$(if $(3),$(3),$(shell UP=$(if $(PROD),$(2),$(2)_testnet); echo $${UP} | perl -nE 'say ucfirst')) \
+# --network $(2) --slow --skip-git \
+# $(if $(LEDGER),$(BASE_LEDGER),$(BASE_KEY)) \
+# $(custom_$(if $(PROD),$(2),$(2)-testnet))
+#
+#endef
 
 define deploy_fn
  $(foreach network,$(2),$(call deploy_single_fn,$(1),$(network),$(3)))
@@ -112,13 +113,16 @@ deploy-zkevm-adapters:
 deploy-wormhole-adapters:
 	$(call deploy_fn,adapters/DeployWormholeAdapter,ethereum celo)
 
+deploy-zksync-adapters-test:
+	$(call deploy_fn,adapters/DeployZkSyncAdapter,ethereum)
+
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters:
-	$(call deploy_fn,CCC/Set_CCF_Sender_Adapters,ethereum)
+	$(call deploy_fn,ccc/Set_CCF_Sender_Adapters,ethereum)
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters:
-	$(call deploy_fn,CCC/Set_CCR_Receivers_Adapters,ethereum polygon avalanche binance arbitrum optimism base metis gnosis zkevm)
+	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,ethereum polygon avalanche binance arbitrum optimism base metis gnosis zkevm)
 
 # Sets the required confirmations
 set-ccr-confirmations:
@@ -154,11 +158,11 @@ deploy-full:
 
 # Deploy Proxy Factories on all networks
 deploy-proxy-factory-test:
-	$(call deploy_fn,InitialDeployments,base)
+	$(call deploy_fn,InitialDeployments,zksync)
 
 # Deploy Cross Chain Infra on all networks
 deploy-cross-chain-infra-test:
-	$(call deploy_fn,CCC/Deploy_CCC,ethereum)
+	$(call deploy_fn,ccc/DeployCCC,zksync)
 
 ## Deploy CCIP bridge adapters on all networks
 deploy-ccip-bridge-adapters-test:
@@ -202,15 +206,15 @@ deploy-base-adapters-test:
 
 ## Set sender bridge dapters. Only eth pol avax are needed as other networks will only receive
 set-ccf-sender-adapters-test:
-	$(call deploy_fn,CCC/Set_CCF_Sender_Adapters,avalanche)
+	$(call deploy_fn,ccc/Set_CCF_Sender_Adapters,ethereum)
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters-test:
-	$(call deploy_fn,CCC/Set_CCR_Receivers_Adapters,celo)
+	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,zksync)
 
 # Sets the required confirmations
 set-ccr-confirmations-test:
-	$(call deploy_fn,CCC/Set_CCR_Confirmations,ethereum)
+	$(call deploy_fn,ccc/Set_CCR_Confirmations,zksync)
 
 
 ## Deploy and configure all contracts
@@ -238,7 +242,7 @@ send-direct-message:
 	$(call deploy_fn,helpers/Send_Direct_CCMessage,avalanche)
 
 deploy_mock_destination:
-	$(call deploy_fn,helpers/Deploy_Mock_destination,ethereum)
+	$(call deploy_fn,helpers/Deploy_Mock_destination,zksync)
 
 set-approved-ccf-senders:
 	$(call deploy_fn,helpers/Set_Approved_Senders,ethereum)
@@ -253,7 +257,7 @@ send-message-via-adapter:
 	$(call deploy_fn,helpers/Send_Message_Via_Adapter,ethereum)
 
 deploy_ccc_granular_guardian:
-	$(call deploy_fn,access_control/DeployGranularGuardian,ethereum avalanche polygon binance gnosis metis scroll optimism arbitrum base)
+	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,zksync)
 
 deploy-ccc-revision-and-update:
 	$(call deploy_fn,CCC/UpdateCCC,ethereum)
@@ -263,3 +267,6 @@ deploy-ccc-update-payload:
 
 deploy-ccc-shuffle-payload:
 	$(call deploy_fn,payloads/ccc/shuffle/Network_Deployments,metis)
+
+deploy-zksync-path-payload:
+	$(call deploy_fn,payloads/adapters/zksync/Network_Deployments,ethereum)
