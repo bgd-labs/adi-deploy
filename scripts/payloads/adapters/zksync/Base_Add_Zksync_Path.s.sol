@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import '../../../BaseDeployerScript.sol';
-import 'aave-helpers/adi/SimpleAddForwarderAdapter.sol';
+import '../../../../src/templates/SimpleAddForwarderAdapter.sol';
 
 abstract contract Base_Deploy_Add_ZkSync_Path_Payload is BaseDeployerScript {
   function _getPayloadByteCode() internal virtual returns (bytes memory);

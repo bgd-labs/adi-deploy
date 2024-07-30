@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import 'aave-helpers/adi/BaseCCCUpdate.sol';
+import '../../../src/templates/BaseCCCUpdate.sol';
 import {IReinitialize} from 'adi/revisions/update_to_rev_3/IReinitialize.sol';
 import {ICrossChainForwarder} from 'adi/interfaces/ICrossChainForwarder.sol';
 import {ChainIds} from 'solidity-utils/contracts/utils/ChainHelpers.sol';
