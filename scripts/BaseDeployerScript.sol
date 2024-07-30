@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import 'forge-std/Script.sol';
 import 'adi-scripts/BaseScript.sol';
-import {ChainHelpers} from 'aave-helpers/ChainIds.sol';
+import {ChainHelpers} from 'solidity-utils/contracts/utils/ChainHelpers.sol';
 
 struct Addresses {
   address arbAdapter;
