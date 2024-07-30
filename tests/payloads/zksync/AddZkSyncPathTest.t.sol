@@ -4,8 +4,7 @@ pragma solidity ^0.8.0;
 import 'forge-std/console.sol';
 import {ADITestBase} from 'aave-helpers/adi/test/ADITestBase.sol';
 import {Addresses, Ethereum as PayloadEthereumScript} from '../../../scripts/payloads/adapters/zksync/Network_Deployments.s.sol';
-import {AddForwarderAdapterArgs} from 'aave-helpers/adi/SimpleAddForwarderAdapter.sol';
-import 'aave-helpers/adi/SimpleAddForwarderAdapter.sol';
+import '../../../src/templates/SimpleAddForwarderAdapter.sol';
 
 abstract contract BaseAddZkSyncPathPayloadTest is ADITestBase {
   address internal _payload;

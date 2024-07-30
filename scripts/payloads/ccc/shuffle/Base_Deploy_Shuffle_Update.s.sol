@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import '../../../BaseDeployerScript.sol';
 import {CrossChainControllerUpgradeRev3} from 'adi/revisions/update_to_rev_3/CrossChainController.sol';
 import {CrossChainControllerWithEmergencyModeUpgradeRev3} from 'adi/revisions/update_to_rev_3/CrossChainControllerWithEmergencyMode.sol';
-import {CCCUpdateArgs} from 'aave-helpers/adi/BaseCCCUpdate.sol';
+import {CCCUpdateArgs} from '../../../../src/templates/BaseCCCUpdate.sol';
 
 // Library to get the code of ccc revision 3 (shuffle)
 library CCCUpdateDeploymentHelper {
