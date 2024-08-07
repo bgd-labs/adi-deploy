@@ -2,8 +2,7 @@
 pragma solidity ^0.8.0;
 
 // This Scripts change the ownership of the V3 contracts from Deployer to the correct addresses. For most of the cases
-// ownership will be changed to executor lvl1, and guardian to the aave safes. BGD will mantain for now the guardian of aDI
-// Effects of executing this changes on tenderly fork can be found here: https://github.com/bgd-labs/aave-permissions-list/pull/42
+// ownership will be changed to executor lvl1, and guardian to the aave safes.
 
 import {ZkSyncScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
 import {OwnableWithGuardian} from 'solidity-utils/contracts/access-control/OwnableWithGuardian.sol';
@@ -11,8 +10,6 @@ import {Ownable} from 'solidity-utils/contracts/oz-common/Ownable.sol';
 import {IWithGuardian} from 'solidity-utils/contracts/access-control/interfaces/IWithGuardian.sol';
 import {GovernanceV3ZkSync} from 'aave-address-book/AaveAddressBook.sol';
 import {ICrossChainForwarder} from 'aave-delivery-infrastructure/contracts/interfaces/ICrossChainForwarder.sol';
-
-// Effects of executing this changes on tenderly fork can be found here: https://github.com/bgd-labs/aave-permissions-list/pull/42
 
 abstract contract UpdateV3Permissions {
   function targetOwner() public pure virtual returns (address);
@@ -24,11 +21,6 @@ abstract contract UpdateV3Permissions {
   function govContractsToUpdate() public pure virtual returns (address[] memory);
 
   function aDIContractsToUpdate() public pure virtual returns (address[] memory);
-
-  // @dev should be set not to 0x0 if requires removal of msg.sender from allowed senders
-  function CROSS_CHAIN_CONTROLLER() public pure virtual returns (address) {
-    return address(0);
-  }
 
   function _changeOwnerAndGuardian(
     address owner,
