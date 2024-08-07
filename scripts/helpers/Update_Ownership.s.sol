@@ -63,11 +63,11 @@ contract UpdateV3ContractsPermissionsZkSync is UpdateV3Permissions {
   }
 
   function targetADIGuardian() public pure override returns (address) {
-    return GovernanceV3ZkSync.GRANULAR_GUARDIAN; // Gran
+    return GovernanceV3ZkSync.GRANULAR_GUARDIAN;
   }
 
   function targetGovernanceGuardian() public pure override returns (address) {
-    return GovernanceV3ZkSync.GOVERNANCE_GUARDIAN; // Governance guardian
+    return GovernanceV3ZkSync.GOVERNANCE_GUARDIAN;
   }
 
   function govContractsToUpdate() public pure override returns (address[] memory) {
