@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.0;
 
 // This Scripts change the ownership of the V3 contracts from Deployer to the correct addresses. For most of the cases

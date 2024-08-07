@@ -270,3 +270,6 @@ deploy-ccc-shuffle-payload:
 
 deploy-zksync-path-payload:
 	$(call deploy_fn,payloads/adapters/zksync/Network_Deployments,ethereum)
+
+update-owners-and-guardians:
+	$(call deploy_fn,helpers/Update_Ownership,zksync)
