@@ -11,10 +11,10 @@ metadata="none"
 solc = "0.8.19"
 ffi = true
 
-[profile.default.zksync]
+[profile.zksync.zksync]
 fallback_oz = true
 mode = "3"
-zksolc="1.5.1"
+zksolc="1.4.1"
 
 [rpc_endpoints]
 ethereum="${RPC_MAINNET}"

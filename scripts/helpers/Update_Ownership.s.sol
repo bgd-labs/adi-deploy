@@ -11,19 +11,21 @@ import {GovernanceV3ZkSync} from 'aave-address-book/AaveAddressBook.sol';
 contract ZkSync is ZkSyncScript {
   function run() external {
     vm.startBroadcast();
-    OwnableWithGuardian(GovernanceV3ZkSync.CROSS_CHAIN_CONTROLLER).transferOwnership(
+    OwnableWithGuardian(address(GovernanceV3ZkSync.PAYLOADS_CONTROLLER)).transferOwnership(
       GovernanceV3ZkSync.EXECUTOR_LVL_1
     );
+    OwnableWithGuardian(address(GovernanceV3ZkSync.PAYLOADS_CONTROLLER)).updateGuardian(
+      GovernanceV3ZkSync.GOVERNANCE_GUARDIAN
+    );
+
     OwnableWithGuardian(GovernanceV3ZkSync.CROSS_CHAIN_CONTROLLER).updateGuardian(
       GovernanceV3ZkSync.GRANULAR_GUARDIAN
     );
 
-    OwnableWithGuardian(GovernanceV3ZkSync.PAYLOADS_CONTROLLER).transferOwnership(
+    OwnableWithGuardian(GovernanceV3ZkSync.CROSS_CHAIN_CONTROLLER).transferOwnership(
       GovernanceV3ZkSync.EXECUTOR_LVL_1
     );
-    OwnableWithGuardian(GovernanceV3ZkSync.PAYLOADS_CONTROLLER).updateGuardian(
-      GovernanceV3ZkSync.GOVERNANCE_GUARDIAN
-    );
+
     vm.stopBroadcast();
   }
 }

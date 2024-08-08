@@ -146,7 +146,7 @@ contract Celo is BaseCCCNetworkDeployment {
 
 contract Zksync is BaseCCCNetworkDeployment {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return ChainIds.ZK_SYNC;
+    return ChainIds.ZKSYNC;
   }
 }
 

@@ -56,7 +56,7 @@ contract Ethereum is BaseCCFSenderAdapters {
       zkevm: _getAddresses(ChainIds.POLYGON_ZK_EVM),
       scroll: _getAddresses(ChainIds.SCROLL),
       celo: _getAddresses(ChainIds.CELO),
-      zksync: _getAddresses(ChainIds.ZK_SYNC)
+      zksync: _getAddresses(ChainIds.ZKSYNC)
     });
 
     // polygon path
