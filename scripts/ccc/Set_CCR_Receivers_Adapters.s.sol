@@ -315,7 +315,7 @@ contract Celo is BaseSetCCRAdapters {
 
 contract Zksync is BaseSetCCRAdapters {
   function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
-    return ChainIds.ZK_SYNC;
+    return ChainIds.ZKSYNC;
   }
 
   function getChainIds() public pure virtual override returns (uint256[] memory) {

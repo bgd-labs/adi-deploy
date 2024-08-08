@@ -250,7 +250,7 @@ contract Celo is BaseSetCCRConfirmations {
 
 contract Zksync is BaseSetCCRConfirmations {
   function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
-    return ChainIds.ZK_SYNC;
+    return ChainIds.ZKSYNC;
   }
 
   function getConfirmationsByChainIds()

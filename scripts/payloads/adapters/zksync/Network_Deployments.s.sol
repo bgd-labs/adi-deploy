@@ -13,6 +13,6 @@ contract Ethereum is Base_Deploy_Add_ZkSync_Path_Payload {
   }
 
   function DESTINATION_CHAIN_ID() internal pure override returns (uint256) {
-    return ChainIds.ZK_SYNC;
+    return ChainIds.ZKSYNC;
   }
 }

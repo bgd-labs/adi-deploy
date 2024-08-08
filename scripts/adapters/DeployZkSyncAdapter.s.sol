@@ -6,7 +6,7 @@ import '../BaseDeployerScript.sol';
 
 abstract contract DeployZkSyncAdapter is BaseDeployerScript, BaseZkSyncAdapter {
   function _execute(Addresses memory addresses) internal virtual override {
-    if (TRANSACTION_NETWORK() == ChainIds.ZK_SYNC) {
+    if (TRANSACTION_NETWORK() == ChainIds.ZKSYNC) {
       addresses.zksyncAdapter = _deployWithoutCreate2(
         BaseAdapterArgs({
           crossChainController: addresses.crossChainController,
@@ -31,7 +31,7 @@ contract Ethereum is DeployZkSyncAdapter {
   }
 
   function REFUND_ADDRESS() internal view override returns (address) {
-    Addresses memory remoteAddresses = _getAddresses(ChainIds.ZK_SYNC);
+    Addresses memory remoteAddresses = _getAddresses(ChainIds.ZKSYNC);
     return remoteAddresses.crossChainController;
   }
 
@@ -46,7 +46,7 @@ contract Ethereum is DeployZkSyncAdapter {
 
 contract Zksync is DeployZkSyncAdapter {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return ChainIds.ZK_SYNC;
+    return ChainIds.ZKSYNC;
   }
 
   function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
@@ -68,7 +68,7 @@ contract Ethereum_testnet is DeployZkSyncAdapter {
   }
 
   function REFUND_ADDRESS() internal view override returns (address) {
-    Addresses memory remoteAddresses = _getAddresses(TestNetChainIds.ZK_SYNC_SEPOLIA);
+    Addresses memory remoteAddresses = _getAddresses(TestNetChainIds.ZKSYNC_SEPOLIA);
     return remoteAddresses.crossChainController;
   }
 
@@ -87,7 +87,7 @@ contract Ethereum_testnet is DeployZkSyncAdapter {
 
 contract Zksync_testnet is DeployZkSyncAdapter {
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
-    return TestNetChainIds.ZK_SYNC_SEPOLIA;
+    return TestNetChainIds.ZKSYNC_SEPOLIA;
   }
 
   function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
