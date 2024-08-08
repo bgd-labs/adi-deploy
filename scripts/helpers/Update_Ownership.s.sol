@@ -6,79 +6,24 @@ pragma solidity ^0.8.0;
 
 import {ZkSyncScript} from 'solidity-utils/contracts/utils/ScriptUtils.sol';
 import {OwnableWithGuardian} from 'solidity-utils/contracts/access-control/OwnableWithGuardian.sol';
-import {Ownable} from 'solidity-utils/contracts/oz-common/Ownable.sol';
-import {IWithGuardian} from 'solidity-utils/contracts/access-control/interfaces/IWithGuardian.sol';
 import {GovernanceV3ZkSync} from 'aave-address-book/AaveAddressBook.sol';
-import {ICrossChainForwarder} from 'aave-delivery-infrastructure/contracts/interfaces/ICrossChainForwarder.sol';
 
-abstract contract UpdateV3Permissions {
-  function targetOwner() public pure virtual returns (address);
-
-  function targetGovernanceGuardian() public pure virtual returns (address);
-
-  function targetADIGuardian() public pure virtual returns (address);
-
-  function govContractsToUpdate() public pure virtual returns (address[] memory);
-
-  function aDIContractsToUpdate() public pure virtual returns (address[] memory);
-
-  function _changeOwnerAndGuardian(
-    address owner,
-    address guardian,
-    address[] memory contracts
-  ) internal {
-    require(owner != address(0), 'NEW_OWNER_CANT_BE_0');
-    require(guardian != address(0), 'NEW_GUARDIAN_CANT_BE_0');
-
-    for (uint256 i = 0; i < contracts.length; i++) {
-      OwnableWithGuardian contractWithAC = OwnableWithGuardian(contracts[i]);
-      try contractWithAC.guardian() returns (address currentGuardian) {
-        if (currentGuardian != guardian) {
-          IWithGuardian(contracts[i]).updateGuardian(guardian);
-        }
-      } catch {}
-      if (contractWithAC.owner() != owner) {
-        contractWithAC.transferOwnership(owner);
-      }
-    }
-  }
-
-  function _changeOwnerAndGuardian() internal {
-    _changeOwnerAndGuardian(targetOwner(), targetGovernanceGuardian(), govContractsToUpdate());
-    _changeOwnerAndGuardian(targetOwner(), targetADIGuardian(), aDIContractsToUpdate());
-  }
-}
-
-contract UpdateV3ContractsPermissionsZkSync is UpdateV3Permissions {
-  function targetOwner() public pure override returns (address) {
-    return GovernanceV3ZkSync.EXECUTOR_LVL_1;
-  }
-
-  function targetADIGuardian() public pure override returns (address) {
-    return GovernanceV3ZkSync.GRANULAR_GUARDIAN;
-  }
-
-  function targetGovernanceGuardian() public pure override returns (address) {
-    return GovernanceV3ZkSync.GOVERNANCE_GUARDIAN;
-  }
-
-  function govContractsToUpdate() public pure override returns (address[] memory) {
-    address[] memory contracts = new address[](1);
-    contracts[0] = address(GovernanceV3ZkSync.PAYLOADS_CONTROLLER);
-    return contracts;
-  }
-
-  function aDIContractsToUpdate() public pure override returns (address[] memory) {
-    address[] memory contracts = new address[](1);
-    contracts[0] = GovernanceV3ZkSync.CROSS_CHAIN_CONTROLLER;
-    return contracts;
-  }
-}
-
-contract ZkSync is ZkSyncScript, UpdateV3ContractsPermissionsZkSync {
+contract ZkSync is ZkSyncScript {
   function run() external {
     vm.startBroadcast();
-    _changeOwnerAndGuardian();
+    OwnableWithGuardian(GovernanceV3ZkSync.CROSS_CHAIN_CONTROLLER).transferOwnership(
+      GovernanceV3ZkSync.EXECUTOR_LVL_1
+    );
+    OwnableWithGuardian(GovernanceV3ZkSync.CROSS_CHAIN_CONTROLLER).updateGuardian(
+      GovernanceV3ZkSync.GRANULAR_GUARDIAN
+    );
+
+    OwnableWithGuardian(GovernanceV3ZkSync.PAYLOADS_CONTROLLER).transferOwnership(
+      GovernanceV3ZkSync.EXECUTOR_LVL_1
+    );
+    OwnableWithGuardian(GovernanceV3ZkSync.PAYLOADS_CONTROLLER).updateGuardian(
+      GovernanceV3ZkSync.GOVERNANCE_GUARDIAN
+    );
     vm.stopBroadcast();
   }
 }
