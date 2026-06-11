@@ -2,9 +2,7 @@
 pragma solidity ^0.8.0;
 
 import './BaseDeployerScript.sol';
-import {
-  TransparentProxyFactory
-} from 'solidity-utils/contracts/transparent-proxy/TransparentProxyFactory.sol';
+import {TransparentProxyFactory} from 'solidity-utils/contracts/transparent-proxy/TransparentProxyFactory.sol';
 import {MiscArbitrum} from 'aave-address-book/MiscArbitrum.sol';
 import {MiscAvalanche} from 'aave-address-book/MiscAvalanche.sol';
 import {MiscBase} from 'aave-address-book/MiscBase.sol';
@@ -24,6 +22,8 @@ import {MiscInk} from 'aave-address-book/MiscInk.sol';
 import {MiscSoneium} from 'aave-address-book/MiscSoneium.sol';
 import {MiscPlasma} from 'aave-address-book/MiscPlasma.sol';
 import {MiscBob} from 'aave-address-book/MiscBob.sol';
+import {MiscXLayer} from 'aave-address-book/MiscXLayer.sol';
+import {MiscMegaEth} from 'aave-address-book/MiscMegaEth.sol';
 import {GovernanceV3Arbitrum} from 'aave-address-book/GovernanceV3Arbitrum.sol';
 import {GovernanceV3Avalanche} from 'aave-address-book/GovernanceV3Avalanche.sol';
 import {GovernanceV3Base} from 'aave-address-book/GovernanceV3Base.sol';
@@ -43,6 +43,8 @@ import {GovernanceV3Ink} from 'aave-address-book/GovernanceV3Ink.sol';
 import {GovernanceV3Soneium} from 'aave-address-book/GovernanceV3Soneium.sol';
 import {GovernanceV3Plasma} from 'aave-address-book/GovernanceV3Plasma.sol';
 import {GovernanceV3Bob} from 'aave-address-book/GovernanceV3Bob.sol';
+import {GovernanceV3XLayer} from 'aave-address-book/GovernanceV3XLayer.sol';
+import {GovernanceV3MegaEth} from 'aave-address-book/GovernanceV3MegaEth.sol';
 
 abstract contract BaseInitialDeployment is BaseDeployerScript {
   function OWNER() internal virtual returns (address) {
@@ -356,11 +358,11 @@ contract Xlayer is BaseInitialDeployment {
   }
 
   function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
-    return 0xEB0682d148e874553008730f0686ea89db7DA412; //MiscXlayer.TRANSPARENT_PROXY_FACTORY;
+    return MiscXLayer.TRANSPARENT_PROXY_FACTORY;
   }
 
   function EXECUTOR() internal pure override returns (address) {
-    return 0xE2E8Badc5d50f8a6188577B89f50701cDE2D4e19; // GovernanceV3Xlayer.EXECUTOR_LVL_1;
+    return GovernanceV3XLayer.EXECUTOR_LVL_1;
   }
 }
 
@@ -370,10 +372,24 @@ contract Megaeth is BaseInitialDeployment {
   }
 
   function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
-    return 0xEB0682d148e874553008730f0686ea89db7DA412;
+    return MiscMegaEth.TRANSPARENT_PROXY_FACTORY;
   }
 
   function EXECUTOR() internal pure override returns (address) {
-    return 0xE2E8Badc5d50f8a6188577B89f50701cDE2D4e19; // GovernanceV3MegaEth.EXECUTOR_LVL_1;
+    return GovernanceV3MegaEth.EXECUTOR_LVL_1;
+  }
+}
+
+contract Monad is BaseInitialDeployment {
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.MONAD;
+  }
+
+  function TRANSPARENT_PROXY_FACTORY() internal pure override returns (address) {
+    return 0xEB0682d148e874553008730f0686ea89db7DA412; // MiscMonad.TRANSPARENT_PROXY_FACTORY
+  }
+
+  function EXECUTOR() internal pure override returns (address) {
+    return 0xa9d0EAFF48cE1DF468f9eAeb7e628c413343F6A2; // GovernanceV3Monad.EXECUTOR_LVL_1;
   }
 }

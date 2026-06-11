@@ -25,6 +25,7 @@ struct NetworkAddresses {
   Addresses plasma;
   Addresses xlayer;
   Addresses megaeth;
+  Addresses monad;
 }
 
 abstract contract BaseCCFSenderAdapters is BaseDeployerScript {
@@ -49,7 +50,7 @@ contract Ethereum is BaseCCFSenderAdapters {
   ) public view override returns (ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[] memory) {
     ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[]
       memory bridgeAdaptersToEnable = new ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[](
-        1
+        2
       );
 
     NetworkAddresses memory networkAddresses = NetworkAddresses({
@@ -72,7 +73,8 @@ contract Ethereum is BaseCCFSenderAdapters {
       bob: _getAddresses(ChainIds.BOB),
       plasma: _getAddresses(ChainIds.PLASMA),
       xlayer: _getAddresses(ChainIds.XLAYER),
-      megaeth: _getAddresses(ChainIds.MEGAETH)
+      megaeth: _getAddresses(ChainIds.MEGAETH),
+      monad: _getAddresses(ChainIds.MONAD)
     });
 
     // polygon path
@@ -288,10 +290,22 @@ contract Ethereum is BaseCCFSenderAdapters {
     // });
 
     // Megaeth
+    // bridgeAdaptersToEnable[0] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+    //   currentChainBridgeAdapter: addresses.megaethAdapter,
+    //   destinationBridgeAdapter: networkAddresses.megaeth.megaethAdapter,
+    //   destinationChainId: networkAddresses.megaeth.chainId
+    // });
+
+    // Monad
     bridgeAdaptersToEnable[0] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
-      currentChainBridgeAdapter: addresses.megaethAdapter,
-      destinationBridgeAdapter: networkAddresses.megaeth.megaethAdapter,
-      destinationChainId: networkAddresses.megaeth.chainId
+      currentChainBridgeAdapter: addresses.ccipAdapter,
+      destinationBridgeAdapter: networkAddresses.monad.ccipAdapter,
+      destinationChainId: networkAddresses.monad.chainId
+    });
+    bridgeAdaptersToEnable[1] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+      currentChainBridgeAdapter: addresses.hlAdapter,
+      destinationBridgeAdapter: networkAddresses.monad.hlAdapter,
+      destinationChainId: networkAddresses.monad.chainId
     });
 
     return bridgeAdaptersToEnable;

@@ -129,3 +129,9 @@ contract Megaeth is BaseMockDestination {
     return ChainIds.MEGAETH;
   }
 }
+
+contract Monad is BaseMockDestination {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return ChainIds.MONAD;
+  }
+}

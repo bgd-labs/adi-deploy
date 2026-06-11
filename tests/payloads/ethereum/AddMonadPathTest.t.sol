@@ -3,10 +3,10 @@ pragma solidity ^0.8.0;
 
 import 'forge-std/console.sol';
 import {ADITestBase} from '../../adi/ADITestBase.sol';
-import {Addresses, Ethereum_Ink as Ethereum} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
-import {SimpleAddForwarderAdapter, AddForwarderAdapterArgs} from '../../../src/templates/SimpleAddForwarderAdapter.sol';
+import {Addresses, Ethereum as PayloadEthereumScript} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
+import {Ethereum_Monad_Path_Payload, AddForwarderAdapterArgs} from '../../../src/adapter_payloads/Ethereum_Monad_Path_Payload.sol';
 
-abstract contract BaseAddInkPathPayloadTest is ADITestBase {
+abstract contract BaseAddMonadPathPayloadTest is ADITestBase {
   address internal _payload;
   address internal _crossChainController;
 
@@ -35,42 +35,47 @@ abstract contract BaseAddInkPathPayloadTest is ADITestBase {
 
   function test_defaultTest() public {
     defaultTest(
-      string.concat('add_ink_path_to_adi', NETWORK),
+      string.concat('add_monad_path_to_adi', NETWORK),
       _crossChainController,
       address(_payload),
-      false,
+      true,
       vm
     );
   }
 
-  function test_samePayloadAddress(
-    address currentChainAdapter,
-    address destinationChainAdapter,
-    address crossChainController,
-    uint256 destinationChainId
-  ) public {
-    SimpleAddForwarderAdapter deployedPayload = SimpleAddForwarderAdapter(_getDeployedPayload());
-    SimpleAddForwarderAdapter predictedPayload = SimpleAddForwarderAdapter(_getPayload());
+  function test_samePayloadAddress() public {
+    Ethereum_Monad_Path_Payload deployedPayload = Ethereum_Monad_Path_Payload(
+      _getDeployedPayload()
+    );
+    Ethereum_Monad_Path_Payload predictedPayload = Ethereum_Monad_Path_Payload(_getPayload());
 
     assertEq(predictedPayload.DESTINATION_CHAIN_ID(), deployedPayload.DESTINATION_CHAIN_ID());
     assertEq(predictedPayload.CROSS_CHAIN_CONTROLLER(), deployedPayload.CROSS_CHAIN_CONTROLLER());
     assertEq(
-      predictedPayload.CURRENT_CHAIN_BRIDGE_ADAPTER(),
-      deployedPayload.CURRENT_CHAIN_BRIDGE_ADAPTER()
+      predictedPayload.CURRENT_CHAIN_HL_BRIDGE_ADAPTER(),
+      deployedPayload.CURRENT_CHAIN_HL_BRIDGE_ADAPTER()
     );
     assertEq(
-      predictedPayload.DESTINATION_CHAIN_BRIDGE_ADAPTER(),
-      deployedPayload.DESTINATION_CHAIN_BRIDGE_ADAPTER()
+      predictedPayload.DESTINATION_CHAIN_HL_BRIDGE_ADAPTER(),
+      deployedPayload.DESTINATION_CHAIN_HL_BRIDGE_ADAPTER()
+    );
+    assertEq(
+      predictedPayload.CURRENT_CHAIN_CCIP_BRIDGE_ADAPTER(),
+      deployedPayload.CURRENT_CHAIN_CCIP_BRIDGE_ADAPTER()
+    );
+    assertEq(
+      predictedPayload.DESTINATION_CHAIN_CCIP_BRIDGE_ADAPTER(),
+      deployedPayload.DESTINATION_CHAIN_CCIP_BRIDGE_ADAPTER()
     );
   }
 }
 
-contract EthereumAddInkPathPayloadTest is
-  Ethereum,
-  BaseAddInkPathPayloadTest('ethereum', 22300000)
+contract EthereumAddMonadPathPayloadTest is
+  PayloadEthereumScript,
+  BaseAddMonadPathPayloadTest('ethereum', 25294679)
 {
   function _getDeployedPayload() internal pure override returns (address) {
-    return 0x9cdA84ae11d829079EDcCaEd49e473f6fb841b75;
+    return 0xB6d264B1322d7ec61dEDE1B60369AFf25229E39a;
   }
 
   function _getCurrentNetworkAddresses() internal view override returns (Addresses memory) {
@@ -83,8 +88,10 @@ contract EthereumAddInkPathPayloadTest is
 
     AddForwarderAdapterArgs memory args = AddForwarderAdapterArgs({
       crossChainController: currentAddresses.crossChainController,
-      currentChainBridgeAdapter: currentAddresses.inkAdapter, // ethereum -> ink bridge adapter
-      destinationChainBridgeAdapter: destinationAddresses.inkAdapter, // ink bridge adapter
+      currentChainHLBridgeAdapter: currentAddresses.hlAdapter,
+      destinationChainHLBridgeAdapter: destinationAddresses.hlAdapter,
+      currentChainCCIPBridgeAdapter: currentAddresses.ccipAdapter,
+      destinationChainCCIPBridgeAdapter: destinationAddresses.ccipAdapter,
       destinationChainId: DESTINATION_CHAIN_ID()
     });
     return _deployPayload(args);

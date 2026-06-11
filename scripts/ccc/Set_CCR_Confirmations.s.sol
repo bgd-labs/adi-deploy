@@ -409,3 +409,21 @@ contract Megaeth is BaseSetCCRConfirmations {
     return chainIds;
   }
 }
+
+contract Monad is BaseSetCCRConfirmations {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return ChainIds.MONAD;
+  }
+
+  function getConfirmationsByChainIds()
+    public
+    virtual
+    override
+    returns (ConfirmationsByChain[] memory)
+  {
+    ConfirmationsByChain[] memory chainIds = new ConfirmationsByChain[](1);
+    chainIds[0] = ConfirmationsByChain({chainId: ChainIds.ETHEREUM, confirmations: 2});
+
+    return chainIds;
+  }
+}

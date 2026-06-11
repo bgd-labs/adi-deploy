@@ -14,10 +14,11 @@ test   :; forge test -vvv
 
 BASE_LEDGER = --ledger --mnemonic-indexes $(MNEMONIC_INDEX) --sender $(LEDGER_SENDER)
 BASE_KEY = --private-key ${PRIVATE_KEY}
+BASE_ACCOUNT = --account ${ACCOUNT_NAME}
 
 
 
-custom_ethereum := --with-gas-price 400000000 # 0.5 gwei
+# custom_ethereum := --with-gas-price 400000000 # 0.5 gwei
 #custom_polygon :=  --with-gas-price 190000000000 # 560 gwei
 #custom_avalanche := --with-gas-price 27000000000 # 27 gwei
 #custom_metis-testnet := --legacy --verifier-url https://goerli.explorer.metisdevops.link/api/
@@ -40,8 +41,8 @@ custom_megaeth := --skip-simulation
 define deploy_single_fn
 forge script \
  scripts/$(1).s.sol:$(if $(3),$(if $(PROD),$(3),$(3)_testnet),$(shell UP=$(if $(PROD),$(2),$(2)_testnet); echo $${UP} | perl -nE 'say ucfirst')) \
- --rpc-url $(if $(PROD),$(2),$(2)-testnet) --broadcast --verify --legacy -vvvv \
- $(if $(LEDGER),$(BASE_LEDGER),$(BASE_KEY)) \
+ --rpc-url $(if $(PROD),$(2),$(2)-testnet) --broadcast --verify --slow --legacy -vvvv \
+ $(if $(LEDGER),$(BASE_LEDGER),$(BASE_ACCOUNT)) \
  $(custom_$(if $(PROD),$(2),$(2)-testnet))
 
 endef
@@ -51,7 +52,7 @@ endef
 #npx catapulta@latest script \
 # scripts/$(1).s.sol:$(if $(3),$(3),$(shell UP=$(if $(PROD),$(2),$(2)_testnet); echo $${UP} | perl -nE 'say ucfirst')) \
 # --network $(2) --slow --skip-git \
-# $(if $(LEDGER),$(BASE_LEDGER),$(BASE_KEY)) \
+# $(if $(LEDGER),$(BASE_LEDGER),$(BASE_ACCOUNT)) \
 # $(custom_$(if $(PROD),$(2),$(2)-testnet))
 #
 #endef
@@ -69,23 +70,23 @@ deploy-emergency-registry:
 
 # Deploy Proxy Factories on all networks
 deploy-initial:
-	$(call deploy_fn,InitialDeployments,megaeth)
+	$(call deploy_fn,InitialDeployments,monad)
 
 # Deploy Cross Chain Infra on all networks
 deploy-cross-chain-infra:
-	$(call deploy_fn,ccc/DeployCCC,megaeth)
+	$(call deploy_fn,ccc/DeployCCC,monad)
 
 ## Deploy CCIP bridge adapters on all networks
 deploy-ccip-bridge-adapters:
-	$(call deploy_fn,adapters/DeployCCIP,ethereum avalanche binance polygon binance gnosis)
+	$(call deploy_fn,adapters/DeployCCIPAdapter,ethereum monad)
 
 ## Deploy LayerZero bridge adapters on all networks
 deploy-lz-bridge-adapters:
-	$(call deploy_fn,adapters/DeployLZ,ethereum avalanche binance polygon binance gnosis)
+	$(call deploy_fn,adapters/DeployLZ,monad)
 
 ## Deploy HyperLane bridge adapters on all networks
 deploy-hl-bridge-adapters:
-	$(call deploy_fn,adapters/DeployHL,ethereum avalanche binance polygon binance gnosis)
+	$(call deploy_fn,adapters/DeployHL,monad)
 
 ## Deploy SameChain adapters on ethereum
 deploy-same-chain-adapters:
@@ -148,11 +149,11 @@ set-ccf-sender-adapters:
 
 # Set the bridge adapters allowed to receive messages
 set-ccr-receiver-adapters:
-	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,megaeth)
+	$(call deploy_fn,ccc/Set_CCR_Receivers_Adapters,monad)
 
 # Sets the required confirmations
 set-ccr-confirmations:
-	$(call deploy_fn,CCC/Set_CCR_Confirmations,megaeth)
+	$(call deploy_fn,CCC/Set_CCR_Confirmations,monad)
 
 
 # ------------------------------------------------------------------------------------------------------------------
@@ -170,7 +171,7 @@ send-direct-message:
 	$(call deploy_fn,helpers/Send_Direct_CCMessage,ethereum)
 
 deploy_mock_destination:
-	$(call deploy_fn,helpers/Deploy_Mock_destination,megaeth)
+	$(call deploy_fn,helpers/Deploy_Mock_destination,monad)
 
 set-approved-ccf-senders:
 	$(call deploy_fn,helpers/Set_Approved_Senders,ethereum)

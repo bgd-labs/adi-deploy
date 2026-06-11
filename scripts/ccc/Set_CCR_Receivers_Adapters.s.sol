@@ -513,3 +513,26 @@ contract Megaeth is BaseSetCCRAdapters {
     return receiverBridgeAdaptersToAllow;
   }
 }
+
+contract Monad is BaseSetCCRAdapters {
+  function TRANSACTION_NETWORK() internal pure virtual override returns (uint256) {
+    return ChainIds.MONAD;
+  }
+
+  function getChainIds() public pure virtual override returns (uint256[] memory) {
+    uint256[] memory chainIds = new uint256[](1);
+    chainIds[0] = ChainIds.ETHEREUM;
+
+    return chainIds;
+  }
+
+  function getReceiverBridgeAdaptersToAllow(
+    Addresses memory addresses
+  ) public pure override returns (address[] memory) {
+    address[] memory receiverBridgeAdaptersToAllow = new address[](2);
+    receiverBridgeAdaptersToAllow[0] = addresses.ccipAdapter;
+    receiverBridgeAdaptersToAllow[1] = addresses.hlAdapter;
+
+    return receiverBridgeAdaptersToAllow;
+  }
+}
