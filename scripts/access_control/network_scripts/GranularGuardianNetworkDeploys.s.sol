@@ -400,3 +400,21 @@ contract Megaeth is DeployGranularGuardian {
     return ChainIds.MEGAETH;
   }
 }
+
+contract Monad is DeployGranularGuardian {
+  function DEFAULT_ADMIN() internal pure override returns (address) {
+    return 0xa9d0EAFF48cE1DF468f9eAeb7e628c413343F6A2; // GovernanceV3Monad.EXECUTOR_LVL_1;
+  }
+
+  function RETRY_GUARDIAN() internal pure override returns (address) {
+    return 0x2B99790c35a401be873FA7Eb514D9220736BB1cA; // aave labs guardian
+  }
+
+  function SOLVE_EMERGENCY_GUARDIAN() internal pure override returns (address) {
+    return 0x056E4C4E80D1D14a637ccbD0412CDAAEc5B51F4E; // dao governance guardian
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.MONAD;
+  }
+}

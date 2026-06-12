@@ -160,7 +160,7 @@ set-ccr-confirmations:
 # ----------------------------------------- ACCESS CONTROL SCRIPTS ---------------------------------------------------------
 
 deploy_ccc_granular_guardian:
-	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,megaeth)
+	$(call deploy_fn,access_control/network_scripts/GranularGuardianNetworkDeploys,monad)
 
 # ------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------- HELPER SCRIPTS ---------------------------------------------------------
@@ -189,4 +189,4 @@ update-owners-and-guardians:
 	$(call deploy_fn,helpers/Update_Ownership,zksync)
 
 update-ccc-permissions:
-	$(call deploy_fn,helpers/UpdateCCCPermissions,megaeth)
+	$(call deploy_fn,helpers/UpdateCCCPermissions,monad)
