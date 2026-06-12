@@ -1,0 +1,26 @@
+scripts/ccc/Set_CCF_Sender_Adapters.s.sol
+  h_739c25e72c37fb 53,310-314
+tests/payloads/ethereum/AddMonadPathTest.t.sol
+  h_739c25e72c37fb 70-77,83,86,103-104
+src/adapter_payloads/Ethereum_Monad_Path_Payload.sol
+  h_739c25e72c37fb 10-11,27-28,38-39,50,64-66
+scripts/payloads/adapters/ethereum/Ethereum_Activate_Monad_Bridge_Adapter_Payload.s.sol
+  h_739c25e72c37fb 32-33
+Makefile
+  h_739c25e72c37fb 85
+scripts/adapters/DeployLZ.s.sol
+  h_739c25e72c37fb 192,194,198
+scripts/ccc/Set_CCR_Receivers_Adapters.s.sol
+  h_739c25e72c37fb 532,535
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "bbe82823aa356775e70f2af2c437473bd6c80fe4",
+  "prompts": {},
+  "humans": {
+    "h_739c25e72c37fb": {
+      "author": "DhairyaSethi <55102840+DhairyaSethi@users.noreply.github.com>"
+    }
+  }
+}
