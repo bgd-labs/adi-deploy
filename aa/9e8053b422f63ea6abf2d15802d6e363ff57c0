@@ -1,0 +1,20 @@
+Makefile
+  h_739c25e72c37fb 163,192
+scripts/access_control/network_scripts/GranularGuardianNetworkDeploys.s.sol
+  h_739c25e72c37fb 403-420
+deployments/monad.json
+  h_739c25e72c37fb 14
+scripts/helpers/UpdateCCCPermissions.s.sol
+  h_739c25e72c37fb 222,224,228,233,238
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "aa9e8053b422f63ea6abf2d15802d6e363ff57c0",
+  "prompts": {},
+  "humans": {
+    "h_739c25e72c37fb": {
+      "author": "DhairyaSethi <55102840+DhairyaSethi@users.noreply.github.com>"
+    }
+  }
+}
