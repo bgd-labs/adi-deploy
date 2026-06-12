@@ -29,6 +29,8 @@ abstract contract Ethereum_Activate_Monad_Bridge_Adapter_Payload is BaseDeployer
         destinationChainHLBridgeAdapter: destinationAddresses.hlAdapter,
         currentChainCCIPBridgeAdapter: addresses.ccipAdapter,
         destinationChainCCIPBridgeAdapter: destinationAddresses.ccipAdapter,
+        currentChainLZBridgeAdapter: addresses.lzAdapter,
+        destinationChainLZBridgeAdapter: destinationAddresses.lzAdapter,
         destinationChainId: DESTINATION_CHAIN_ID()
       })
     );

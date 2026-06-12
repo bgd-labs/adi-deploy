@@ -7,6 +7,8 @@ struct AddForwarderAdapterArgs {
   address crossChainController;
   address currentChainHLBridgeAdapter;
   address destinationChainHLBridgeAdapter;
+  address currentChainLZBridgeAdapter;
+  address destinationChainLZBridgeAdapter;
   address currentChainCCIPBridgeAdapter;
   address destinationChainCCIPBridgeAdapter;
   uint256 destinationChainId;
@@ -22,6 +24,8 @@ contract Ethereum_Monad_Path_Payload is BaseAdaptersUpdate {
   address public immutable DESTINATION_CHAIN_HL_BRIDGE_ADAPTER;
   address public immutable CURRENT_CHAIN_CCIP_BRIDGE_ADAPTER;
   address public immutable DESTINATION_CHAIN_CCIP_BRIDGE_ADAPTER;
+  address public immutable CURRENT_CHAIN_LZ_BRIDGE_ADAPTER;
+  address public immutable DESTINATION_CHAIN_LZ_BRIDGE_ADAPTER;
   uint256 public immutable DESTINATION_CHAIN_ID;
 
   constructor(
@@ -31,6 +35,8 @@ contract Ethereum_Monad_Path_Payload is BaseAdaptersUpdate {
     DESTINATION_CHAIN_HL_BRIDGE_ADAPTER = forwarderArgs.destinationChainHLBridgeAdapter;
     CURRENT_CHAIN_CCIP_BRIDGE_ADAPTER = forwarderArgs.currentChainCCIPBridgeAdapter;
     DESTINATION_CHAIN_CCIP_BRIDGE_ADAPTER = forwarderArgs.destinationChainCCIPBridgeAdapter;
+    CURRENT_CHAIN_LZ_BRIDGE_ADAPTER = forwarderArgs.currentChainLZBridgeAdapter;
+    DESTINATION_CHAIN_LZ_BRIDGE_ADAPTER = forwarderArgs.destinationChainLZBridgeAdapter;
     DESTINATION_CHAIN_ID = forwarderArgs.destinationChainId;
   }
 
@@ -41,7 +47,7 @@ contract Ethereum_Monad_Path_Payload is BaseAdaptersUpdate {
     returns (ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[] memory)
   {
     ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[]
-      memory newForwarders = new ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[](2);
+      memory newForwarders = new ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[](3);
 
     newForwarders[0] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
       currentChainBridgeAdapter: CURRENT_CHAIN_HL_BRIDGE_ADAPTER,
@@ -52,6 +58,12 @@ contract Ethereum_Monad_Path_Payload is BaseAdaptersUpdate {
     newForwarders[1] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
       currentChainBridgeAdapter: CURRENT_CHAIN_CCIP_BRIDGE_ADAPTER,
       destinationBridgeAdapter: DESTINATION_CHAIN_CCIP_BRIDGE_ADAPTER,
+      destinationChainId: DESTINATION_CHAIN_ID
+    });
+
+    newForwarders[2] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+      currentChainBridgeAdapter: CURRENT_CHAIN_LZ_BRIDGE_ADAPTER,
+      destinationBridgeAdapter: DESTINATION_CHAIN_LZ_BRIDGE_ADAPTER,
       destinationChainId: DESTINATION_CHAIN_ID
     });
 

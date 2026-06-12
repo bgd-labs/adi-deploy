@@ -67,15 +67,23 @@ abstract contract BaseAddMonadPathPayloadTest is ADITestBase {
       predictedPayload.DESTINATION_CHAIN_CCIP_BRIDGE_ADAPTER(),
       deployedPayload.DESTINATION_CHAIN_CCIP_BRIDGE_ADAPTER()
     );
+    assertEq(
+      predictedPayload.CURRENT_CHAIN_LZ_BRIDGE_ADAPTER(),
+      deployedPayload.CURRENT_CHAIN_LZ_BRIDGE_ADAPTER()
+    );
+    assertEq(
+      predictedPayload.DESTINATION_CHAIN_LZ_BRIDGE_ADAPTER(),
+      deployedPayload.DESTINATION_CHAIN_LZ_BRIDGE_ADAPTER()
+    );
   }
 }
 
 contract EthereumAddMonadPathPayloadTest is
   PayloadEthereumScript,
-  BaseAddMonadPathPayloadTest('ethereum', 25294679)
+  BaseAddMonadPathPayloadTest('ethereum', 25300906)
 {
   function _getDeployedPayload() internal pure override returns (address) {
-    return 0xB6d264B1322d7ec61dEDE1B60369AFf25229E39a;
+    return 0x5c67Ac24Ed23B343d26E9D6AC682ce34617ae634;
   }
 
   function _getCurrentNetworkAddresses() internal view override returns (Addresses memory) {
@@ -92,6 +100,8 @@ contract EthereumAddMonadPathPayloadTest is
       destinationChainHLBridgeAdapter: destinationAddresses.hlAdapter,
       currentChainCCIPBridgeAdapter: currentAddresses.ccipAdapter,
       destinationChainCCIPBridgeAdapter: destinationAddresses.ccipAdapter,
+      currentChainLZBridgeAdapter: currentAddresses.lzAdapter,
+      destinationChainLZBridgeAdapter: destinationAddresses.lzAdapter,
       destinationChainId: DESTINATION_CHAIN_ID()
     });
     return _deployPayload(args);

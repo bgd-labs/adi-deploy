@@ -50,7 +50,7 @@ contract Ethereum is BaseCCFSenderAdapters {
   ) public view override returns (ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[] memory) {
     ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[]
       memory bridgeAdaptersToEnable = new ICrossChainForwarder.ForwarderBridgeAdapterConfigInput[](
-        2
+        3
       );
 
     NetworkAddresses memory networkAddresses = NetworkAddresses({
@@ -305,6 +305,11 @@ contract Ethereum is BaseCCFSenderAdapters {
     bridgeAdaptersToEnable[1] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
       currentChainBridgeAdapter: addresses.hlAdapter,
       destinationBridgeAdapter: networkAddresses.monad.hlAdapter,
+      destinationChainId: networkAddresses.monad.chainId
+    });
+    bridgeAdaptersToEnable[2] = ICrossChainForwarder.ForwarderBridgeAdapterConfigInput({
+      currentChainBridgeAdapter: addresses.lzAdapter,
+      destinationBridgeAdapter: networkAddresses.monad.lzAdapter,
       destinationChainId: networkAddresses.monad.chainId
     });
 

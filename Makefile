@@ -82,7 +82,7 @@ deploy-ccip-bridge-adapters:
 
 ## Deploy LayerZero bridge adapters on all networks
 deploy-lz-bridge-adapters:
-	$(call deploy_fn,adapters/DeployLZ,monad)
+	$(call deploy_fn,adapters/DeployLZ,ethereum monad)
 
 ## Deploy HyperLane bridge adapters on all networks
 deploy-hl-bridge-adapters:
