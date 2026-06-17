@@ -3,14 +3,8 @@ pragma solidity ^0.8.0;
 
 import 'forge-std/console.sol';
 import {ADITestBase} from '../../adi/ADITestBase.sol';
-import {
-  Addresses,
-  Ethereum as Ethereum
-} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
-import {
-  SimpleAddForwarderAdapter,
-  AddForwarderAdapterArgs
-} from '../../../src/templates/SimpleAddForwarderAdapter.sol';
+import {Addresses, Ethereum_MegaEth as Ethereum} from '../../../scripts/payloads/adapters/ethereum/Network_Deployments.s.sol';
+import {SimpleAddForwarderAdapter, AddForwarderAdapterArgs} from '../../../src/templates/SimpleAddForwarderAdapter.sol';
 
 abstract contract BaseAddMegaEthPathPayloadTest is ADITestBase {
   address internal _payload;

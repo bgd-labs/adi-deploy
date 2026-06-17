@@ -72,6 +72,7 @@ bob="${RPC_BOB}"
 plasma="${RPC_PLASMA}"
 xlayer="${RPC_XLAYER}"
 megaeth="${RPC_MEGAETH}"
+monad="${RPC_MONAD}"
 
 [etherscan]
 ethereum={key="${ETHERSCAN_API_KEY}", chain=1 }
@@ -113,6 +114,7 @@ soneium={key="${ETHERSCAN_API_KEY}", chain=1868, url='https://soneium.blockscout
 bob={key="${ETHERSCAN_API_KEY}", chain=60808, url='https://explorer.gobob.xyz/api/'}
 xlayer={key="any", chain=196, url='https://www.oklink.com/api/v5/explorer/contract/verify-source-code-plugin/xlayer'}
 megaeth={key="any", chain=4326, url='https://megaeth.blockscout.com/api/'}
+monad={key="${ETHERSCAN_API_KEY}", chain=143, url='https://api.monadscan.io/api/'}
 
 # See more config options https://github.com/gakonst/foundry/tree/master/config
 [fuzz]

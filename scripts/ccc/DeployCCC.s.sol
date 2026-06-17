@@ -217,3 +217,13 @@ contract Megaeth is BaseCCCNetworkDeployment {
     return ChainIds.MEGAETH;
   }
 }
+
+contract Monad is BaseCCCNetworkDeployment {
+  function CL_EMERGENCY_ORACLE() internal pure override returns (address) {
+    return 0x4C24fFe2Cb6dE5C55ef0cA8905c13b8508994D4b;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.MONAD;
+  }
+}

@@ -67,7 +67,7 @@ abstract contract BaseAddInkPathPayloadTest is ADITestBase {
 
 contract EthereumAddInkPathPayloadTest is
   Ethereum,
-  BaseAddInkPathPayloadTest('ethereum', 22123500)
+  BaseAddInkPathPayloadTest('ethereum', 22300000)
 {
   function _getDeployedPayload() internal pure override returns (address) {
     return 0x9cdA84ae11d829079EDcCaEd49e473f6fb841b75;

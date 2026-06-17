@@ -1,25 +1,26 @@
 import {
-arbitrum,
-optimism,
-zksync, 
-linea,
-sonic,
-mantle,
-ink,
-soneium,
-bob,
-celo,
-gnosis,
-metis,
-plasma,
-xLayer,
-megaeth,
-mainnet,
-avalanche,
-bsc,
-scroll,
-polygon, 
-base
+  arbitrum,
+  optimism,
+  zksync,
+  linea,
+  sonic,
+  mantle,
+  ink,
+  soneium,
+  bob,
+  celo,
+  gnosis,
+  metis,
+  plasma,
+  xLayer,
+  megaeth,
+  mainnet,
+  avalanche,
+  bsc,
+  scroll,
+  polygon,
+  base,
+  monad,
 } from 'viem/chains';
 import {z} from 'zod';
 
@@ -45,6 +46,7 @@ export const CHAIN_ID = {
   XLAYER: xLayer.id,
   MEGAETH: megaeth.id,
   ZKSYNC: zksync.id,
+  MONAD: monad.id,
 } as const;
 
 const zodChainId = z.nativeEnum(CHAIN_ID);
@@ -71,6 +73,3 @@ export const aDISnapshotSchema = z.object({
 });
 
 export type ADISnapshot = z.infer<typeof aDISnapshotSchema>;
-
-
-

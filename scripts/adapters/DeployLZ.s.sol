@@ -71,7 +71,6 @@ contract Polygon is DeployLZAdapter {
   }
 }
 
-
 contract Binance is DeployLZAdapter {
   function LZ_ENDPOINT() internal pure override returns (address) {
     return 0x1a44076050125825900e736c501f859c50fE728c;
@@ -178,6 +177,25 @@ contract Plasma is DeployLZAdapter {
 
   function TRANSACTION_NETWORK() internal pure override returns (uint256) {
     return ChainIds.PLASMA;
+  }
+
+  function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {
+    RemoteCCC[] memory remoteCCCByNetwork = new RemoteCCC[](1);
+    remoteCCCByNetwork[0].chainId = ChainIds.ETHEREUM;
+    remoteCCCByNetwork[0].crossChainController = _getAddresses(ChainIds.ETHEREUM)
+      .crossChainController;
+
+    return remoteCCCByNetwork;
+  }
+}
+
+contract Monad is DeployLZAdapter {
+  function LZ_ENDPOINT() internal pure override returns (address) {
+    return 0x6F475642a6e85809B1c36Fa62763669b1b48DD5B;
+  }
+
+  function TRANSACTION_NETWORK() internal pure override returns (uint256) {
+    return ChainIds.MONAD;
   }
 
   function REMOTE_CCC_BY_NETWORK() internal view override returns (RemoteCCC[] memory) {

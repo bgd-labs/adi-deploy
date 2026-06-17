@@ -138,7 +138,7 @@ contract ADITestBase is Test {
     string memory beforeString = string(abi.encodePacked('adi_', reportName, '_before'));
     CCCConfig memory configBefore = createConfigurationSnapshot(beforeString, crossChainController);
 
-    uint256 snapshotId = vm.snapshot();
+    uint256 snapshotId = vm.snapshotState();
 
     executePayload(vm, payload);
 
@@ -147,7 +147,7 @@ contract ADITestBase is Test {
 
     diffReports(beforeString, afterString);
 
-    vm.revertTo(snapshotId);
+    vm.revertToState(snapshotId);
     if (runE2E) e2eTest(payload, crossChainController);
 
     return (configBefore, configAfter);
@@ -332,7 +332,7 @@ contract ADITestBase is Test {
 
   function _testCorrectTrustedRemotes(
     ICrossChainReceiver.ReceiverBridgeAdapterConfigInput[] memory receiversToAllow
-  ) internal {
+  ) internal view {
     for (uint256 i = 0; i < receiversToAllow.length; i++) {
       for (uint256 j = 0; j < receiversToAllow[i].chainIds.length; j++) {
         address trustedRemote = IBaseAdapter(receiversToAllow[i].bridgeAdapter)
@@ -643,6 +643,24 @@ contract ADITestBase is Test {
   ) internal view returns (GranularGuardianRoles memory) {
     GranularGuardianAccessControl granularGuardian = GranularGuardianAccessControl(guardian);
 
+    // todo: temp-fix until all guardians are migrated to granular guardian
+    try granularGuardian.RETRY_ROLE() returns (bytes32) {} catch {
+      console.log(
+        string.concat(
+          'Guardian [',
+          vm.toString(guardian),
+          '] is not a granular guardian, skipping roles snapshot on chainId: ',
+          vm.toString(block.chainid)
+        )
+      );
+      return
+        GranularGuardianRoles({
+          retryGuardians: new address[](0),
+          solveEmergencyGuardians: new address[](0),
+          defaultAdmin: address(0)
+        });
+    }
+
     address[] memory retryGuardians = new address[](
       granularGuardian.getRoleMemberCount(granularGuardian.RETRY_ROLE())
     );
@@ -739,7 +757,7 @@ contract ADITestBase is Test {
     uint256 chainId
   ) internal pure returns (uint256[] memory) {
     if (chainId == ChainIds.MAINNET) {
-      uint256[] memory chainIds = new uint256[](20);
+      uint256[] memory chainIds = new uint256[](21);
       chainIds[0] = ChainIds.MAINNET;
       chainIds[1] = ChainIds.POLYGON;
       chainIds[2] = ChainIds.AVALANCHE;
@@ -760,6 +778,7 @@ contract ADITestBase is Test {
       chainIds[17] = ChainIds.PLASMA;
       chainIds[18] = ChainIds.XLAYER;
       chainIds[19] = ChainIds.MEGAETH;
+      chainIds[20] = ChainIds.MONAD;
 
       return chainIds;
     } else if (chainId == ChainIds.POLYGON) {
@@ -855,6 +874,8 @@ contract ADITestBase is Test {
       return GovernanceV3XLayer.CROSS_CHAIN_CONTROLLER;
     } else if (chainId == ChainIds.MEGAETH) {
       return GovernanceV3MegaEth.CROSS_CHAIN_CONTROLLER;
+    } else if (chainId == ChainIds.MONAD) {
+      return 0x8dd5b84b26ae3916A5Fb34C8968F93d206216b63;
     }
     revert();
   }
